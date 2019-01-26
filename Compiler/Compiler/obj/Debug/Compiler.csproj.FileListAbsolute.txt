@@ -1,0 +1,6 @@
+C:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cache
+C:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csproj.CoreCompileInputs.cache
+C:\TAiFA\Compiler\Compiler\bin\Debug\Compiler.exe
+C:\TAiFA\Compiler\Compiler\bin\Debug\Compiler.pdb
+C:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.exe
+C:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.pdb
