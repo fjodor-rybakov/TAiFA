@@ -10,6 +10,13 @@
           <e p="Interpreter.cs" t="Include" />
           <e p="Lexer.cs" t="Include" />
         </e>
+        <e p="Lexer1" t="Include">
+          <e p="AutomateData.cs" t="Include" />
+          <e p="Controller.cs" t="Include" />
+          <e p="Lexer.cs" t="Include" />
+          <e p="LexerInfo.cs" t="Include" />
+          <e p="TypeLexem.cs" t="Include" />
+        </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
