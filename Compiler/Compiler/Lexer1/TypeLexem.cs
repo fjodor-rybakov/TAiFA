@@ -10,6 +10,7 @@ namespace Compiler.Lexer1
         private const string DECIMAL = "DECIMAL";
         private const string UNKNOWN = "UNKNOWN";
         public const string OPERATION = "OPERATION";
+        public const string DELIMITER = "DELIMITER";
 
         public static string GetToken(AutomateData automateData, int lastState)
         {

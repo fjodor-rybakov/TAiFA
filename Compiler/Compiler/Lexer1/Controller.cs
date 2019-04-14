@@ -11,9 +11,10 @@ namespace Compiler.Lexer1
         private const string ErrorMessageParseFinishState = "Не удалось считать финишные состояния";
         public List<AutomateData> Automates { get; }
         public List<char> BindOptions { get; } = new List<char>{'=', '*', '/', '+', '-', '<', '>'};
+        public List<char> SplitSymbols { get; } = new List<char>{',', ':', ';'};
         public List<string> ReserveWords { get; } = new List<string>
         {
-            "begin", "end", "main", "number", "decimal", "string", "char", "bool", "number2", "number8", "number216", "for", "while", "if", "else"
+            "begin", "end", "main", "number", "decimal", "string", "char", "bool", "number2", "number8", "number216", "for", "while", "if", "else", "var"
         };
 
         public Controller(params string[] paths)

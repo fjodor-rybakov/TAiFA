@@ -19,6 +19,7 @@ namespace Compiler.Lexer1
             Dictionary<AutomateData, List<int>> acceptAutomates = InitAcceptAutomates();
             string value = "";
             int index = 0;
+            char lastCh = ' ';
             List<LexerInfo> lexerInfo = new List<LexerInfo>();
             foreach (var ch in line)
             {
@@ -39,13 +40,37 @@ namespace Compiler.Lexer1
                     lexerInfo.Add(new LexerInfo(value, TypeLexem.OPERATION, false));
                     value = "";
                 }
+                else if (_controller.SplitSymbols.Contains(ch) && 
+                         (index + 1 < line.Length && line[index + 1] == ' ' || index + 1 == line.Length))
+                {
+                    lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.DELIMITER, false));
+                    foreach (var automate in acceptAutomates)
+                    {
+                        if (automate.Value.Count == 0) continue;
+                        if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
+                        bool isReserve = _controller.ReserveWords.Contains(value.ToLower());
+                        lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve));
+                    }
+                    value = "";
+                    acceptAutomates = InitAcceptAutomates();
+                }
                 else
                 {
                     acceptAutomates = CheckLexem(ch, acceptAutomates, value);
+                    if (acceptAutomates.Count == 0)
+                    {
+                        throw new Exception(line[index] + " <--------- FAIL!!!");
+                    }
                     value += ch;
                 }
 
+                lastCh = ch;
+
                 index++;
+            }
+            if (_controller.SplitSymbols.Contains(lastCh))
+            {
+                lexerInfo.Add(new LexerInfo(lastCh.ToString(), TypeLexem.DELIMITER, false));
             }
             foreach (var automate in acceptAutomates)
             {
@@ -61,10 +86,6 @@ namespace Compiler.Lexer1
         private Dictionary<AutomateData, List<int>> CheckLexem(char ch, Dictionary<AutomateData, List<int>> acceptAutomates, string value)
         {
             List<AutomateData> removeData = new List<AutomateData>();
-            if (acceptAutomates.Count == 0)
-            {
-                throw new Exception(value + " <--------- FAIL!!!");
-            }
             foreach(var item in acceptAutomates)
             {
                 var currentState = item.Value.Count != 0 ? item.Value.Last() : 0;
@@ -102,7 +123,7 @@ namespace Compiler.Lexer1
             }
 
             RefreshAcceptAutomates(removeData, ref acceptAutomates);
-
+            
             return acceptAutomates;
         }
         
