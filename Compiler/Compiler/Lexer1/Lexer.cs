@@ -19,7 +19,6 @@ namespace Compiler.Lexer1
             Dictionary<AutomateData, List<int>> acceptAutomates = InitAcceptAutomates();
             string value = "";
             int index = 0;
-            char lastCh = ' ';
             List<LexerInfo> lexerInfo = new List<LexerInfo>();
             foreach (var ch in line)
             {
@@ -40,10 +39,8 @@ namespace Compiler.Lexer1
                     lexerInfo.Add(new LexerInfo(value, TypeLexem.OPERATION, false));
                     value = "";
                 }
-                else if (_controller.SplitSymbols.Contains(ch) && 
-                         (index + 1 < line.Length && line[index + 1] == ' ' || index + 1 == line.Length))
+                else if (_controller.SplitSymbols.Contains(ch))
                 {
-                    lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.DELIMITER, false));
                     foreach (var automate in acceptAutomates)
                     {
                         if (automate.Value.Count == 0) continue;
@@ -51,6 +48,7 @@ namespace Compiler.Lexer1
                         bool isReserve = _controller.ReserveWords.Contains(value.ToLower());
                         lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve));
                     }
+                    lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.DELIMITER, false));
                     value = "";
                     acceptAutomates = InitAcceptAutomates();
                 }
@@ -64,13 +62,7 @@ namespace Compiler.Lexer1
                     value += ch;
                 }
 
-                lastCh = ch;
-
                 index++;
-            }
-            if (_controller.SplitSymbols.Contains(lastCh))
-            {
-                lexerInfo.Add(new LexerInfo(lastCh.ToString(), TypeLexem.DELIMITER, false));
             }
             foreach (var automate in acceptAutomates)
             {

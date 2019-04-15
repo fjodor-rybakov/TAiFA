@@ -43,11 +43,9 @@
     <Compile Include="Lexer1\Lexer.cs" />
     <Compile Include="Lexer1\LexerInfo.cs" />
     <Compile Include="Lexer1\TypeLexem.cs" />
-    <Compile Include="Lexer\DataObject.cs" />
-    <Compile Include="Lexer\Interpreter.cs" />
-    <Compile Include="Lexer\Lexer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecDown\RecDown.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

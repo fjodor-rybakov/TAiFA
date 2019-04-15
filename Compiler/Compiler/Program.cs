@@ -15,7 +15,7 @@ namespace Compiler
 			const string pathNumber2816 = @"C:/TAiFA/Compiler/files/lexer/number2816.txt";
 			
 			StreamReader reader = new StreamReader(pathData);
-			Lexer1.Lexer lexer = new Lexer1.Lexer(pathIdentificator, pathNumber10, pathNumber2816);
+			Lexer lexer = new Lexer(pathIdentificator, pathNumber10, pathNumber2816);
 			
 			string line;
 			while ((line = reader.ReadLine()) != null)
@@ -25,6 +25,8 @@ namespace Compiler
 				{
 					Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
 				}
+				RecDown.RecDown recDown = new RecDown.RecDown(lexerInfo);
+				Console.WriteLine("Var is valid: " + recDown.CheckVar());
 			}
 		}
 	}

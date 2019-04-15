@@ -2,15 +2,24 @@ namespace Compiler.Lexer1
 {
     public static class TypeLexem
     {
-        private const string IDENTIFICATOR = "IDENTIFICATOR";
-        private const string NUMBER2 = "NUMBER2";
-        private const string NUMBER8 = "NUMBER8";
-        private const string NUMBER10 = "NUMBER10";
-        private const string NUMBER16 = "NUMBER16";
-        private const string DECIMAL = "DECIMAL";
-        private const string UNKNOWN = "UNKNOWN";
+        public const string IDENTIFICATOR = "IDENTIFICATOR";
+        public const string NUMBER2 = "NUMBER2";
+        public const string NUMBER8 = "NUMBER8";
+        public const string NUMBER10 = "NUMBER10";
+        public const string NUMBER16 = "NUMBER16";
+        public const string DECIMAL = "DECIMAL";
+        public const string UNKNOWN = "UNKNOWN";
         public const string OPERATION = "OPERATION";
         public const string DELIMITER = "DELIMITER";
+
+        public const string INT = "int";
+        public const string STRING = "string";
+        public const string BOOL = "bool";
+        public const string SEMICOLON = ";";
+        public const string COMMA = ",";
+        public const string COLON = ":";
+        public const string VAR = "var";
+        
 
         public static string GetToken(AutomateData automateData, int lastState)
         {

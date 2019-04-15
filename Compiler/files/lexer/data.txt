@@ -1,1 +1,1 @@
-var number: abc, qwe;
+var int: abc, qwe, qwe, qwe, qwe, qwe, qwe, qwe;
