@@ -6,6 +6,7 @@ namespace Compiler.RecDown
     public class RecDown
     {
         private List<LexerInfo> _lexerInfo;
+        private static int lastListIndex = 3;
 
         public RecDown(List<LexerInfo> lexerInfo)
         {
@@ -14,36 +15,42 @@ namespace Compiler.RecDown
         
         public bool CheckVar()
         {
-            var lastListIndex = 3;
-            return IsVar(_lexerInfo[0].Value) && 
-                   IsType(_lexerInfo[1].Value) &&
-                   _lexerInfo[2].Value == TypeLexem.COLON && 
-                   IsIdList(ref lastListIndex) && 
-                   _lexerInfo[lastListIndex].Value == TypeLexem.SEMICOLON;
+            return IsVar() && IsType() && IsColon() && IsIdList() && IsSemicolon();
         }
 
-        private bool IsVar(string value)
+        private bool IsVar()
         {
-            return value == TypeLexem.VAR;
+            return lastListIndex < _lexerInfo.Count && _lexerInfo[0].Value == TypeLexem.VAR;
         }
         
-        private bool IsType(string value)
+        private bool IsType()
         {
-            return value == TypeLexem.INT || value == TypeLexem.STRING || value == TypeLexem.BOOL;
+            string value = _lexerInfo[1].Value;
+            return lastListIndex  < _lexerInfo.Count && (value == TypeLexem.INT || value == TypeLexem.STRING || value == TypeLexem.BOOL);
         }
 
-        private bool IsIdList(ref int index)
+        private bool IsColon()
         {
-            return index < _lexerInfo.Count && IsList(ref index);
+            return lastListIndex < _lexerInfo.Count && _lexerInfo[2].Value == TypeLexem.COLON;
         }
 
-        private bool IsList(ref int index)
+        private bool IsSemicolon()
         {
-            if (_lexerInfo[index].Type != TypeLexem.IDENTIFICATOR) return false;
-            index++;
-            if (index >= _lexerInfo.Count || _lexerInfo[index].Value != TypeLexem.COMMA) return true;
-            index++;
-            return IsList(ref index);
+            return lastListIndex < _lexerInfo.Count && _lexerInfo[lastListIndex].Value == TypeLexem.SEMICOLON;
+        }
+
+        private bool IsIdList()
+        {
+            return lastListIndex < _lexerInfo.Count && IsList();
+        }
+
+        private bool IsList()
+        {
+            if (_lexerInfo[lastListIndex].Type != TypeLexem.IDENTIFICATOR) return false;
+            lastListIndex++;
+            if (lastListIndex >= _lexerInfo.Count || _lexerInfo[lastListIndex].Value != TypeLexem.COMMA) return true;
+            lastListIndex++;
+            return IsList();
         }
     }
 }

@@ -41,18 +41,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Compiler/RecDown/RecDown.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-145">
-              <caret line="20" column="50" selection-start-line="20" selection-start-column="50" selection-end-line="20" selection-end-column="50" />
+            <state relative-caret-position="-29">
+              <caret line="36" column="94" selection-start-line="36" selection-start-column="94" selection-end-line="36" selection-end-column="94" />
               <folding>
-                <marker date="1555527662000" expanded="false" signature="6:56" ph="..." />
-                <marker date="1555527662000" expanded="true" signature="84:1393" ph="{...}" />
-                <marker date="1555527662000" expanded="true" signature="111:1391" ph="{...}" />
-                <marker date="1555527662000" expanded="true" signature="212:268" ph="{...}" />
-                <marker date="1555527662000" expanded="true" signature="308:651" ph="{...}" />
-                <marker date="1555527662000" expanded="true" signature="693:756" ph="{...}" />
-                <marker date="1555527662000" expanded="true" signature="807:926" ph="{...}" />
-                <marker date="1555527662000" expanded="true" signature="972:1058" ph="{...}" />
-                <marker date="1555527662000" expanded="true" signature="1102:1385" ph="{...}" />
+                <marker date="1555528420046" expanded="false" signature="6:56" ph="..." />
+                <marker date="1555528420046" expanded="true" signature="84:1707" ph="{...}" />
+                <marker date="1555528420046" expanded="true" signature="111:1705" ph="{...}" />
+                <marker date="1555528420046" expanded="true" signature="258:314" ph="{...}" />
+                <marker date="1555528420046" expanded="true" signature="354:572" ph="{...}" />
+                <marker date="1555528420046" expanded="true" signature="614:713" ph="{...}" />
+                <marker date="1555528420046" expanded="true" signature="764:922" ph="{...}" />
+                <marker date="1555528420046" expanded="true" signature="954:1069" ph="{...}" />
+                <marker date="1555528420046" expanded="true" signature="1105:1236" ph="{...}" />
+                <marker date="1555528420046" expanded="true" signature="1269:1354" ph="{...}" />
+                <marker date="1555528420046" expanded="true" signature="1385:1699" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -156,7 +158,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="708" />
     <option name="height" value="744" />
@@ -242,12 +244,12 @@
       <workItem from="1555263301786" duration="2685000" />
       <workItem from="1555347156104" duration="9277000" />
       <workItem from="1555415187144" duration="186000" />
-      <workItem from="1555526718963" duration="976000" />
+      <workItem from="1555526718963" duration="1697000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="127113000" />
+    <option name="totallyTimeSpent" value="127834000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -269,7 +271,7 @@
       <window_info id="Favorites" order="4" sideWeight="0.502439" side_tool="true" weight="0.24962178" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4183056" visible="true" weight="0.30605564" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.38956127" visible="true" weight="0.45008183" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49848714" weight="0.39934534" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -281,8 +283,8 @@
       <window_info anchor="bottom" id="Database Changes" order="11" />
       <window_info anchor="bottom" id="Unit Tests" order="12" weight="0.3289689" />
       <window_info anchor="bottom" id="Terminal" order="13" weight="0.3289689" />
-      <window_info anchor="bottom" id="Event Log" order="14" sideWeight="0.5816944" side_tool="true" visible="true" weight="0.30605564" />
-      <window_info anchor="bottom" id="Build" order="15" sideWeight="0.41906202" weight="0.3502455" />
+      <window_info anchor="bottom" id="Event Log" order="14" sideWeight="0.6104387" side_tool="true" visible="true" weight="0.45008183" />
+      <window_info anchor="bottom" id="Build" order="15" sideWeight="0.3903177" weight="0.3502455" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -495,18 +497,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Compiler/RecDown/RecDown.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-145">
-          <caret line="20" column="50" selection-start-line="20" selection-start-column="50" selection-end-line="20" selection-end-column="50" />
+        <state relative-caret-position="-29">
+          <caret line="36" column="94" selection-start-line="36" selection-start-column="94" selection-end-line="36" selection-end-column="94" />
           <folding>
-            <marker date="1555527662000" expanded="false" signature="6:56" ph="..." />
-            <marker date="1555527662000" expanded="true" signature="84:1393" ph="{...}" />
-            <marker date="1555527662000" expanded="true" signature="111:1391" ph="{...}" />
-            <marker date="1555527662000" expanded="true" signature="212:268" ph="{...}" />
-            <marker date="1555527662000" expanded="true" signature="308:651" ph="{...}" />
-            <marker date="1555527662000" expanded="true" signature="693:756" ph="{...}" />
-            <marker date="1555527662000" expanded="true" signature="807:926" ph="{...}" />
-            <marker date="1555527662000" expanded="true" signature="972:1058" ph="{...}" />
-            <marker date="1555527662000" expanded="true" signature="1102:1385" ph="{...}" />
+            <marker date="1555528420046" expanded="false" signature="6:56" ph="..." />
+            <marker date="1555528420046" expanded="true" signature="84:1707" ph="{...}" />
+            <marker date="1555528420046" expanded="true" signature="111:1705" ph="{...}" />
+            <marker date="1555528420046" expanded="true" signature="258:314" ph="{...}" />
+            <marker date="1555528420046" expanded="true" signature="354:572" ph="{...}" />
+            <marker date="1555528420046" expanded="true" signature="614:713" ph="{...}" />
+            <marker date="1555528420046" expanded="true" signature="764:922" ph="{...}" />
+            <marker date="1555528420046" expanded="true" signature="954:1069" ph="{...}" />
+            <marker date="1555528420046" expanded="true" signature="1105:1236" ph="{...}" />
+            <marker date="1555528420046" expanded="true" signature="1269:1354" ph="{...}" />
+            <marker date="1555528420046" expanded="true" signature="1385:1699" ph="{...}" />
           </folding>
         </state>
       </provider>
