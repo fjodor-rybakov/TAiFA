@@ -34,7 +34,7 @@ namespace Compiler.RecDown
 
         private bool IsIdList(ref int index)
         {
-            return _lexerInfo[index] != null && IsList(ref index);
+            return index < _lexerInfo.Count && IsList(ref index);
         }
 
         private bool IsList(ref int index)
