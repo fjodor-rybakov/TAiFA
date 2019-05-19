@@ -1,4 +1,4 @@
-namespace Compiler.Lexer1
+namespace Compiler.Lexer
 {
     public static class TypeLexem
     {

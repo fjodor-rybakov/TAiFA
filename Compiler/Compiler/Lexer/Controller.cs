@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Compiler.Lexer1
+namespace Compiler.Lexer
 {
     public class Controller
     {

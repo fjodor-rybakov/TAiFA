@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using Compiler.Lexer1;
 
 namespace Compiler
 {
@@ -14,18 +12,18 @@ namespace Compiler
 			const string pathNumber10 = @"C:/TAiFA/Compiler/files/lexer/number10.txt";
 			const string pathNumber2816 = @"C:/TAiFA/Compiler/files/lexer/number2816.txt";
 			
-			StreamReader reader = new StreamReader(pathData);
-			Lexer lexer = new Lexer(pathIdentificator, pathNumber10, pathNumber2816);
+			var reader = new StreamReader(pathData);
+			var lexer = new Lexer.Lexer(pathIdentificator, pathNumber10, pathNumber2816);
 			
 			string line;
 			while ((line = reader.ReadLine()) != null)
 			{
-				List<LexerInfo> lexerInfo = lexer.GetLexerInfo(line);
+				var lexerInfo = lexer.GetLexerInfo(line);
 				foreach (var item in lexerInfo)
 				{
 					Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
 				}
-				RecDown.RecDown recDown = new RecDown.RecDown(lexerInfo);
+				var recDown = new RecDown.RecDown(lexerInfo);
 				Console.WriteLine("Var is valid: " + recDown.CheckVar());
 			}
 		}

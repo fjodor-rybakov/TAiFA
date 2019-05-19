@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Compiler.Lexer1
+namespace Compiler.Lexer
 {
     public class AutomateData
     {

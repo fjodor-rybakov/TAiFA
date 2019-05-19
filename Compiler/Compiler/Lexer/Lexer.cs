@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Compiler.Lexer1
+namespace Compiler.Lexer
 {
     public class Lexer
     {
@@ -17,9 +17,9 @@ namespace Compiler.Lexer1
         public List<LexerInfo> GetLexerInfo(string line)
         {
             Dictionary<AutomateData, List<int>> acceptAutomates = InitAcceptAutomates();
-            string value = "";
-            int index = 0;
-            List<LexerInfo> lexerInfo = new List<LexerInfo>();
+            var value = "";
+            var index = 0;
+            var lexerInfo = new List<LexerInfo>();
             foreach (var ch in line)
             {
                 if (ch == ' ')
@@ -28,7 +28,7 @@ namespace Compiler.Lexer1
                     {
                         if (automate.Value.Count == 0) continue;
                         if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
-                        bool isReserve = _controller.ReserveWords.Contains(value.ToLower());
+                        var isReserve = _controller.ReserveWords.Contains(value.ToLower());
                         lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve));
                     }
                     value = "";
@@ -45,7 +45,7 @@ namespace Compiler.Lexer1
                     {
                         if (automate.Value.Count == 0) continue;
                         if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
-                        bool isReserve = _controller.ReserveWords.Contains(value.ToLower());
+                        var isReserve = _controller.ReserveWords.Contains(value.ToLower());
                         lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve));
                     }
                     lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.DELIMITER, false));
@@ -68,7 +68,7 @@ namespace Compiler.Lexer1
             {
                 if (automate.Value.Count == 0) continue;
                 if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
-                bool isReserve = _controller.ReserveWords.Contains(value.ToLower());
+                var isReserve = _controller.ReserveWords.Contains(value.ToLower());
                 lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve));
             }
 
@@ -77,7 +77,7 @@ namespace Compiler.Lexer1
 
         private Dictionary<AutomateData, List<int>> CheckLexem(char ch, Dictionary<AutomateData, List<int>> acceptAutomates, string value)
         {
-            List<AutomateData> removeData = new List<AutomateData>();
+            var removeData = new List<AutomateData>();
             foreach(var item in acceptAutomates)
             {
                 var currentState = item.Value.Count != 0 ? item.Value.Last() : 0;
@@ -124,7 +124,7 @@ namespace Compiler.Lexer1
             return _controller.BindOptions.Contains(value);
         }
 
-        private void RefreshAcceptAutomates(List<AutomateData> removeData, ref Dictionary<AutomateData, List<int>> acceptAutomates)
+        private void RefreshAcceptAutomates(IEnumerable<AutomateData> removeData, ref Dictionary<AutomateData, List<int>> acceptAutomates)
         {
             foreach (var item in removeData)
             {

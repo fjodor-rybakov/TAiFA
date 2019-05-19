@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Compiler.Lexer1;
+using Compiler.Lexer;
 
 namespace Compiler.RecDown
 {
