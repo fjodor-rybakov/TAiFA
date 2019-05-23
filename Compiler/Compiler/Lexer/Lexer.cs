@@ -7,8 +7,7 @@ namespace Compiler.Lexer
     public class Lexer
     {
         private readonly Controller _controller;
-        
-        
+
         public Lexer(params string[] paths)
         {
             _controller = new Controller(paths);

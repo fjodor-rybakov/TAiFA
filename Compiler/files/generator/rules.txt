@@ -1,0 +1,4 @@
+<var> -> var <id_list> ;
+<id_list> -> id <list>
+<list> -> empty
+<list> -> , id <list>

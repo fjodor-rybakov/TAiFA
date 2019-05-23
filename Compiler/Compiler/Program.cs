@@ -5,17 +5,19 @@ namespace Compiler
 {
 	internal class Program
 	{
+		private const string PATH_DATA = @"../../../files/lexer/data.txt";
+		private const string PATH_IDENTIFICATOR = @"../../../files/lexer/identificator.txt";
+		private const string PATH_NUMBER10 = @"../../../files/lexer/number10.txt";
+		private const string PATH_NUMBER2816 = @"../../../files/lexer/number2816.txt";
+		
 		public static void Main()
 		{
-			const string pathData = @"C:/TAiFA/Compiler/files/lexer/data.txt";
-			const string pathIdentificator = @"C:/TAiFA/Compiler/files/lexer/identificator.txt";
-			const string pathNumber10 = @"C:/TAiFA/Compiler/files/lexer/number10.txt";
-			const string pathNumber2816 = @"C:/TAiFA/Compiler/files/lexer/number2816.txt";
+			var reader = new StreamReader(PATH_DATA);
+			var lexer = new Lexer.Lexer(PATH_IDENTIFICATOR, PATH_NUMBER10, PATH_NUMBER2816);
 			
-			var reader = new StreamReader(pathData);
-			var lexer = new Lexer.Lexer(pathIdentificator, pathNumber10, pathNumber2816);
-			
-			string line;
+			var generator = new Generator.Generator();
+
+			/*string line;
 			while ((line = reader.ReadLine()) != null)
 			{
 				var lexerInfo = lexer.GetLexerInfo(line);
@@ -25,7 +27,7 @@ namespace Compiler
 				}
 				var recDown = new RecDown.RecDown(lexerInfo);
 				Console.WriteLine("Var is valid: " + recDown.CheckVar());
-			}
+			}*/
 		}
 	}
 }

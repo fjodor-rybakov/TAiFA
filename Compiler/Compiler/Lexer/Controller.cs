@@ -7,8 +7,8 @@ namespace Compiler.Lexer
 {
     public class Controller
     {
-        private const string ErrorMessageParseCountState = "Не удалось считать кол-во состояний";
-        private const string ErrorMessageParseFinishState = "Не удалось считать финишные состояния";
+        private const string ERROR_MESSAGE_PARSE_COUNT_STATE = "Не удалось считать кол-во состояний";
+        private const string ERROR_MESSAGE_PARSE_FINISH_STATE = "Не удалось считать финишные состояния";
         public List<AutomateData> Automates { get; }
         public List<char> BindOptions { get; } = new List<char>{'=', '*', '/', '+', '-', '<', '>'};
         public List<char> SplitSymbols { get; } = new List<char>{',', ':', ';'};
@@ -22,24 +22,24 @@ namespace Compiler.Lexer
             Automates = new List<AutomateData>();
             foreach (var path in paths)
             {
-                AutomateData automateData = GetAutomate(path);
+                var automateData = GetAutomate(path);
                 Automates.Add(automateData);
             }
         }
 
-        public AutomateData GetAutomate(string path)
+        private AutomateData GetAutomate(string path)
         {
-            StreamReader reader = new StreamReader(path);
-            string type = Path.GetFileName(path).Split('.')[0];
-            int countStates = int.Parse(reader.ReadLine() ?? throw new Exception(ErrorMessageParseCountState));
+            var reader = new StreamReader(path);
+            var type = Path.GetFileName(path).Split('.')[0];
+            var countStates = int.Parse(reader.ReadLine() ?? throw new Exception(ERROR_MESSAGE_PARSE_COUNT_STATE));
             List<int> finishStates = GetFinishStates(ref reader);
             Dictionary<string, List<int>> automate = InitDictionary(ref reader);
             
             string line;
             while ((line = reader.ReadLine()) != null)
             {
-                int index = 0;
-                string[] states = line.Split(' ');
+                var index = 0;
+                var states = line.Split(' ');
                 foreach (var item in automate)
                 {
                     item.Value.Add(int.Parse(states[index]));
@@ -52,8 +52,8 @@ namespace Compiler.Lexer
 
         private Dictionary<string, List<int>> InitDictionary(ref StreamReader reader)
         {
-            Dictionary<string, List<int>> result = new Dictionary<string, List<int>>();
-            string[] terminalSymbols = reader.ReadLine()?.Split(' ');
+            var result = new Dictionary<string, List<int>>();
+            var terminalSymbols = reader.ReadLine()?.Split(' ');
             if (terminalSymbols == null) return result;
             foreach (var symbol in terminalSymbols)
             {
@@ -66,10 +66,10 @@ namespace Compiler.Lexer
 
         private List<int> GetFinishStates(ref StreamReader reader)
         {
-            List<int> result = new List<int>();
-            string[] states = reader.ReadLine()?.Split(' ');
+            var result = new List<int>();
+            var states = reader.ReadLine()?.Split(' ');
             if (states == null) return result;
-            result.AddRange(states.Select(state => int.Parse(state ?? throw new Exception(ErrorMessageParseFinishState))));
+            result.AddRange(states.Select(state => int.Parse(state ?? throw new Exception(ERROR_MESSAGE_PARSE_FINISH_STATE))));
 
             return result;
         }
