@@ -1,4 +1,5 @@
-<var> -> var <id_list> ;
-<id_list> -> id <list>
-<list> -> empty
-<list> -> , id <list>
+G -> <VAR> [e] / VAR
+<VAR> -> VAR <IDLIST> ; / VAR
+<IDLIST> -> ID <A> / ID
+<A> -> E / ;
+<A> -> , <IDLIST> / ,

@@ -4,12 +4,12 @@ namespace Compiler.Generator
 {
     public class NodeInfo
     {
-        public int Number { get; set; }
+        public List<string> DirSet { get; set; }
         public string Name { get; set; }
-        public List<string> GuidesSet { get; set; }
         public bool IsShift { get; set; }
-        public bool IsError { get; set; }
-        public bool IsFinish { get; set; }
-        public List<NodeInfo> Children { get; set; }
+        public bool IsEnd { get; set; }
+        public bool IsStack { get; set; }
+        public int GoTo { get; set; }
+        public int IfErrGoTo { get; set; }
     }
 }

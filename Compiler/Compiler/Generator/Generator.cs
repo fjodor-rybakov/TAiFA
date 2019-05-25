@@ -9,87 +9,182 @@ namespace Compiler.Generator
     {
         private const string PATH_RULES = @"../../../files/generator/rules.txt";
         private readonly List<NodeInfo> _table = new List<NodeInfo>();
-        private readonly List<Tuple<string, string[]>> _list = new List<Tuple<string, string[]>>();
+        private readonly List<string> _list = new List<string>();
+        private readonly Dictionary<string, List<string>> _dirSet = new Dictionary<string, List<string>>();
+        private readonly Dictionary<string, List<int>> _positions = new Dictionary<string, List<int>>();
 
         public Generator()
         {
             ReadRules();
+            foreach (var n in _table)
+            {
+                Console.Write(n.Name + " ");
+                foreach (var s in n.DirSet)
+                {
+                    Console.Write(s + " ");
+                }
+                Console.WriteLine( n.IsShift + " " + n.IfErrGoTo  + " " + n.IsStack + " " + n.GoTo +  " " + n.IsEnd  );
+            }
         }
 
         private void ReadRules()
         {
+            FillDirSetsAndPositions();
+            FillTable();
+        }
+
+        private void FillDirSetsAndPositions()
+        {
             var reader = new StreamReader(PATH_RULES);
-            string line;
+            string line, value = "";
+            var counter = 0;
+            bool isLeftPart, isDirSet;
 
             while ((line = reader.ReadLine()) != null)
             {
+                isLeftPart = true;
+                isDirSet = false;
                 var lexems = line.Split(' ');
-                _list.Add(new Tuple<string, string[]>(lexems[0], lexems.Skip(2).ToArray()));
+                foreach (var lexem in lexems)
+                {
+                    _list.Add(lexem);
+                    if (isDirSet && value.Length != 0 && !_dirSet[value].Contains(lexem))
+                    {
+                        _dirSet[value].Add(lexem);
+                    }
+
+                    if (isLeftPart && lexem != "->")
+                    {
+                        value = lexem.Replace("<", "").Replace(">", "");
+                        AddTerminal(value, counter);
+                    }
+
+                    if (!isLeftPart && !isDirSet && lexem != "/")
+                    {
+                        counter++;
+                    }
+
+                    switch (lexem)
+                    {
+                        case "->":
+                            isLeftPart = false;
+                            break;
+                        case "/":
+                            isDirSet = true;
+                            break;
+                        default: break;
+                    }
+                }
+                _list.Add("^"); // mark end of line
             }
+        }
 
-            // Console.WriteLine("This terminal: " + IsTerminal(item.Item2[0]) + ", Value: " + item.Item2[0]);
-            // var item = _list[0];
-
-            foreach (var key in _list)
+        private void FillTable()
+        {
+            bool isLeftPart = true, isDirSet = false;
+            var leftPart = "";
+            var index = -1;
+            
+            foreach (var lexem in _list)
             {
-                _table.Add(new NodeInfo
+                index++;
+                if (isLeftPart && lexem != "->")
                 {
-                    Number = 0,
-                    Name = key.Item1,
-                    GuidesSet = new List<string>{key.Item2[0]},
-                    IsError = false,
-                    IsFinish = false,
-                    IsShift = true,
-                    Children = GetChildren(key.Item2)
-                });
-
-                foreach (var item in key.Item2)
+                    leftPart = lexem;
+                }
+                if (lexem == "^")
                 {
+                    isLeftPart = true;
+                    isDirSet = false;
+                }
+                
+                if (lexem != "^" && lexem != "=>" && lexem != "/" && !isLeftPart && !isDirSet)
+                {
+                    var formatted = lexem.Replace("<", "").Replace(">", "");
                     _table.Add(new NodeInfo
                     {
-                        Number = 0,
-                        Name = key.Item1,
-                        GuidesSet = new List<string>{key.Item2[0]},
-                        IsError = false,
-                        IsFinish = false,
-                        IsShift = true,
-                        Children = GetChildren(key.Item2)
+                        Name = formatted,
+                        DirSet = GetDirSet(lexem, formatted, index),
+                        GoTo = GetGoTo(lexem, formatted, index),
+                        IfErrGoTo = GetErrGo(leftPart, lexem),
+                        IsEnd = lexem == "[e]",
+                        IsShift = IsTerminal(lexem) && lexem != "[e]",
+                        IsStack = !IsTerminal(lexem) && !IsLast(lexem, index)
                     });
+                }
+                switch (lexem)
+                {
+                    case "->":
+                        isLeftPart = false;
+                        break;
+                    case "/":
+                        isDirSet = true;
+                        break;
+                    default: break;
                 }
             }
         }
 
-        private List<NodeInfo> GetChildren(IEnumerable<string> children)
+        private List<string> GetDirSet(string lexem, string formatted, int index)
         {
-            foreach (var child in children)
+            if (lexem == "E")
             {
-                if (IsTerminal(child))
+                var result = new List<string>();
+                var count = index + 2;
+                while (_list[count] != "^")
                 {
-                    var nodeInfo = new NodeInfo
-                    {
-                        Number = 1,
-                        Name = child,
-                        GuidesSet = new List<string>{child},
-                        IsError = false,
-                        IsFinish = false,
-                        IsShift = true,
-                        Children = GetChildren(lastNode, null)
-                    };
+                    result.Add(_list[count]);
+                    count++;
                 }
-                else
+
+                return result;
+            }
+
+            return !IsTerminal(lexem) ? _dirSet[formatted] : new List<string> {lexem};
+        }
+        private int GetGoTo(string lexem, string formatted, int index)
+        {
+            if (lexem == "[e]" || IsTerminal(lexem) && IsLast(lexem, index))
+            {
+                return -1;
+            }
+
+            return IsTerminal(lexem) ? _table.Count + 1 : _positions[formatted][0];
+        }
+
+        private int GetErrGo(string leftPart, string lexem)
+        {
+            var errGo = -1;
+            if (leftPart != "" && lexem != "->")
+            {
+                var pos = leftPart.Replace("<", "").Replace(">", "");
+                var index = _positions[pos].IndexOf(_table.Count);
+                if (index != -1 && _positions[pos].Count - 1 >= index + 1)
                 {
-                    var nodeInfo = new NodeInfo
-                    {
-                        Number = 1,
-                        Name = child,
-                        GuidesSet = new List<string>{child},
-                        IsError = false,
-                        IsFinish = false,
-                        IsShift = true,
-                        Children = GetChildren(null)
-                    };
+                    errGo = _positions[pos][index + 1];
                 }
             }
+
+            return errGo;
+        }
+
+        private bool IsLast(string value, int index)
+        {
+            return index + 1 < _list.Count && _list[index + 1] == "/";
+        }
+        
+        private void AddTerminal(string value, int position)
+        {
+            if (!_dirSet.ContainsKey(value))
+            {
+                _dirSet.Add(value, new List<string>());
+            }
+
+            if (!_positions.ContainsKey(value))
+            {
+                _positions.Add(value, new List<int>());
+            }
+            _positions[value].Add(position);
         }
 
         private static bool IsTerminal(string value)
