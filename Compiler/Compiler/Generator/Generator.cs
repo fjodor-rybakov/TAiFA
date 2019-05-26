@@ -108,7 +108,7 @@ namespace Compiler.Generator
                         GoTo = GetGoTo(lexem, formatted, index),
                         IfErrGoTo = GetErrGo(leftPart, lexem),
                         IsEnd = lexem == "[e]",
-                        IsShift = IsTerminal(lexem) && lexem != "[e]",
+                        IsShift = IsTerminal(lexem) && lexem != "[e]" && lexem != "E",
                         IsStack = !IsTerminal(lexem) && !IsLast(lexem, index)
                     });
                 }
@@ -144,7 +144,7 @@ namespace Compiler.Generator
         }
         private int GetGoTo(string lexem, string formatted, int index)
         {
-            if (lexem == "[e]" || IsTerminal(lexem) && IsLast(lexem, index))
+            if (lexem == "[e]" || IsTerminal(lexem) && IsLast(lexem, index) || lexem == "E")
             {
                 return -1;
             }
