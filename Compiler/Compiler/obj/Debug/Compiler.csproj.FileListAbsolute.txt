@@ -10,3 +10,9 @@ D:\study\TAiFA\Compiler\Compiler\obj\Debug\Compiler.pdb
 D:\study\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csprojResolveAssemblyReference.cache
 D:\study\TAiFA\Compiler\Compiler\bin\Debug\Compiler.exe
 D:\study\TAiFA\Compiler\Compiler\bin\Debug\Compiler.pdb
+C:\projects\TAiFA\Compiler\Compiler\bin\Debug\Compiler.exe
+C:\projects\TAiFA\Compiler\Compiler\bin\Debug\Compiler.pdb
+C:\projects\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cache
+C:\projects\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csproj.CoreCompileInputs.cache
+C:\projects\TAiFA\Compiler\Compiler\obj\Debug\Compiler.exe
+C:\projects\TAiFA\Compiler\Compiler\obj\Debug\Compiler.pdb

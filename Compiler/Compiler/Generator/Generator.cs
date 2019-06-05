@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Compiler.Generator
 {
     public class Generator
     {
         private const string PATH_RULES = @"../../../files/generator/rules.txt";
+        private const string FINISH_STATE = "[end]";
+        private const string EMPTY_SYMBOL = "E";
         private readonly List<NodeInfo> _table = new List<NodeInfo>();
         private readonly List<string> _list = new List<string>();
         private readonly Dictionary<string, List<string>> _dirSet = new Dictionary<string, List<string>>();
@@ -38,12 +39,11 @@ namespace Compiler.Generator
             var reader = new StreamReader(PATH_RULES);
             string line, value = "";
             var counter = 0;
-            bool isLeftPart, isDirSet;
 
             while ((line = reader.ReadLine()) != null)
             {
-                isLeftPart = true;
-                isDirSet = false;
+                var isLeftPart = true;
+                var isDirSet = false;
                 var lexems = line.Split(' ');
                 foreach (var lexem in lexems)
                 {
@@ -107,8 +107,8 @@ namespace Compiler.Generator
                         DirSet = GetDirSet(lexem, formatted, index),
                         GoTo = GetGoTo(lexem, formatted, index),
                         IfErrGoTo = GetErrGo(leftPart, lexem),
-                        IsEnd = lexem == "[e]",
-                        IsShift = IsTerminal(lexem) && lexem != "[e]" && lexem != "E",
+                        IsEnd = lexem == FINISH_STATE,
+                        IsShift = IsTerminal(lexem) && lexem != FINISH_STATE && lexem != EMPTY_SYMBOL,
                         IsStack = !IsTerminal(lexem) && !IsLast(lexem, index)
                     });
                 }
@@ -127,24 +127,21 @@ namespace Compiler.Generator
 
         private List<string> GetDirSet(string lexem, string formatted, int index)
         {
-            if (lexem == "E")
+            if (lexem != EMPTY_SYMBOL) return !IsTerminal(lexem) ? _dirSet[formatted] : new List<string> {lexem};
+            var result = new List<string>();
+            var count = index + 2;
+            while (_list[count] != "^")
             {
-                var result = new List<string>();
-                var count = index + 2;
-                while (_list[count] != "^")
-                {
-                    result.Add(_list[count]);
-                    count++;
-                }
-
-                return result;
+                result.Add(_list[count]);
+                count++;
             }
 
-            return !IsTerminal(lexem) ? _dirSet[formatted] : new List<string> {lexem};
+            return result;
+
         }
         private int GetGoTo(string lexem, string formatted, int index)
         {
-            if (lexem == "[e]" || IsTerminal(lexem) && IsLast(lexem, index) || lexem == "E")
+            if (lexem == FINISH_STATE || IsTerminal(lexem) && IsLast(lexem, index) || lexem == EMPTY_SYMBOL)
             {
                 return -1;
             }
@@ -155,14 +152,12 @@ namespace Compiler.Generator
         private int GetErrGo(string leftPart, string lexem)
         {
             var errGo = -1;
-            if (leftPart != "" && lexem != "->")
+            if (leftPart == "" || lexem == "->") return errGo;
+            var pos = leftPart.Replace("<", "").Replace(">", "");
+            var index = _positions[pos].IndexOf(_table.Count);
+            if (index != -1 && _positions[pos].Count - 1 >= index + 1)
             {
-                var pos = leftPart.Replace("<", "").Replace(">", "");
-                var index = _positions[pos].IndexOf(_table.Count);
-                if (index != -1 && _positions[pos].Count - 1 >= index + 1)
-                {
-                    errGo = _positions[pos][index + 1];
-                }
+                errGo = _positions[pos][index + 1];
             }
 
             return errGo;

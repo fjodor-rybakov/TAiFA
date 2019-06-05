@@ -1,4 +1,4 @@
-G -> <VAR> [e] / VAR
+[begin] -> <VAR> [end] / VAR
 <VAR> -> VAR <IDLIST> ; / VAR
 <IDLIST> -> ID <A> / ID
 <A> -> E / ;
