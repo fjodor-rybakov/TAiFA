@@ -17,15 +17,23 @@ namespace Compiler.Generator
         public Generator()
         {
             ReadRules();
+            var c = 0;
             foreach (var n in _table)
             {
-                Console.Write(n.Name + " ");
+                Console.Write("Index: " + c + " ");
+                c++;
+                Console.Write("Name: " + n.Name + " ");
+                Console.Write("DirSet: ");
                 foreach (var s in n.DirSet)
                 {
                     Console.Write(s + " ");
                 }
-                Console.WriteLine( n.IsShift + " " + n.IfErrGoTo  + " " + n.IsStack + " " + n.GoTo +  " " + n.IsEnd  );
+                Console.WriteLine("IsShift: " + n.IsShift + " ErrGo: " + n.IfErrGoTo  + " STack: " + n.IsStack + " goto: " + n.GoTo +  " end: " + n.IsEnd  );
             }
+
+            var runner = new Runner(_table);
+            var res = runner.Run();
+            Console.WriteLine("result: " + res);
         }
 
         private void ReadRules()

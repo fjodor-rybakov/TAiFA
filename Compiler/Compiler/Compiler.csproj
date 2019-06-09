@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Generator\Generator.cs" />
     <Compile Include="Generator\NodeInfo.cs" />
+    <Compile Include="Generator\Runner.cs" />
     <Compile Include="Lexer\AutomateData.cs" />
     <Compile Include="Lexer\Controller.cs" />
     <Compile Include="Lexer\Lexer.cs" />

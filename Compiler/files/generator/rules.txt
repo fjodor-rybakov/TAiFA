@@ -1,5 +1,11 @@
-[begin] -> <VAR> [end] / VAR
-<VAR> -> VAR <IDLIST> ; / VAR
-<IDLIST> -> ID <A> / ID
-<A> -> E / ;
-<A> -> , <IDLIST> / ,
+[begin] -> <S> [end] / ( - i j
+<S> -> <T> <A> / ( - i j
+<A> -> + <T> <A> / +
+<A> -> E / [end] )
+<T> -> <F> <B> / ( - i j
+<B> -> * <F> <B> / *
+<B> -> E / + [end] )
+<F> -> ( <S> ) / (
+<F> -> - <F> / -
+<F> -> i / i
+<F> -> j / j
