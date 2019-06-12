@@ -8,8 +8,8 @@ namespace Compiler.Generator
     public class Factorization
     {
         private readonly Dictionary<string, List<List<string>>> _ruleList = new Dictionary<string, List<List<string>>>();
-        private string _filePath;
         private readonly List<string> _alreadyExistKeyList = new List<string>();
+        private string _filePath;
         
         public void Factor(string filePath)
         {
@@ -32,11 +32,65 @@ namespace Compiler.Generator
                     }
                     else
                     {
-                        var randString = RandomString(3);
+                        var randString = RandomString();
                         FileWrite($"{item.Key} -> {group.Key} {randString}");
                         _ruleList.Add(randString, group.Select(i => i.Skip(1).ToList()).ToList());
                     }
                 }
+            }
+        }
+
+        public void ReplaceLR(string filePath)
+        {
+            _filePath = filePath;
+            FileRead();
+            Replace();
+        }
+
+        private void Replace()
+        {
+            var alreadyUsed = new List<string>();
+            var tempList = new List<List<string>>();
+            
+            for (var index = 0; index < _ruleList.Count; index++)
+            {
+                var item = _ruleList.ElementAtOrDefault(index);
+
+                foreach (var value in item.Value)
+                {
+                    if (item.Key == value.First() && value.Count < 2)
+                    {
+                        throw new Exception("Неверный формат правил");
+                    }
+                    
+                    if (item.Key == value.First() && value.Count >= 2)
+                    {
+                        alreadyUsed.Add(item.Key);
+                        var firstKey = RandomString();
+                        var lastKey = RandomString();
+                        FileWrite($"{item.Key} -> {firstKey} {lastKey}");
+                        foreach (var exp in item.Value)
+                        {
+                            if (!exp.SequenceEqual(value))
+                                FileWrite($"{firstKey} -> {string.Join(" ", exp)}");
+                        }
+                        FileWrite($"{lastKey} -> E");
+                        FileWrite($"{lastKey} -> {string.Join(" ", value.Skip(1).SelectMany(g => g))} {lastKey}");
+                        tempList.Clear();
+                    }
+                    else
+                    {
+                        tempList.Add(value);
+                    }
+                }
+
+                if (tempList.Count == 0) continue;
+                foreach (var value in tempList)
+                {
+                    if (!alreadyUsed.Contains(item.Key)) 
+                        FileWrite($"{item.Key} -> {string.Join(" ", value)}");
+                }
+                tempList.Clear();
             }
         }
 
@@ -47,6 +101,8 @@ namespace Compiler.Generator
 
         private void FileRead()
         {
+            _alreadyExistKeyList.Clear();
+            _ruleList.Clear();
             using (var reader = new StreamReader(_filePath))
             {
                 string line;
@@ -60,13 +116,12 @@ namespace Compiler.Generator
                     else _ruleList[key].Add(values);
                 }
             }
-            
             var fs = File.OpenWrite(_filePath);
             fs.SetLength(0);
             fs.Close();
         }
 
-        private string RandomString(int length)
+        private string RandomString(int length = 3)
         {
             var random = new Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

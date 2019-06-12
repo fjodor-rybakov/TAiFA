@@ -3,6 +3,10 @@
 
 .idea/*
 
+.vs
+
+.vs/*
+
 Compiler/bin
 
 Compiler/bin/*
