@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Compiler.Generator;
 
 namespace Compiler
 {
@@ -15,8 +16,10 @@ namespace Compiler
 			var reader = new StreamReader(PATH_DATA);
 			var lexer = new Lexer.Lexer(PATH_IDENTIFICATOR, PATH_NUMBER10, PATH_NUMBER2816);
 			
-			var generator = new Generator.Generator();
+			//var generator = new Generator.Generator();
 
+			var finder = new DirSetFinder();
+			finder.Find();
 			/*string line;
 			while ((line = reader.ReadLine()) != null)
 			{
