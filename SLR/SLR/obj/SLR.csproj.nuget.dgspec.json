@@ -1,0 +1,59 @@
+{
+  "format": 1,
+  "restore": {
+    "F:\\rep\\TAiFA\\SLR\\SLR\\SLR.csproj": {}
+  },
+  "projects": {
+    "F:\\rep\\TAiFA\\SLR\\SLR\\SLR.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "F:\\rep\\TAiFA\\SLR\\SLR\\SLR.csproj",
+        "projectName": "SLR",
+        "projectPath": "F:\\rep\\TAiFA\\SLR\\SLR\\SLR.csproj",
+        "packagesPath": "F:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "F:\\rep\\TAiFA\\SLR\\SLR\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "F:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "F:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "F:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "F:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "Microsoft.NETCore.App": {
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}
