@@ -6,9 +6,12 @@ namespace SLR
 {
     class Slr
     {
+        Dictionary<string, List<string>> _valueOfDict;
         List<string> _elements;
+        List<List<string>> _addingIdentifiersHistory = new List<List<string>>();
         List<string> _identifiers = new List<string>();
         List<Dictionary<string, List<String>>> _rules;
+        List<Dictionary<List<String>, Dictionary<string, List<String>>>> _resultTable = new List<Dictionary<List<String>, Dictionary<string, List<string>>>>();
 
         public Slr(List<Dictionary<string, List<String>>> rules)
         {
@@ -18,7 +21,56 @@ namespace SLR
         public void SyntexAnalyze()
         {
             AddIdentifiers();
+            addTestItem();
+            ShowResultTable();
+        }
+        
+        private void addTestItem()
+        {
+            Dictionary<string, List<string>> insertedDict = new Dictionary<string, List<string>>();
+            insertedDict.Add("id", new List<string>(new string[] { "id11", "id12" }));
+            insertedDict.Add("<Z>", new List<string>(new string[] { "<Z>1", "<Z>2" }));
 
+            Dictionary<List<string>, Dictionary<string, List<string>>> baseDict = new Dictionary<List<string>, Dictionary<string, List<string>>>();
+            baseDict.Add(new List<string>(new string[] { "id11" }), insertedDict);
+            _resultTable.Add(baseDict);
+        }
+
+        private void ShowResultTable()
+        {
+            foreach(var row in _resultTable)
+            {
+                var keys = row.Keys;
+                
+                foreach(var key in keys)
+                {
+                    row.TryGetValue(key, out _valueOfDict);
+
+                    var stringKey = "";
+                    key.ForEach(x => { stringKey = stringKey + " " + x; });
+                    Console.WriteLine(stringKey + ":");
+
+                    var keysOnDict = _valueOfDict.Keys;
+
+                    ShowValueOfDict(keysOnDict);
+                }
+            }
+        }
+
+        private void ShowValueOfDict(Dictionary<string, List<String>>.KeyCollection keys)
+        {
+            foreach(var key in keys)
+            {
+                Console.Write("     " + key + ":");
+                _valueOfDict.TryGetValue(key, out _elements);
+                
+                _elements.ForEach(element =>
+                {
+                    Console.Write(element + " ");
+                });
+
+                Console.WriteLine();
+            }
         }
 
         private void AddnewIdentifier(string identifier)

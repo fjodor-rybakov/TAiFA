@@ -1,7 +1,6 @@
-<Z> -><S>
-<S> ->a <A> b
-<S> ->c
-<A> ->b <S>
-<A> -><B> b
-<B> ->a <A>
-<B> ->c
+<S> ->real <idList>
+<idList> -><idList> , <id>
+<idList> -><id>
+<id> ->A
+<id> ->B
+<id> ->C
