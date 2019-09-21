@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SLR
 {
@@ -6,7 +7,9 @@ namespace SLR
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var finder = new DirSetFinder();
+            Slr slr = new Slr(finder.GetRules());
+            slr.analyze();
         }
     }
 }
