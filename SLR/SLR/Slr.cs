@@ -12,6 +12,9 @@ namespace SLR
         List<string> _identifiers = new List<string>();
         List<Dictionary<string, List<String>>> _rules;
         List<Dictionary<List<String>, Dictionary<string, List<String>>>> _resultTable = new List<Dictionary<List<String>, Dictionary<string, List<string>>>>();
+        Dictionary<string, List<string>> dictForInsertToDict = new Dictionary<string, List<string>>();
+        Dictionary<List<string>, Dictionary<string, List<string>>> dictForInsertResultTable = new Dictionary<List<string>, Dictionary<string, List<string>>>();
+
 
         public Slr(List<Dictionary<string, List<String>>> rules)
         {
@@ -21,19 +24,17 @@ namespace SLR
         public void SyntexAnalyze()
         {
             AddIdentifiers();
-            addTestItem();
+            AddTestItem();
             ShowResultTable();
         }
         
-        private void addTestItem()
+        private void AddTestItem()
         {
-            Dictionary<string, List<string>> insertedDict = new Dictionary<string, List<string>>();
-            insertedDict.Add("id", new List<string>(new string[] { "id11", "id12" }));
-            insertedDict.Add("<Z>", new List<string>(new string[] { "<Z>1", "<Z>2" }));
+            dictForInsertToDict.Add("id", new List<string>(new string[] { "id11", "id12" }));
+            dictForInsertToDict.Add("<Z>", new List<string>(new string[] { "<Z>1", "<Z>2" }));
 
-            Dictionary<List<string>, Dictionary<string, List<string>>> baseDict = new Dictionary<List<string>, Dictionary<string, List<string>>>();
-            baseDict.Add(new List<string>(new string[] { "id11" }), insertedDict);
-            _resultTable.Add(baseDict);
+            dictForInsertResultTable.Add(new List<string>(new string[] { "id11" }), dictForInsertToDict);
+            _resultTable.Add(dictForInsertResultTable);
         }
 
         private void ShowResultTable()
