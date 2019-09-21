@@ -9,7 +9,7 @@ namespace SLR
         {
             var finder = new DirSetFinder();
             Slr slr = new Slr(finder.GetRules());
-            slr.analyze();
+            slr.SyntexAnalyze();
         }
     }
 }

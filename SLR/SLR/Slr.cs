@@ -7,6 +7,7 @@ namespace SLR
     class Slr
     {
         List<string> _elements;
+        List<string> _identifiers = new List<string>();
         List<Dictionary<string, List<String>>> _rules;
 
         public Slr(List<Dictionary<string, List<String>>> rules)
@@ -14,12 +15,23 @@ namespace SLR
             _rules = rules;
         }
 
-        public void analyze()
+        public void SyntexAnalyze()
         {
-            showRules();
+            AddIdentifiers();
+
         }
 
-        private void showRules()
+        private void AddnewIdentifier(string identifier)
+        {
+            if (!_identifiers.Exists(x => x.Contains(identifier)))
+            {
+                _identifiers.Add(identifier);
+            }
+        }
+
+
+
+        private void AddIdentifiers()
         {
             foreach (var rule in _rules)
             {
@@ -27,12 +39,12 @@ namespace SLR
 
                 foreach (var key in keys)
                 {
-                    Console.WriteLine(key + ":");
+                    AddnewIdentifier(key);
                     List<string> elements = new List<string>();
                     rule.TryGetValue(key, out elements);
                     foreach (var element in elements)
                     {
-                        Console.WriteLine(element);
+                        AddnewIdentifier(element);
                     }
                 }
             }
