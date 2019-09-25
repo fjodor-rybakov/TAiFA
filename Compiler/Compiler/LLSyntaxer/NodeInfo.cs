@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Compiler.Generator
+namespace Compiler.LLSyntaxer
 {
     public class NodeInfo
     {

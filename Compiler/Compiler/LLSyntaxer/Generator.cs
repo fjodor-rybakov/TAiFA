@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Compiler.Generator
+namespace Compiler.LLSyntaxer
 {
     public class Generator
     {

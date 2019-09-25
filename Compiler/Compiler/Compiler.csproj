@@ -38,11 +38,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generator\DirSetFinder.cs" />
-    <Compile Include="Generator\Factorization.cs" />
-    <Compile Include="Generator\Generator.cs" />
-    <Compile Include="Generator\NodeInfo.cs" />
-    <Compile Include="Generator\Runner.cs" />
+    <Compile Include="LLSyntaxer\DirSetFinder.cs" />
+    <Compile Include="LLSyntaxer\Factorization.cs" />
+    <Compile Include="LLSyntaxer\Generator.cs" />
+    <Compile Include="LLSyntaxer\NodeInfo.cs" />
+    <Compile Include="LLSyntaxer\Runner.cs" />
     <Compile Include="Lexer\AutomateData.cs" />
     <Compile Include="Lexer\Controller.cs" />
     <Compile Include="Lexer\Lexer.cs" />

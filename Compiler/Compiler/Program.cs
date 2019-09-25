@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Compiler.Generator;
+using Compiler.LLSyntaxer;
 
 namespace Compiler
 {

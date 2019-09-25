@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Compiler.Generator
+namespace Compiler.LLSyntaxer
 {
     public class Runner
     {
