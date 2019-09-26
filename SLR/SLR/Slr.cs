@@ -54,26 +54,11 @@ namespace SLR
         {
             foreach (var row in table)
             {
-                if (row.key == list)
+                if (row.key.SequenceEqual(list))
                 {
                     return false;
                 }
             }
-
-            /*bool isValid = true;
-
-            foreach(var row in table)
-            {
-                isValid = list.TrueForAll(x => { if (row.key.Contains(x)){ return false; }; return true; });
-            }*/
-
-            /*Console.Write("table: ");
-            ShowResultTable();
-            Console.WriteLine("list: ");
-            list.ForEach(x => { Console.Write(" " + x + " ");});
-            Console.WriteLine();
-            Console.WriteLine();*/
-
 
             return true;
         }
