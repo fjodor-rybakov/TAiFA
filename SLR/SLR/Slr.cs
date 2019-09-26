@@ -51,10 +51,63 @@ namespace SLR
 
         private void DoOtherIterations()
         {
+            int i = 0;
             while (true)
             {
+                var rtTemp = new List<Table>(_resultTable);
+                if (i > rtTemp.Count - 1)
+                {
+                    break;
+                }
 
+                rtTemp[i].value.ForEach(row =>
+                {
+                    if (row.valueOfColumn.Count != 0)
+                    {
+                        if (!row.valueOfColumn[0].Contains("RETURN") && !row.valueOfColumn[0].Contains("OK"))
+                        {
+                            Table table = new Table();
+                            table.key = row.valueOfColumn;                       
+                            table.value = GetEmptyColumns();
+                            _resultTable.Add(table);
+                        }
+                }
+                });
+
+                if (i+1 < _resultTable.Count)
+                {
+                    var values = GetEmptyColumns();
+
+                    _resultTable[i+1].key.ForEach(key => {
+                        int k = -1;
+                        int l = -1;
+                        Int32.TryParse(key.Split(':')[1], out k);
+                        Int32.TryParse(key.Split(':')[2], out l);
+                        var elem = GetElementOfRule(k, l);
+
+                        if (elem.isLast)
+                        {
+                            AddValueToColumn(ref values, "__end", "RETURN");
+                        }
+                        else
+                        {
+                            elem = GetElementOfRule(k, l + 1);
+                            ToProcessElementFirstIt(k, l + 1, elem, ref values);
+                        }
+
+                        _resultTable[i + 1].value.Clear();
+                        _resultTable[i + 1].value.AddRange(values);
+                    });
+
+                    ShowResultTable();
+                    Console.WriteLine("-------------------------------------------------");
+                    
+                }
+
+                i++;
             }
+
+            
         }
         private void DoFirstIteration()
         {
@@ -234,12 +287,12 @@ namespace SLR
         {
             _resultTable.ForEach(row => {
                 string stringKey = "";
-                row.key.ForEach(x => { stringKey = stringKey + " " + x + ":";
-                    Console.WriteLine(stringKey); });
+                row.key.ForEach(x => { stringKey = "( "+ stringKey + x + " ) ";
+                    Console.WriteLine(stringKey + ":"); });
 
                 row.value.ForEach(x =>
                 {
-                    Console.Write("     " + x.columnOfTable + ": ");
+                    Console.Write("     " + x.columnOfTable + "^ ");
                     x.valueOfColumn.ForEach(y => { Console.Write(y + " "); });
                     Console.WriteLine();
                 });
