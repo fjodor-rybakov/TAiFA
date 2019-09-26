@@ -87,7 +87,7 @@ namespace SLR
 
                         if (elem.isLast)
                         {
-                            AddValueToColumn(ref values, "__end", "RETURN");
+                            AddValueToColumn(ref values, "__end", "RETURN");//свертка
                         }
                         else
                         {
@@ -95,12 +95,15 @@ namespace SLR
                             ToProcessElementFirstIt(k, l + 1, elem, ref values);
                         }
 
-                        _resultTable[i + 1].value.Clear();
-                        _resultTable[i + 1].value.AddRange(values);
+                        /*values.ForEach(z => { Console.WriteLine(z.columnOfTable + "||"); z.valueOfColumn.ForEach(v => { Console.Write("  " + v); }); });
+                        Console.WriteLine("+++++++++++++");*/
                     });
 
-                    ShowResultTable();
-                    Console.WriteLine("-------------------------------------------------");
+                    _resultTable[i + 1].value.Clear();
+                    _resultTable[i + 1].value.AddRange(values);
+
+                    /*ShowResultTable();
+                    Console.WriteLine("-------------------------------------------------");*/
                     
                 }
 
@@ -169,6 +172,11 @@ namespace SLR
             {
                 AddValueToColumn(ref columns, elem.value, elem.value + ":" + i + ":" + j);
                 var notTerminals = GetAllNotTerminalId(elem.value, new List<string>(), 0);
+
+                if (notTerminals.Contains(elem.value))
+                {
+                    notTerminals.Add(elem.value);
+                }
 
                 for (var f = 0; f < notTerminals.Count; f++)
                 {

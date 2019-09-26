@@ -1,6 +1,8 @@
 <S> ->real <idList>
-<idList> -><idList> , <id>
+<idList> -><idList> , <id> <x>
 <idList> -><id>
 <id> ->A
 <id> ->B
 <id> ->C
+<x> -><u> g
+<u> ->c
