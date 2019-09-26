@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SLR
@@ -49,6 +50,34 @@ namespace SLR
             DoOtherIterations();
         }
 
+        private bool isValid(List<Table> table, List<string> list)
+        {
+            foreach (var row in table)
+            {
+                if (row.key == list)
+                {
+                    return false;
+                }
+            }
+
+            /*bool isValid = true;
+
+            foreach(var row in table)
+            {
+                isValid = list.TrueForAll(x => { if (row.key.Contains(x)){ return false; }; return true; });
+            }*/
+
+            /*Console.Write("table: ");
+            ShowResultTable();
+            Console.WriteLine("list: ");
+            list.ForEach(x => { Console.Write(" " + x + " ");});
+            Console.WriteLine();
+            Console.WriteLine();*/
+
+
+            return true;
+        }
+
         private void DoOtherIterations()
         {
             int i = 0;
@@ -66,10 +95,13 @@ namespace SLR
                     {
                         if (!row.valueOfColumn[0].Contains("RETURN") && !row.valueOfColumn[0].Contains("OK"))
                         {
-                            Table table = new Table();
-                            table.key = row.valueOfColumn;                       
-                            table.value = GetEmptyColumns();
-                            _resultTable.Add(table);
+                            if (isValid(_resultTable, row.valueOfColumn))
+                            {
+                                Table table = new Table();
+                                table.key = row.valueOfColumn;
+                                table.value = GetEmptyColumns();
+                                _resultTable.Add(table);
+                            }
                         }
                 }
                 });
@@ -173,7 +205,7 @@ namespace SLR
                 AddValueToColumn(ref columns, elem.value, elem.value + ":" + i + ":" + j);
                 var notTerminals = GetAllNotTerminalId(elem.value, new List<string>(), 0);
 
-                if (notTerminals.Contains(elem.value))
+                if (!notTerminals.Contains(elem.value))
                 {
                     notTerminals.Add(elem.value);
                 }
