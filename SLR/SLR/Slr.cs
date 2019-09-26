@@ -4,17 +4,32 @@ using System.Text;
 
 namespace SLR
 {
+
+    struct Response
+    {
+        public string key;
+        public string value;
+        public bool isLast;
+    }
+
+    struct Value
+    {
+        public string columnOfTable;
+        public List<string> valueOfColumn;
+    }
+    struct Table
+    {
+        public List<string> key;
+        public List<Value> value;
+
+    }
+
     class Slr
     {
-        Dictionary<string, List<string>> _valueOfDict;
-        List<string> _elements;
-        List<List<string>> _addingIdentifiersHistory = new List<List<string>>();
         List<string> _identifiers = new List<string>();
-        List<Dictionary<string, List<String>>> _rules;
-        List<Dictionary<List<String>, Dictionary<string, List<String>>>> _resultTable = new List<Dictionary<List<String>, Dictionary<string, List<string>>>>();
-        Dictionary<string, List<string>> dictForInsertToDict = new Dictionary<string, List<string>>();
-        Dictionary<List<string>, Dictionary<string, List<string>>> dictForInsertResultTable = new Dictionary<List<string>, Dictionary<string, List<string>>>();
-
+        List<Dictionary<string, List<string>>> _rules;
+        List<Table> _resultTable = new List<Table>();
+        List<Value> columnsOnTable = new List<Value>();
 
         public Slr(List<Dictionary<string, List<String>>> rules)
         {
@@ -24,54 +39,212 @@ namespace SLR
         public void SyntexAnalyze()
         {
             AddIdentifiers();
-            AddTestItem();
+            FillResultTable();
             ShowResultTable();
         }
         
-        private void AddTestItem()
+        private void FillResultTable()
         {
-            dictForInsertToDict.Add("id", new List<string>(new string[] { "id11", "id12" }));
-            dictForInsertToDict.Add("<Z>", new List<string>(new string[] { "<Z>1", "<Z>2" }));
+            DoFirstIteration();
+            DoOtherIterations();
+        }
 
-            dictForInsertResultTable.Add(new List<string>(new string[] { "id11" }), dictForInsertToDict);
-            _resultTable.Add(dictForInsertResultTable);
+        private void DoOtherIterations()
+        {
+            while (true)
+            {
+
+            }
+        }
+        private void DoFirstIteration()
+        {
+            string key = "";
+            List<Value> values = new List<Value>();
+
+            for (int i = 0; i < _rules.Count; i++)
+            {
+                var elem = GetElementOfRule(i, 0);
+                key = elem.key;
+
+                values = GetEmptyColumns();
+                ToProcessElementFirstIt(i, 0, elem, ref values);
+
+                if (GetElementOfRule(i+1, 0).key != elem.key || GetElementOfRule(i + 1, 0).value == "-1")
+                {
+                    break;
+                }
+            }
+
+            AddValueToColumn(ref values, key, "OK");
+            Table row = new Table();
+            row.key = new List<string>(new string[] { key });
+            row.value = values;
+            _resultTable.Add(row);
+
+        } 
+        
+        private bool AddValueToColumn(ref List<Value> values, string key, string value)
+        {
+            for (int i = 0; i < values.Count; i++)
+            {
+                if (values[i].columnOfTable == key)
+                {
+                    if (!values[i].valueOfColumn.Contains(value))
+                    {
+                        values[i].valueOfColumn.Add(value);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        private void ToProcessElementFirstIt(int i, int j, Response elem, ref List<Value> columns)
+        {
+            
+            if (IsTerminal(elem.value))
+            {
+                AddValueToColumn(ref columns, elem.value, elem.value + ":" + i + ":" + j);
+            }
+            else
+            {
+                AddValueToColumn(ref columns, elem.value, elem.value + ":" + i + ":" + j);
+                var notTerminals = GetAllNotTerminalId(elem.value, new List<string>(), 0);
+
+                for (var f = 0; f < notTerminals.Count; f++)
+                {
+                    for (var s = 0; s < _rules.Count; s++)
+                    {
+                        var elemR = GetElementOfRule(s, 0);
+
+                        if (elemR.key == notTerminals[f])
+                        {
+                            AddValueToColumn(ref columns, elemR.value, elemR.value + ":" + s + ":" + 0);
+                        }
+                    }
+                }
+            }
+        }
+        
+        private List<string> GetAllNotTerminalId(string notTerminal, List<string> listOfNeterminals, int count)
+        {
+            List<string> notTerminals = new List<string>(listOfNeterminals);
+            List<string> tempNotTerminals = new List<string>(listOfNeterminals);
+
+            for (int i = 0; i < _rules.Count; i++)
+                {
+                    var elem = GetElementOfRule(i, 0);
+                    if (elem.key == notTerminal)
+                    {
+                        if (!IsTerminal(elem.value) && !tempNotTerminals.Contains(elem.value))
+                        {
+                            tempNotTerminals.Add(elem.value);
+                            notTerminals.Add(elem.value);
+                        }
+                    }
+                }
+
+                notTerminals.ForEach(x => {
+                    for (int i = 0; i < _rules.Count; i++)
+                    {
+                        var elem = GetElementOfRule(i, 0);
+                        if (elem.key == x)
+                        {
+                            if (!IsTerminal(elem.value) && !tempNotTerminals.Contains(elem.value))
+                            {
+                                tempNotTerminals.Add(elem.value);
+                            }
+                        }
+                    }
+                });
+
+            if (count == tempNotTerminals.Count)
+            {
+                return tempNotTerminals;
+            }
+
+            listOfNeterminals.Clear();
+            listOfNeterminals.AddRange(GetAllNotTerminalId("", new List<string>(tempNotTerminals), tempNotTerminals.Count));
+
+            return tempNotTerminals;
+        }
+
+
+        private Response GetElementOfRule(int i, int j)
+        {
+            List<string> elements = new List<string>();
+            
+            Response response = new Response();
+            response.value = "-1";
+
+            if (i >= _rules.Count)
+            {
+                return new Response();
+            }
+
+            var rule = _rules[i];
+            var keys = rule.Keys;
+
+            foreach(var key in keys)
+            {
+                response.key = key;
+                rule.TryGetValue(key, out elements);
+            }
+
+            if (j >= elements.Count)
+            {
+                return response;
+            }
+
+            response.value = elements[j];
+            if (j == elements.Count - 1)
+            {
+                response.isLast = true;
+            }
+            else
+            {
+                response.isLast = false;
+            }
+
+            return response;
+        }
+
+        private List<Value> GetEmptyColumns()
+        {
+            List<Value> values = new List<Value>();
+
+            foreach(var id in _identifiers)
+            {
+                Value value = new Value();
+                value.columnOfTable = id;
+                value.valueOfColumn = new List<string>();
+                values.Add(value);
+            }
+
+            return values;
         }
 
         private void ShowResultTable()
         {
-            foreach(var row in _resultTable)
-            {
-                var keys = row.Keys;
-                
-                foreach(var key in keys)
+            _resultTable.ForEach(row => {
+                string stringKey = "";
+                row.key.ForEach(x => { stringKey = stringKey + " " + x + ":";
+                    Console.WriteLine(stringKey); });
+
+                row.value.ForEach(x =>
                 {
-                    row.TryGetValue(key, out _valueOfDict);
-
-                    var stringKey = "";
-                    key.ForEach(x => { stringKey = stringKey + " " + x; });
-                    Console.WriteLine(stringKey + ":");
-
-                    var keysOnDict = _valueOfDict.Keys;
-
-                    ShowValueOfDict(keysOnDict);
-                }
-            }
-        }
-
-        private void ShowValueOfDict(Dictionary<string, List<String>>.KeyCollection keys)
-        {
-            foreach(var key in keys)
-            {
-                Console.Write("     " + key + ":");
-                _valueOfDict.TryGetValue(key, out _elements);
-                
-                _elements.ForEach(element =>
-                {
-                    Console.Write(element + " ");
+                    Console.Write("     " + x.columnOfTable + ": ");
+                    x.valueOfColumn.ForEach(y => { Console.Write(y + " "); });
+                    Console.WriteLine();
                 });
 
-                Console.WriteLine();
-            }
+            });
         }
 
         private void AddnewIdentifier(string identifier)
@@ -101,9 +274,10 @@ namespace SLR
                     }
                 }
             }
+            _identifiers.Add("__end");
         }
 
-        private bool isTerminal(string value)
+        private bool IsTerminal(string value)
         {
             return value[0] != '<' && value[value.Length - 1] != '>';
         }

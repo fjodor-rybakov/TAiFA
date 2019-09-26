@@ -42,6 +42,7 @@ namespace SLR
 
                 Dictionary<string, List<string>> newDict = new Dictionary<string, List<string>>();
                 newDict.Add(leftPart, wordsList);
+                
                 _rules.Add(newDict);
             }
         }
