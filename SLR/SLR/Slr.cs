@@ -104,7 +104,14 @@ namespace SLR
 
                         if (elem.isLast)
                         {
-                            AddValueToColumn(ref values, "__end", "RETURN");//свертка
+                            var responseList = ToAddReturnToColumns(elem);
+
+                            responseList.ForEach(x =>
+                            {
+                                AddValueToColumn(ref values, x.value, "RETURN");
+                            });
+
+                            AddValueToColumn(ref values, "__end", "RETURN");
                         }
                         else
                         {
@@ -112,23 +119,72 @@ namespace SLR
                             ToProcessElementFirstIt(k, l + 1, elem, ref values);
                         }
 
-                        /*values.ForEach(z => { Console.WriteLine(z.columnOfTable + "||"); z.valueOfColumn.ForEach(v => { Console.Write("  " + v); }); });
-                        Console.WriteLine("+++++++++++++");*/
                     });
 
                     _resultTable[i + 1].value.Clear();
                     _resultTable[i + 1].value.AddRange(values);
-
-                    /*ShowResultTable();
-                    Console.WriteLine("-------------------------------------------------");*/
                     
                 }
 
                 i++;
             }
-
-            
         }
+
+        private List<Response> ToAddReturnToColumns(Response elem)
+        {
+            Queue<Response> keysToConvolute = new Queue<Response>();
+            keysToConvolute.Enqueue(elem);
+            List<Response> responseList = new List<Response>();
+            List<List<string>> history = new List<List<string>>();//для проверки на повторения;[0] - строки,которые сворачиваем a->c (a), возвращаемый лист;
+            history.Add(new List<string>());
+            history.Add(new List<string>());
+            history[0].Add(elem.key);
+
+
+            while (keysToConvolute.Count != 0)
+            {
+                Response key = keysToConvolute.Dequeue();
+                responseList.AddRange(GetColumnsToConvolute(ref keysToConvolute, key, history));
+            }
+
+            return responseList;
+        }
+
+        private List<Response> GetColumnsToConvolute(ref Queue<Response> keysToConvolute, Response key, List<List<string>> history)
+        {
+            List<Response> responses = new List<Response>();
+
+            for(int i = 0; i < _rules.Count; i++)
+            {
+                int j = 0;
+                Response elem = GetElementOfRule(i, j);
+
+                while(elem.value != "-1")
+                {
+                    if (elem.value == key.key && !elem.isLast)
+                    {
+                        if (!history[1].Contains(GetElementOfRule(i, j + 1).value))
+                        {
+                            responses.Add(GetElementOfRule(i, j + 1));
+                        }
+                    }
+
+                    if (elem.value == key.key && elem.isLast)
+                    {
+                        if (!history[0].Contains(elem.key))
+                        {
+                            keysToConvolute.Enqueue(elem);
+                        }
+                    }
+
+                    j++;
+                    elem = GetElementOfRule(i, j); 
+                }
+            }
+
+            return responses;
+        }
+
         private void DoFirstIteration()
         {
             string key = "";
@@ -312,8 +368,8 @@ namespace SLR
         {
             _resultTable.ForEach(row => {
                 string stringKey = "";
-                row.key.ForEach(x => { stringKey = "( "+ stringKey + x + " ) ";
-                    Console.WriteLine(stringKey + ":"); });
+                row.key.ForEach(x => { stringKey = "( "+ stringKey + x + " ) ";});
+                Console.WriteLine(stringKey + ":");
 
                 row.value.ForEach(x =>
                 {
