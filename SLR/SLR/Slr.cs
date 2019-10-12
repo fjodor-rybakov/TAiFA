@@ -15,13 +15,13 @@ namespace SLR
 
     struct Value
     {
-        public string columnOfTable;
-        public List<string> valueOfColumn;
+        public string columnOfTable; // элемент сверху
+        public List<string> valueOfColumn; // значения этого элменета
     }
     struct Table
     {
-        public List<string> key;
-        public List<Value> value;
+        public List<string> key; // единственный ключ, в котором может быть несколько элементов
+        public List<Value> value; // сама таблица
 
     }
 
