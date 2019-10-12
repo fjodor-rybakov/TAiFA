@@ -98,8 +98,8 @@ namespace SLR
                     _resultTable[i+1].key.ForEach(key => {
                         int k = -1;
                         int l = -1;
-                        Int32.TryParse(key.Split(':')[1], out k);
-                        Int32.TryParse(key.Split(':')[2], out l);
+                        int.TryParse(key.Split(':')[1], out k);
+                        int.TryParse(key.Split(':')[2], out l);
                         var elem = GetElementOfRule(k, l);
 
                         if (elem.isLast)
@@ -189,14 +189,27 @@ namespace SLR
         {
             string key = "";
             List<Value> values = new List<Value>();
+            List<Value> mainValues = new List<Value>();
+            values = GetEmptyColumns();
 
             for (int i = 0; i < _rules.Count; i++)
             {
                 var elem = GetElementOfRule(i, 0);
                 key = elem.key;
 
-                values = GetEmptyColumns();
                 ToProcessElementFirstIt(i, 0, elem, ref values);
+
+                
+                mainValues.ForEach(main =>
+                {
+                    values.ForEach(val =>
+                    {
+                        if (main.columnOfTable == val.columnOfTable)
+                        {
+                            main.valueOfColumn.AddRange(val.valueOfColumn);
+                        }
+                    });
+                });
 
                 if (GetElementOfRule(i+1, 0).key != elem.key || GetElementOfRule(i + 1, 0).value == "-1")
                 {
@@ -211,7 +224,7 @@ namespace SLR
             _resultTable.Add(row);
 
         } 
-        
+
         private bool AddValueToColumn(ref List<Value> values, string key, string value)
         {
             for (int i = 0; i < values.Count; i++)
