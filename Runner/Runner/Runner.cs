@@ -13,7 +13,7 @@ namespace Runner
     }
     struct Table
     {
-        public List<string> key; // единственный ключ, в котором может быть несколько элементов
+        public List<string> key; // единственный ключ, в котором может быть несколько элементов  //key:номерПравила:колонка (a:3:0)
         public List<Value> value; // сама таблица
 
     }
@@ -24,10 +24,11 @@ namespace Runner
         private Stack enterChain = new Stack();
         private Stack tableKey = new Stack();
         private List<Table> resultTable = new List<Table>(); //вынес в глобальную переменную, чтобы слишком часто не передавать по значению(экономим немного памяти)
-        List<Dictionary<string, List<string>>> rules; //правила берем из slr, они там уже есть.
+        List<Dictionary<string, List<string>>> rules;
+        List<string> enterStrArr;
 
-
-        public Runner(List<Dictionary<string, List<string>>> _rules)
+        //init
+        public Runner(List<Dictionary<string, List<string>>> _rules) //правила берем из slr, они там уже есть.
         {
             rules = _rules;
         }
@@ -46,7 +47,8 @@ namespace Runner
 
         bool IsEqualKeys(List<string> key, string value)
         {
-            return MakeStringFromList(key) == value;
+            string[] keyParams = MakeStringFromList(key).Split(':');
+            return keyParams[0] == value;
         }
 
         //["id1", "id2"] -> "id1,id2";
@@ -61,56 +63,79 @@ namespace Runner
         }
 
 
-        int? GetKeyIndexFromTableWith(string value)
+        int GetClearKeyIndexFromTableWith(string value)
         {
-            int ctr = 0;
-            while (!IsEqualKeys(resultTable[ctr].key, value))
+            int counter = 0;
+            while (!IsEqualKeys(resultTable[counter].key, value))
             {
-                if (resultTable.Count > (ctr + 1)) { ctr++; } 
-                else { return null; }
+                if (resultTable.Count > (counter + 1)) { counter++; } 
+                else { return -1; }
             }
-            return ctr;
+            return counter;
         }
 
-        int? GetIndexFromValue(string value)
+        int GetSimpleKeyIndexFromTableWith(string value)
         {
-            int ctr = 0;
-            while (resultTable[0].value[ctr].columnOfTable != value)
+            int counter = 0;
+            while (!(MakeStringFromList(resultTable[counter].key) == value))
             {
-                if (resultTable.Count > (ctr + 1)) { ctr++; }
-                else { return null; }
+                if (resultTable.Count > (counter + 1)) { counter++; }
+                else { return -1; }
             }
-            return ctr;
+            return counter;
+        }
+
+        int GetIndexFromValue(string value)
+        {
+            int counter = 0;
+            while (resultTable[0].value[counter].columnOfTable != value)
+            {
+                if (resultTable.Count > (counter + 1)) { counter++; }
+                else { return -1; }
+            }
+            return counter;
         }
 
         void ProcessChain(List<string> chain)
         {
-            int ctr;
-            for (ctr = 0; ctr < chain.Count; ctr++)
-            {
-                int? i = GetKeyIndexFromTableWith(chain[ctr]);
+            int counter = 0;
+            //for (counter = 0; counter < chain.Count; counter++)
+            //{
+                int? i = GetClearKeyIndexFromTableWith(chain[counter]);
                 if (i == null)
                 {
                     //fatalErr
-                    Console.WriteLine("\n--- [Fatal Error]: Element \"", chain[ctr], "\" not found.\n");
-                    break;
+                    Console.WriteLine("\n--- [Fatal Error]: Element \"", chain[counter], "\" not found.\n");
+                    return;
                 }
-                enterChain.Push(chain[ctr]);
-                if (ctr + 1 < chain.Count)
+                enterChain.Push(chain[counter]);
+                if (counter + 1 < chain.Count)
                 {
-                    int? indexOfNextVal = GetIndexFromValue(chain[ctr + 1]);
-                    int idNext = indexOfNextVal ?? -1;
-                    if ((MakeStringFromList(resultTable[ctr].value[idNext].valueOfColumn) == "RETURN") 
-                        || (MakeStringFromList(resultTable[ctr].value[resultTable[ctr].value.Count].valueOfColumn) == "RETURN"))
+                    int indexOfNextVal = GetIndexFromValue(chain[counter + 1]);
+                    string nextValueOfColumn = MakeStringFromList(resultTable[counter].value[indexOfNextVal].valueOfColumn);
+                    if ((nextValueOfColumn == "RETURN") 
+                        || (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN"))
                     {
-                        TryToConvolutionInRule(ctr);
+                        TryToConvolutionInRule(counter);
+                    } 
+                    else if (nextValueOfColumn != "")
+                    {
+                        int indexOfSimpleKey = GetSimpleKeyIndexFromTableWith(nextValueOfColumn);
+                        
                     }
+                    else
+                    {
+                        //fatalErr
+                        Console.WriteLine("\n--- [Fatal Error]: nextValueOfColumn is NULL(\"\"). Index of next val = ", indexOfNextVal, ";\n");
+                    return;
                 }
-                else if (MakeStringFromList(resultTable[ctr].value[resultTable[ctr].value.Count].valueOfColumn) == "RETURN") //подумать над концовкой
+                }
+                else if (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN") //подумать над концовкой
                 {
-                    TryToConvolutionInRule(ctr);
+                    TryToConvolutionInRule(counter);
                 }
-            }
+            //}
+            return;
         }
 
         
