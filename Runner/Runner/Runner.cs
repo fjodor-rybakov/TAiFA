@@ -11,6 +11,7 @@ namespace Runner
         public string columnOfTable; // элемент сверху
         public List<string> valueOfColumn; // значения этого элменета
     }
+
     struct Table
     {
         public List<string> key; // единственный ключ, в котором может быть несколько элементов  //key:номерПравила:колонка (a:3:0)
@@ -45,10 +46,15 @@ namespace Runner
             return true;
         }
 
+        string GetClearKey(string dirtyKey)
+        {
+            string[] keyParams = dirtyKey.Split(':');
+            return keyParams[0];
+        }
+
         bool IsEqualKeys(List<string> key, string value)
         {
-            string[] keyParams = MakeStringFromList(key).Split(':');
-            return keyParams[0] == value;
+            return GetClearKey(MakeStringFromList(key)) == value;
         }
 
         //["id1", "id2"] -> "id1,id2";
@@ -74,7 +80,7 @@ namespace Runner
             return counter;
         }
 
-        int GetSimpleKeyIndexFromTableWith(string value)
+        int GetSafeKeyIndexFromTableWith(string value)
         {
             int counter = 0;
             while (!(MakeStringFromList(resultTable[counter].key) == value))
@@ -85,7 +91,7 @@ namespace Runner
             return counter;
         }
 
-        int GetIndexFromValue(string value)
+        int GetColumnIndexFromValue(string value)
         {
             int counter = 0;
             while (resultTable[0].value[counter].columnOfTable != value)
@@ -96,53 +102,110 @@ namespace Runner
             return counter;
         }
 
+        int GetNumberOfRule(string key)
+        {
+            string[] keyParams = MakeStringFromList(key).Split(':');
+            if (keyParams.Length > 1)
+            {
+                return int.Parse(keyParams[1]);
+            }
+            return -1;
+        }
+
         void ProcessChain(List<string> chain)
         {
             int counter = 0;
-            //for (counter = 0; counter < chain.Count; counter++)
-            //{
-                int? i = GetClearKeyIndexFromTableWith(chain[counter]);
-                if (i == null)
-                {
-                    //fatalErr
-                    Console.WriteLine("\n--- [Fatal Error]: Element \"", chain[counter], "\" not found.\n");
-                    return;
-                }
-                enterChain.Push(chain[counter]);
-                if (counter + 1 < chain.Count)
-                {
-                    int indexOfNextVal = GetIndexFromValue(chain[counter + 1]);
-                    string nextValueOfColumn = MakeStringFromList(resultTable[counter].value[indexOfNextVal].valueOfColumn);
-                    if ((nextValueOfColumn == "RETURN") 
-                        || (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN"))
-                    {
-                        TryToConvolutionInRule(counter);
-                    } 
-                    else if (nextValueOfColumn != "")
-                    {
-                        int indexOfSimpleKey = GetSimpleKeyIndexFromTableWith(nextValueOfColumn);
-                        
-                    }
-                    else
-                    {
-                        //fatalErr
-                        Console.WriteLine("\n--- [Fatal Error]: nextValueOfColumn is NULL(\"\"). Index of next val = ", indexOfNextVal, ";\n");
-                    return;
-                }
-                }
-                else if (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN") //подумать над концовкой
-                {
-                    TryToConvolutionInRule(counter);
-                }
-            //}
+            int? tableIndex = GetClearKeyIndexFromTableWith(chain[counter]);
+            if (tableIndex == null)
+            {
+                //fatalErr
+                Console.WriteLine("\n--- [Fatal Error]: Element \"", chain[counter], "\" not found.\n");
+                return;
+            }
+            enterChain.Push(resultTable[tableIndex].key);
+            RecursiveAnalizingForChainWith(counter);
             return;
         }
 
-        
+        void RecursiveAnalizingForChainWith(int counter)
+        {
+            if (counter + 1 < chain.Count)
+            {
+                int columnIndexOfNextVal = GetColumnIndexFromValue(chain[counter + 1]);
+                string nextValueOfColumn = MakeStringFromList(resultTable[counter].value[columnIndexOfNextVal].valueOfColumn);
+                if ((nextValueOfColumn == "RETURN")
+                    || (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN"))
+                {
+                    TryToConvolutionInRule(GetNumberOfRule(enterChain.Peek()));
+                }
+                else if (nextValueOfColumn != "")
+                {
+                    int indexOfSafeKey = GetSafeKeyIndexFromTableWith(nextValueOfColumn);
+                    if (indexOfSafeKey == -1) //Проверяем, есть ли такой элемент в ключах таблицы
+                    {
+                        //fatalErr
+                        Console.WriteLine("\n--- [Fatal Error]: indexOfSafeKey == -1 (not exist). For value: ", nextValueOfColumn, ";\n");
+                        return;
+                    }
+                    enterChain.Push(nextValueOfColumn);
+                    RecursiveAnalizingForChainWith(++counter);
+                }
+                else
+                {
+                    //fatalErr
+                    Console.WriteLine("\n--- [Fatal Error]: nextValueOfColumn is NULL(\"\"). Index of next val = ", columnIndexOfNextVal, ";\n");
+                    return;
+                }
+            }
+            else if (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN") //подумать над концовкой
+            {
+                Console.WriteLine("Найден конец цепочки...");
+                TryToConvolutionInRule(GetNumberOfRule(enterChain.Peek()));
+            }
+            else
+            {
+                //fatalErr
+                Console.WriteLine("\n--- [Fatal Error]: Last element: \"", resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn, "\" != RETURN.\n");
+                return;
+            }
+        }
 
         void TryToConvolutionInRule(int numberOfRule)
         {
+            //Пробуем свернуть. Получается -> идем дальше; нет - завершаем с ошибкой.
+            string key = rules[numberOfRule].Keys.ElementAt(0);
+            List<string> rule = rules[numberOfRule] [rules[numberOfRule].Keys.ElementAt(0)];
+            for (int i = rule.Count; i == 0; i--)
+            {
+                if (rule[i] == GetClearKey(enterChain.Peek()))
+                {
+                    enterChain.Pop();
+                }
+                else
+                {
+                    //fatalErr
+                    Console.WriteLine("\n--- [Fatal Error]: Clear Key: ", GetClearKey(enterChain.Peek()), " - not conform to rule. Rule element: ", rule[i], "; \n");
+                    return;
+                }
+            }
+            
+            RebuildAndCheckChain(key, rule.Count);
+        }
 
+        void RebuildAndCheckChain(string key, int countElementsInRule)
+        {
+            enterStrArr.RemoveRange(0, countElementsInRule);
+            enterStrArr.Insert(0, key);
+            if ((enterStrArr.Count == 1) && (enterChain.Count == 0))
+            {
+                //finish
+                Console.WriteLine("Свертка завершена успешно. Начальный элемент: ", key);
+                return;
+            }
+            else
+            {
+                ProcessChain(enterStrArr);
+            }
         }
     }
 }

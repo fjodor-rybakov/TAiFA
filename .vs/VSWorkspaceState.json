@@ -1,9 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Compiler\\Compiler\\SLR",
-    "\\SLR\\SLR",
-    "\\SLR\\SLR\\files"
+    "\\Runner",
+    "\\Runner\\Runner",
+    "\\SLR\\SLR"
   ],
+  "SelectedNode": "\\Runner\\Runner\\Runner.cs",
   "PreviewInSolutionExplorer": false
 }
