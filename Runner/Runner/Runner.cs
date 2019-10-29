@@ -16,7 +16,6 @@ namespace Runner
     {
         public List<string> key; // единственный ключ, в котором может быть несколько элементов  //key:номерПравила:колонка (a:3:0)
         public List<Value> value; // сама таблица
-
     }
 
     class Runner
@@ -27,6 +26,8 @@ namespace Runner
         private List<Table> resultTable = new List<Table>(); //вынес в глобальную переменную, чтобы слишком часто не передавать по значению(экономим немного памяти)
         List<Dictionary<string, List<string>>> rules;
         List<string> enterStrArr;
+
+        bool firstEnter = true;
 
         //init
         public Runner(List<Dictionary<string, List<string>>> _rules) //правила берем из slr, они там уже есть.
@@ -44,6 +45,40 @@ namespace Runner
             ProcessChain(enterStrArr);
             
             return true;
+        }
+
+        void ProcessChain(List<string> chain)
+        {
+            int counter = 0;
+            string firstElement = "";
+            if (!firstEnter)
+            {
+                if (enterChain.Count != 0)
+                {
+                    firstElement = MakeStringFromList(resultTable[GetSafeKeyIndexFromTableWith(enterChain.Peek())].value[GetColumnIndexFromValue(chain[counter])]);
+                }
+                else
+                {
+                    //fatalErr
+                    Console.WriteLine("\n--- [Fatal Error]: Enter Chain is Empty!\n");
+                    return;
+                }
+            }
+            else
+            {
+                firstElement = MakeStringFromList(resultTable[counter].value[GetColumnIndexFromValue(chain[counter])]);
+                firstEnter = false;
+            }
+
+            if (firstElement == "")
+            {
+                //fatalErr
+                Console.WriteLine("\n--- [Fatal Error]: Element \"", chain[counter], "\" not found.\n");
+                return;
+            }
+            enterChain.Push(firstElement);
+            RecursiveAnalizingForChainWith(counter);
+            return;
         }
 
         string GetClearKey(string dirtyKey)
@@ -66,18 +101,6 @@ namespace Runner
                 val = (val == "") ? elem : (val + strSeparator + elem);
             }
             return val;
-        }
-
-
-        int GetClearKeyIndexFromTableWith(string value)
-        {
-            int counter = 0;
-            while (!IsEqualKeys(resultTable[counter].key, value))
-            {
-                if (resultTable.Count > (counter + 1)) { counter++; } 
-                else { return -1; }
-            }
-            return counter;
         }
 
         int GetSafeKeyIndexFromTableWith(string value)
@@ -112,20 +135,7 @@ namespace Runner
             return -1;
         }
 
-        void ProcessChain(List<string> chain)
-        {
-            int counter = 0;
-            int? tableIndex = GetClearKeyIndexFromTableWith(chain[counter]);
-            if (tableIndex == null)
-            {
-                //fatalErr
-                Console.WriteLine("\n--- [Fatal Error]: Element \"", chain[counter], "\" not found.\n");
-                return;
-            }
-            enterChain.Push(resultTable[tableIndex].key);
-            RecursiveAnalizingForChainWith(counter);
-            return;
-        }
+        
 
         void RecursiveAnalizingForChainWith(int counter)
         {
@@ -184,7 +194,7 @@ namespace Runner
                 else
                 {
                     //fatalErr
-                    Console.WriteLine("\n--- [Fatal Error]: Clear Key: ", GetClearKey(enterChain.Peek()), " - not conform to rule. Rule element: ", rule[i], "; \n");
+                    Console.WriteLine("\n--- [Fatal Error]: Clear Key: ", GetClearKey(enterChain.Peek()), " - not conform to rule. Rule element: ", rule[i], "; in rule ", numberOfRule, "; \n");
                     return;
                 }
             }

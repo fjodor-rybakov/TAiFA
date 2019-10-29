@@ -2,9 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\Runner",
-    "\\Runner\\Runner",
-    "\\SLR\\SLR"
+    "\\Runner\\Runner"
   ],
-  "SelectedNode": "\\Runner\\Runner\\Runner.cs",
+  "SelectedNode": "\\Runner\\Runner\\Runner.sln",
   "PreviewInSolutionExplorer": false
 }

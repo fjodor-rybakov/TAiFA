@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Programming\\таифя\\TAiFA\\Runner\\Runner\\Runner.csproj",
+      "projectUniqueName": "C:\\Taifa\\Runner\\Runner\\Runner.csproj",
       "projectName": "Runner",
-      "projectPath": "C:\\Programming\\таифя\\TAiFA\\Runner\\Runner\\Runner.csproj",
+      "projectPath": "C:\\Taifa\\Runner\\Runner\\Runner.csproj",
       "packagesPath": "C:\\Users\\mrtsa\\.nuget\\packages\\",
-      "outputPath": "C:\\Programming\\таифя\\TAiFA\\Runner\\Runner\\obj\\",
+      "outputPath": "C:\\Taifa\\Runner\\Runner\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mrtsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
