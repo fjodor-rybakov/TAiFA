@@ -25,6 +25,12 @@ namespace SLR
 
     }
 
+    struct ReturnData
+    {
+        public List<Dictionary<string, List<string>>> rules;
+        public List<Table> resultTable;
+    }
+
     class Slr
     {
         List<string> _identifiers = new List<string>();
@@ -37,11 +43,15 @@ namespace SLR
             _rules = rules;
         }
 
-        public void SyntexAnalyze()
+        public ReturnData SyntexAnalyze()
         {
             AddIdentifiers();
             FillResultTable();
-            ShowResultTable();
+            //ShowResultTable(); откомментировать, если хочешь увидеть таблицу.
+            ReturnData returnData = new ReturnData();
+            returnData.resultTable = _resultTable;
+            returnData.rules = _rules;
+            return returnData;
         }
         
         private void FillResultTable()
