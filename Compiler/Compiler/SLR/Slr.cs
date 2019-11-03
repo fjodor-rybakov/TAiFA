@@ -46,7 +46,7 @@ namespace Compiler.SLR
         {
             AddIdentifiers();
             FillResultTable();
-            //ShowResultTable(); откомментировать, если хочешь увидеть таблицу.
+            //ShowResultTable(); //раскомментировать, если хочешь увидеть таблицу.
             ReturnData returnData = new ReturnData();
             returnData.resultTable = _resultTable;
             returnData.rules = _rules;

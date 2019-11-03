@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Compiler.SLR;
 
 namespace Compiler.Runner
 {
@@ -8,12 +9,6 @@ namespace Compiler.Runner
     {
         public string columnOfTable; // элемент сверху
         public List<string> valueOfColumn; // значения этого элменета
-    }
-
-    struct Table
-    {
-        public List<string> key; // единственный ключ, в котором может быть несколько элементов  //key:номерПравила:колонка (a:3:0)
-        public List<Value> value; // сама таблица
     }
 
     class Runner
