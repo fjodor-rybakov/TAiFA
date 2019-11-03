@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
@@ -21,8 +21,7 @@ namespace Runner
     class Runner
     {
         private string strSeparator = ",";
-        private Stack enterChain = new Stack();
-        private Stack tableKey = new Stack();
+        private Stack<string> enterChain = new Stack<string>();
         private List<Table> resultTable = new List<Table>(); //вынес в глобальную переменную, чтобы слишком часто не передавать по значению(экономим немного памяти)
         private bool firstEnter = true;
 
