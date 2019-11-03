@@ -559,6 +559,7 @@
       "path": "netstandard.library/2.0.3",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "build/netstandard2.0/NETStandard.Library.targets",
@@ -688,30 +689,26 @@
     ]
   },
   "packageFolders": {
-    "F:\\Users\\Admin\\.nuget\\packages\\": {},
-    "F:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\mrtsa\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\rep\\TAiFA\\SLR\\SLR\\SLR.csproj",
+      "projectUniqueName": "C:\\Programming\\TAiFA\\SLR\\SLR\\SLR.csproj",
       "projectName": "SLR",
-      "projectPath": "F:\\rep\\TAiFA\\SLR\\SLR\\SLR.csproj",
-      "packagesPath": "F:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "F:\\rep\\TAiFA\\SLR\\SLR\\obj\\",
+      "projectPath": "C:\\Programming\\TAiFA\\SLR\\SLR\\SLR.csproj",
+      "packagesPath": "C:\\Users\\mrtsa\\.nuget\\packages\\",
+      "outputPath": "C:\\Programming\\TAiFA\\SLR\\SLR\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "F:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "F:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "F:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\mrtsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"
       ],
       "sources": {
-        "F:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -729,16 +726,23 @@
       "netcoreapp2.1": {
         "dependencies": {
           "Microsoft.NETCore.App": {
+            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true
           }
         },
         "imports": [
-          "net461"
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
         ],
         "assetTargetFallback": true,
-        "warn": true
+        "warn": true,
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
