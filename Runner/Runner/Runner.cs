@@ -24,10 +24,11 @@ namespace Runner
         private Stack enterChain = new Stack();
         private Stack tableKey = new Stack();
         private List<Table> resultTable = new List<Table>(); //вынес в глобальную переменную, чтобы слишком часто не передавать по значению(экономим немного памяти)
-        List<Dictionary<string, List<string>>> rules;
-        List<string> enterStrArr;
+        private bool firstEnter = true;
 
-        bool firstEnter = true;
+        public bool? isSuccessfullyEnded = null;
+        public List<Dictionary<string, List<string>>> rules;
+        public List<string> enterStrArr;
 
         //init
         public Runner(List<Dictionary<string, List<string>>> _rules) //правила берем из slr, они там уже есть.
@@ -61,6 +62,7 @@ namespace Runner
                 {
                     //fatalErr
                     Console.WriteLine("\n--- [Fatal Error]: Enter Chain is Empty!\n");
+                    isSuccessfullyEnded = false;
                     return;
                 }
             }
@@ -74,6 +76,7 @@ namespace Runner
             {
                 //fatalErr
                 Console.WriteLine("\n--- [Fatal Error]: Element \"", chain[counter], "\" not found.\n");
+                isSuccessfullyEnded = false;
                 return;
             }
             enterChain.Push(firstElement);
@@ -155,6 +158,7 @@ namespace Runner
                     {
                         //fatalErr
                         Console.WriteLine("\n--- [Fatal Error]: indexOfSafeKey == -1 (not exist). For value: ", nextValueOfColumn, ";\n");
+                        isSuccessfullyEnded = false;
                         return;
                     }
                     enterChain.Push(nextValueOfColumn);
@@ -164,6 +168,7 @@ namespace Runner
                 {
                     //fatalErr
                     Console.WriteLine("\n--- [Fatal Error]: nextValueOfColumn is NULL(\"\"). Index of next val = ", columnIndexOfNextVal, ";\n");
+                    isSuccessfullyEnded = false;
                     return;
                 }
             }
@@ -176,6 +181,7 @@ namespace Runner
             {
                 //fatalErr
                 Console.WriteLine("\n--- [Fatal Error]: Last element: \"", resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn, "\" != RETURN.\n");
+                isSuccessfullyEnded = false;
                 return;
             }
         }
@@ -195,6 +201,7 @@ namespace Runner
                 {
                     //fatalErr
                     Console.WriteLine("\n--- [Fatal Error]: Clear Key: ", GetClearKey(enterChain.Peek()), " - not conform to rule. Rule element: ", rule[i], "; in rule ", numberOfRule, "; \n");
+                    isSuccessfullyEnded = false;
                     return;
                 }
             }
@@ -210,6 +217,7 @@ namespace Runner
             {
                 //finish
                 Console.WriteLine("Свертка завершена успешно. Начальный элемент: ", key);
+                isSuccessfullyEnded = true;
                 return;
             }
             else
