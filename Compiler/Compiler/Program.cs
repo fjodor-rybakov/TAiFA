@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Compiler.LLSyntaxer;
+using Compiler.SLR;
 
 namespace Compiler
 {
@@ -13,6 +14,9 @@ namespace Compiler
 		
 		public static void Main()
 		{
+            RulesReader rulesReaeder = new RulesReader();
+            SLR.Slr slr = new SLR.Slr(rulesReaeder.GetRules());
+            slr.SyntexAnalyze();
             Console.ReadLine();
 		}
 	}
