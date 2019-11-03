@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Compiler.SLR;
 
 namespace Compiler
@@ -13,13 +14,32 @@ namespace Compiler
 		
 		public static void Main()
 		{
+			MakeLexer();
+			
             RulesReader rulesReaeder = new RulesReader();
             Slr slr = new Slr(rulesReaeder.GetRules());
             var table = slr.GetTable();
             MakeAndLaunchRunner(table.rules, table.resultTable);
             Console.ReadLine();
 		}
-		
+
+		private static void MakeLexer()
+		{
+			var reader = new StreamReader(PATH_DATA);
+			var lexer = new Lexer.Lexer(PATH_IDENTIFICATOR, PATH_NUMBER10, PATH_NUMBER2816);
+			string line;
+			while ((line = reader.ReadLine()) != null)
+			{
+				var lexerInfo = lexer.GetLexerInfo(line);
+				foreach (var item in lexerInfo)
+				{
+					Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
+				}
+				var recDown = new RecDown.RecDown(lexerInfo);
+				Console.WriteLine("Var is valid: " + recDown.CheckVar());
+			}
+		}
+
 		private static void MakeAndLaunchRunner(List<Dictionary<string, List<string>>> rules, List<Table> resultTable)
 		{
 			string enterString = Console.ReadLine();
