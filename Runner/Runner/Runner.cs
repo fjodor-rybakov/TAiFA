@@ -130,7 +130,7 @@ namespace Runner
 
         int GetNumberOfRule(string key)
         {
-            string[] keyParams = MakeStringFromList(key).Split(':');
+            string[] keyParams = key.Split(':');
             if (keyParams.Length > 1)
             {
                 return int.Parse(keyParams[1]);
@@ -142,9 +142,9 @@ namespace Runner
 
         void RecursiveAnalizingForChainWith(int counter)
         {
-            if (counter + 1 < chain.Count)
+            if (counter + 1 < enterStrArr.Count)
             {
-                int columnIndexOfNextVal = GetColumnIndexFromValue(chain[counter + 1]);
+                int columnIndexOfNextVal = GetColumnIndexFromValue(enterStrArr[counter + 1]);
                 string nextValueOfColumn = MakeStringFromList(resultTable[counter].value[columnIndexOfNextVal].valueOfColumn);
                 if ((nextValueOfColumn == "RETURN")
                     || (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN"))
