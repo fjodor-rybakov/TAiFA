@@ -16,7 +16,7 @@ namespace Compiler
 		{
             RulesReader rulesReaeder = new RulesReader();
             SLR.Slr slr = new SLR.Slr(rulesReaeder.GetRules());
-            slr.SyntexAnalyze();
+            slr.GetTable();
             Console.ReadLine();
 		}
 	}
