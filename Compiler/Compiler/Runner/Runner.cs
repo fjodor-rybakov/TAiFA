@@ -1,10 +1,8 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
-using System.Text;
 
-namespace Runner
+namespace Compiler.Runner
 {
     struct Value
     {
