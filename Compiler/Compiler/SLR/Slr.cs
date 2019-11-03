@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SLR
+namespace Compiler.SLR
 {
-
     struct Response
     {
         public string key;
@@ -25,6 +24,12 @@ namespace SLR
 
     }
 
+    struct ReturnData
+    {
+        public List<Dictionary<string, List<string>>> rules;
+        public List<Table> resultTable;
+    }
+
     class Slr
     {
         List<string> _identifiers = new List<string>();
@@ -37,13 +42,17 @@ namespace SLR
             _rules = rules;
         }
 
-        public void SyntexAnalyze()
+        public ReturnData GetTable()
         {
             AddIdentifiers();
             FillResultTable();
-            ShowResultTable();
+            //ShowResultTable(); откомментировать, если хочешь увидеть таблицу.
+            ReturnData returnData = new ReturnData();
+            returnData.resultTable = _resultTable;
+            returnData.rules = _rules;
+            return returnData;
         }
-        
+
         private void FillResultTable()
         {
             DoFirstIteration();
@@ -88,18 +97,18 @@ namespace SLR
                                 _resultTable.Add(table);
                             }
                         }
-                }
+                    }
                 });
 
-                if (i+1 < _resultTable.Count)
+                if (i + 1 < _resultTable.Count)
                 {
                     var values = GetEmptyColumns();
 
-                    _resultTable[i+1].key.ForEach(key => {
+                    _resultTable[i + 1].key.ForEach(key => {
                         int k = -1;
                         int l = -1;
-                        Int32.TryParse(key.Split(':')[1], out k);
-                        Int32.TryParse(key.Split(':')[2], out l);
+                        int.TryParse(key.Split(':')[1], out k);
+                        int.TryParse(key.Split(':')[2], out l);
                         var elem = GetElementOfRule(k, l);
 
                         if (elem.isLast)
@@ -123,7 +132,7 @@ namespace SLR
 
                     _resultTable[i + 1].value.Clear();
                     _resultTable[i + 1].value.AddRange(values);
-                    
+
                 }
 
                 i++;
@@ -154,12 +163,12 @@ namespace SLR
         {
             List<Response> responses = new List<Response>();
 
-            for(int i = 0; i < _rules.Count; i++)
+            for (int i = 0; i < _rules.Count; i++)
             {
                 int j = 0;
                 Response elem = GetElementOfRule(i, j);
 
-                while(elem.value != "-1")
+                while (elem.value != "-1")
                 {
                     if (elem.value == key.key && !elem.isLast)
                     {
@@ -178,7 +187,7 @@ namespace SLR
                     }
 
                     j++;
-                    elem = GetElementOfRule(i, j); 
+                    elem = GetElementOfRule(i, j);
                 }
             }
 
@@ -189,16 +198,29 @@ namespace SLR
         {
             string key = "";
             List<Value> values = new List<Value>();
+            List<Value> mainValues = new List<Value>();
+            values = GetEmptyColumns();
 
             for (int i = 0; i < _rules.Count; i++)
             {
                 var elem = GetElementOfRule(i, 0);
                 key = elem.key;
 
-                values = GetEmptyColumns();
                 ToProcessElementFirstIt(i, 0, elem, ref values);
 
-                if (GetElementOfRule(i+1, 0).key != elem.key || GetElementOfRule(i + 1, 0).value == "-1")
+
+                mainValues.ForEach(main =>
+                {
+                    values.ForEach(val =>
+                    {
+                        if (main.columnOfTable == val.columnOfTable)
+                        {
+                            main.valueOfColumn.AddRange(val.valueOfColumn);
+                        }
+                    });
+                });
+
+                if (GetElementOfRule(i + 1, 0).key != elem.key || GetElementOfRule(i + 1, 0).value == "-1")
                 {
                     break;
                 }
@@ -210,8 +232,8 @@ namespace SLR
             row.value = values;
             _resultTable.Add(row);
 
-        } 
-        
+        }
+
         private bool AddValueToColumn(ref List<Value> values, string key, string value)
         {
             for (int i = 0; i < values.Count; i++)
@@ -236,7 +258,7 @@ namespace SLR
 
         private void ToProcessElementFirstIt(int i, int j, Response elem, ref List<Value> columns)
         {
-            
+
             if (IsTerminal(elem.value))
             {
                 AddValueToColumn(ref columns, elem.value, elem.value + ":" + i + ":" + j);
@@ -265,38 +287,38 @@ namespace SLR
                 }
             }
         }
-        
+
         private List<string> GetAllNotTerminalId(string notTerminal, List<string> listOfNeterminals, int count)
         {
             List<string> notTerminals = new List<string>(listOfNeterminals);
             List<string> tempNotTerminals = new List<string>(listOfNeterminals);
 
             for (int i = 0; i < _rules.Count; i++)
+            {
+                var elem = GetElementOfRule(i, 0);
+                if (elem.key == notTerminal)
+                {
+                    if (!IsTerminal(elem.value) && !tempNotTerminals.Contains(elem.value))
+                    {
+                        tempNotTerminals.Add(elem.value);
+                        notTerminals.Add(elem.value);
+                    }
+                }
+            }
+
+            notTerminals.ForEach(x => {
+                for (int i = 0; i < _rules.Count; i++)
                 {
                     var elem = GetElementOfRule(i, 0);
-                    if (elem.key == notTerminal)
+                    if (elem.key == x)
                     {
                         if (!IsTerminal(elem.value) && !tempNotTerminals.Contains(elem.value))
                         {
                             tempNotTerminals.Add(elem.value);
-                            notTerminals.Add(elem.value);
                         }
                     }
                 }
-
-                notTerminals.ForEach(x => {
-                    for (int i = 0; i < _rules.Count; i++)
-                    {
-                        var elem = GetElementOfRule(i, 0);
-                        if (elem.key == x)
-                        {
-                            if (!IsTerminal(elem.value) && !tempNotTerminals.Contains(elem.value))
-                            {
-                                tempNotTerminals.Add(elem.value);
-                            }
-                        }
-                    }
-                });
+            });
 
             if (count == tempNotTerminals.Count)
             {
@@ -313,7 +335,7 @@ namespace SLR
         private Response GetElementOfRule(int i, int j)
         {
             List<string> elements = new List<string>();
-            
+
             Response response = new Response();
             response.value = "-1";
 
@@ -325,7 +347,7 @@ namespace SLR
             var rule = _rules[i];
             var keys = rule.Keys;
 
-            foreach(var key in keys)
+            foreach (var key in keys)
             {
                 response.key = key;
                 rule.TryGetValue(key, out elements);
@@ -353,7 +375,7 @@ namespace SLR
         {
             List<Value> values = new List<Value>();
 
-            foreach(var id in _identifiers)
+            foreach (var id in _identifiers)
             {
                 Value value = new Value();
                 value.columnOfTable = id;
@@ -368,7 +390,7 @@ namespace SLR
         {
             _resultTable.ForEach(row => {
                 string stringKey = "";
-                row.key.ForEach(x => { stringKey = "( "+ stringKey + x + " ) ";});
+                row.key.ForEach(x => { stringKey = "( " + stringKey + x + " ) "; });
                 Console.WriteLine(stringKey + ":");
 
                 row.value.ForEach(x =>

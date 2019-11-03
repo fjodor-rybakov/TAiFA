@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SLR
+namespace Compiler.SLR
 {
-    class DirSetFinder
+    class RulesReader
     {
-
         private const string PATH_RULES = @"../../../files/dirSetRules.txt";
         private List<Dictionary<string, List<string>>> _rules = new List<Dictionary<string, List<String>>>();
-       
+
         public List<Dictionary<string, List<string>>> GetRules()
         {
             ReadRules();
@@ -35,14 +34,14 @@ namespace SLR
                 var words = parts[1].Split(' ');
                 List<string> wordsList = new List<string>();
 
-                foreach(var word in words)
+                foreach (var word in words)
                 {
                     wordsList.Add(word);
                 }
 
                 Dictionary<string, List<string>> newDict = new Dictionary<string, List<string>>();
                 newDict.Add(leftPart, wordsList);
-                
+
                 _rules.Add(newDict);
             }
         }
