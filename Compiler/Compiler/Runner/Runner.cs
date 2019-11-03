@@ -55,7 +55,7 @@ namespace Runner
             {
                 if (enterChain.Count != 0)
                 {
-                    firstElement = MakeStringFromList(resultTable[GetSafeKeyIndexFromTableWith(enterChain.Peek())].value[GetColumnIndexFromValue(chain[counter])]);
+                    firstElement = MakeStringFromList(resultTable[GetSafeKeyIndexFromTableWith(enterChain.Peek())].value[GetColumnIndexFromValue(chain[counter])].valueOfColumn);
                 }
                 else
                 {
@@ -67,7 +67,7 @@ namespace Runner
             }
             else
             {
-                firstElement = MakeStringFromList(resultTable[counter].value[GetColumnIndexFromValue(chain[counter])]);
+                firstElement = MakeStringFromList(resultTable[counter].value[GetColumnIndexFromValue(chain[counter])].valueOfColumn);
                 firstEnter = false;
             }
 
