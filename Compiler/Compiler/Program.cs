@@ -13,24 +13,7 @@ namespace Compiler
 		
 		public static void Main()
 		{
-			var reader = new StreamReader(PATH_DATA);
-			var lexer = new Lexer.Lexer(PATH_IDENTIFICATOR, PATH_NUMBER10, PATH_NUMBER2816);
-			
-			//var generator = new Generator.Generator();
-
-			var finder = new DirSetFinder();
-			finder.Find();
-			/*string line;
-			while ((line = reader.ReadLine()) != null)
-			{
-				var lexerInfo = lexer.GetLexerInfo(line);
-				foreach (var item in lexerInfo)
-				{
-					Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
-				}
-				var recDown = new RecDown.RecDown(lexerInfo);
-				Console.WriteLine("Var is valid: " + recDown.CheckVar());
-			}*/
+            Console.ReadLine();
 		}
 	}
 }
