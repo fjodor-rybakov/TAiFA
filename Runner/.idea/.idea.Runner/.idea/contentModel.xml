@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Taifa\Runner" t="IncludeRecursive">
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive">
+        <e p="Debug" t="Include">
+          <e p="netcoreapp3.0" t="Include">
+            <e p="Runner.AssemblyInfo.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Program.cs" t="Include" />
+      <e p="Runner" t="Include">
+        <e p="obj" t="Include">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.0" t="Include">
+              <e p="Runner.assets.cache" t="Include" />
+              <e p="Runner.csproj.FileListAbsolute.txt" t="Include" />
+            </e>
+          </e>
+          <e p="project.assets.json" t="Include" />
+          <e p="Release" t="Include">
+            <e p="netcoreapp3.0" t="Include">
+              <e p="Runner.AssemblyInfo.cs" t="Include" />
+              <e p="Runner.AssemblyInfoInputs.cache" t="Include" />
+              <e p="Runner.assets.cache" t="Include" />
+              <e p="Runner.csprojAssemblyReference.cache" t="Include" />
+            </e>
+          </e>
+          <e p="Runner.csproj.nuget.cache" t="Include" />
+          <e p="Runner.csproj.nuget.dgspec.json" t="Include" />
+          <e p="Runner.csproj.nuget.g.props" t="Include" />
+          <e p="Runner.csproj.nuget.g.targets" t="Include" />
+        </e>
+        <e p="Program.cs" t="Include" />
+      </e>
+      <e p="Runner.cs" t="Include" />
+      <e p="Runner.csproj" t="IncludeRecursive" />
+      <e p="Runner.sln" t="IncludeFlat" />
+    </e>
+    <e p="C:\Users\mrtsa\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_Runner.1814768652.00" t="ExcludeRecursive" />
+  </component>
+</project>
