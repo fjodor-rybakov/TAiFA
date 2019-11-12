@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Compiler.Lexer;
 using Compiler.SLR;
 
 namespace Compiler
@@ -14,7 +15,7 @@ namespace Compiler
 		
 		public static void Main()
 		{
-			MakeLexer();
+			var lexerData = MakeLexer();
 			
             var rulesReader = new RulesReader();
             var slr = new Slr(rulesReader.GetRules());
@@ -23,21 +24,24 @@ namespace Compiler
             Console.ReadLine();
 		}
 
-		private static void MakeLexer()
+		private static IEnumerable<LexerInfo> MakeLexer()
 		{
 			var reader = new StreamReader(PATH_DATA);
 			var lexer = new Lexer.Lexer(PATH_IDENTIFICATOR, PATH_NUMBER10, PATH_NUMBER2816);
 			string line;
+			var lexerData = new List<LexerInfo>();
 			while ((line = reader.ReadLine()) != null)
 			{
 				var lexerInfo = lexer.GetLexerInfo(line);
 				foreach (var item in lexerInfo)
 				{
 					Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
+					lexerData.Add(item);
 				}
-				var recDown = new RecDown.RecDown(lexerInfo);
-				Console.WriteLine("Var is valid: " + recDown.CheckVar());
+				/*var recDown = new RecDown.RecDown(lexerInfo);
+				Console.WriteLine("Var is valid: " + recDown.CheckVar());*/
 			}
+			return lexerData;
 		}
 
 		private static void MakeAndLaunchRunner(List<Dictionary<string, List<string>>> rules, List<Table> resultTable)
