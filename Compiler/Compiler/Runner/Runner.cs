@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Compiler.SLR;
+using Compiler.Lexer;
 
 namespace Compiler.Runner
 {
@@ -20,7 +21,7 @@ namespace Compiler.Runner
 
         public bool? isSuccessfullyEnded = null;
         public List<Dictionary<string, List<string>>> rules;
-        public List<string> enterStrArr;
+        public List<LexerInfo> lexerData;
 
         //init
         public Runner(List<Dictionary<string, List<string>>> _rules) //правила берем из slr, они там уже есть.
@@ -30,17 +31,15 @@ namespace Compiler.Runner
 
         //входная цепочка может состоять из подстрок и разделяется пробелами.
         //например: "abc" => "a b c d,e" |  "lot fok top lol,ik"
-        public bool Convolution(List<Table> table, string enterString) //return true if success.
+        public void Convolution(List<Table> table, List<LexerInfo> lexerChainData) //return true if success.
         {
             resultTable = table;
-            List<string> enterStrArr = new List<string> (enterString.Split(' '));
+            lexerData = lexerChainData;
             
-            ProcessChain(enterStrArr);
-            
-            return true;
+            ProcessChain();
         }
 
-        void ProcessChain(List<string> chain)
+        void ProcessChain()
         {
             int counter = 0;
             string firstElement = "";
@@ -48,7 +47,7 @@ namespace Compiler.Runner
             {
                 if (enterChain.Count != 0)
                 {
-                    firstElement = MakeStringFromList(resultTable[GetSafeKeyIndexFromTableWith(enterChain.Peek())].value[GetColumnIndexFromValue(chain[counter])].valueOfColumn);
+                    firstElement = MakeStringFromList(resultTable[GetSafeKeyIndexFromTableWith(enterChain.Peek())].value[GetColumnIndexFromValue(lexerData[counter].Value)].valueOfColumn);
                 }
                 else
                 {
@@ -60,14 +59,16 @@ namespace Compiler.Runner
             }
             else
             {
-                firstElement = MakeStringFromList(resultTable[counter].value[GetColumnIndexFromValue(chain[counter])].valueOfColumn);
+                int valIndex = GetColumnIndexFromValue(lexerData[counter].Value);
+                var value = resultTable[counter].value[valIndex].valueOfColumn;
+                firstElement = MakeStringFromList(value);
                 firstEnter = false;
             }
 
             if (firstElement == "")
             {
                 //fatalErr
-                Console.WriteLine("\n--- [Fatal Error]: Element \"", chain[counter], "\" not found.\n");
+                Console.WriteLine("\n--- [Fatal Error]: Element \"", lexerData[counter].Value, "\" not found.\n");
                 isSuccessfullyEnded = false;
                 return;
             }
@@ -134,9 +135,9 @@ namespace Compiler.Runner
 
         void RecursiveAnalizingForChainWith(int counter)
         {
-            if (counter + 1 < enterStrArr.Count)
+            if (counter + 1 < lexerData.Count)
             {
-                int columnIndexOfNextVal = GetColumnIndexFromValue(enterStrArr[counter + 1]);
+                int columnIndexOfNextVal = GetColumnIndexFromValue(lexerData[counter + 1].Value);
                 string nextValueOfColumn = MakeStringFromList(resultTable[counter].value[columnIndexOfNextVal].valueOfColumn);
                 if ((nextValueOfColumn == "RETURN")
                     || (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN"))
@@ -203,9 +204,9 @@ namespace Compiler.Runner
 
         void RebuildAndCheckChain(string key, int countElementsInRule)
         {
-            enterStrArr.RemoveRange(0, countElementsInRule);
-            enterStrArr.Insert(0, key);
-            if ((enterStrArr.Count == 1) && (enterChain.Count == 0))
+            lexerData.RemoveRange(0, countElementsInRule);
+            lexerData.Insert(0, new LexerInfo(key, "?", false));
+            if ((lexerData.Count == 1) && (enterChain.Count == 0))
             {
                 //finish
                 Console.WriteLine("Свертка завершена успешно. Начальный элемент: ", key);
@@ -214,7 +215,7 @@ namespace Compiler.Runner
             }
             else
             {
-                ProcessChain(enterStrArr);
+                ProcessChain();
             }
         }
     }

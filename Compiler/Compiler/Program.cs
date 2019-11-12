@@ -20,11 +20,11 @@ namespace Compiler
             var rulesReader = new RulesReader();
             var slr = new Slr(rulesReader.GetRules());
             var table = slr.GetTable();
-            MakeAndLaunchRunner(table.rules, table.resultTable);
+            MakeAndLaunchRunner(table.rules, table.resultTable, lexerData);
             Console.ReadLine();
 		}
 
-		private static IEnumerable<LexerInfo> MakeLexer()
+		private static List<LexerInfo> MakeLexer()
 		{
 			var reader = new StreamReader(PATH_DATA);
 			var lexer = new Lexer.Lexer(PATH_IDENTIFICATOR, PATH_NUMBER10, PATH_NUMBER2816);
@@ -44,25 +44,16 @@ namespace Compiler
 			return lexerData;
 		}
 
-		private static void MakeAndLaunchRunner(List<Dictionary<string, List<string>>> rules, List<Table> resultTable)
+		private static void MakeAndLaunchRunner(List<Dictionary<string, List<string>>> rules, List<Table> resultTable, List<LexerInfo> lexerData)
 		{
-			string enterString = Console.ReadLine();
-			if (enterString != "")
-			{
-				var runner = new Runner.Runner(rules); // при инициализации бегунка передаем правила из SLR.
-				runner.Convolution(resultTable, enterString);
-				while (runner.isSuccessfullyEnded == null)
-				{//не совсем уверен в том, что это не тормозит выполнение работы в бегунке. В случае, если тормозит, то можно оставить блок просто пустым.
-					System.Threading.Thread.Sleep(300);
-				}
-				bool runnerResult = runner.isSuccessfullyEnded ?? default(bool);
-				//следуем дальнейшей логике...
+			var runner = new Runner.Runner(rules); // при инициализации бегунка передаем правила из SLR.
+			runner.Convolution(resultTable, lexerData);
+			while (runner.isSuccessfullyEnded == null)
+			{//не совсем уверен в том, что это не тормозит выполнение работы в бегунке. В случае, если тормозит, то можно оставить блок просто пустым.
+				System.Threading.Thread.Sleep(300);
 			}
-			else
-			{
-				Console.WriteLine("Входная строка пуста. Повторите ввод: ");
-				MakeAndLaunchRunner(rules, resultTable);
-			}
+			bool runnerResult = runner.isSuccessfullyEnded ?? default(bool);
+			//следуем дальнейшей логике...
 		}
 
 	}
