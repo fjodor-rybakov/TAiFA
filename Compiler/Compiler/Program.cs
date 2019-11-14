@@ -38,8 +38,6 @@ namespace Compiler
 					Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
 					lexerData.Add(item);
 				}
-				/*var recDown = new RecDown.RecDown(lexerInfo);
-				Console.WriteLine("Var is valid: " + recDown.CheckVar());*/
 			}
 			return lexerData;
 		}
