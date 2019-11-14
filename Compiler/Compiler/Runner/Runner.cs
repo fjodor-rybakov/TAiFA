@@ -6,12 +6,6 @@ using Compiler.Lexer;
 
 namespace Compiler.Runner
 {
-    struct Value
-    {
-        public string columnOfTable; // элемент сверху
-        public List<string> valueOfColumn; // значения этого элменета
-    }
-
     class Runner
     {
         private string strSeparator = ",";
@@ -52,15 +46,19 @@ namespace Compiler.Runner
                 else
                 {
                     //fatalErr
-                    Console.WriteLine("\n--- [Fatal Error]: Enter Chain is Empty!\n");
-                    isSuccessfullyEnded = false;
+                    PrintEndOfProgram("\n--- [Fatal Error]: Enter Chain is Empty!\n", false);
                     return;
                 }
             }
             else
             {
-               
                 int valIndex = GetColumnIndexFromValue(lexerData[counter].Value);
+                if (valIndex == -1)
+                {
+                    //fatalErr
+                    PrintEndOfProgram("\n--- [Fatal Error]: valIndex == -1 (not exist). For value: " + lexerData[counter].Value + ";\n", false);
+                    return;
+                }
                 var value = resultTable[counter].value[valIndex].valueOfColumn;
                 firstElement = MakeStringFromList(value);
                 firstEnter = false;
@@ -69,8 +67,7 @@ namespace Compiler.Runner
             if (firstElement == "")
             {
                 //fatalErr
-                Console.WriteLine("\n--- [Fatal Error]: Element \"", lexerData[counter].Value, "\" not found.\n");
-                isSuccessfullyEnded = false;
+                PrintEndOfProgram("\n--- [Fatal Error]: Element \"" + lexerData[counter].Value + "\" not found.\n", false);
                 return;
             }
             enterChain.Push(firstElement);
@@ -116,10 +113,13 @@ namespace Compiler.Runner
             int counter = 0;
             while (resultTable[0].value[counter].columnOfTable != value)
             {
-                Console.WriteLine();
-                if (resultTable.Count > (counter + 1)) { counter++; }
+                /*string str = resultTable[0].value[counter].columnOfTable + " != " + value;
+                Console.WriteLine(str);*/
+                if (resultTable[0].value.Count > (counter + 1)) { counter++; }
                 else { return -1; }
             }
+            /*string equalValues = "------EQUAL------ " + resultTable[0].value[counter].columnOfTable + " == " + value;
+            Console.WriteLine(equalValues);*/
             return counter;
         }
 
@@ -140,6 +140,12 @@ namespace Compiler.Runner
             if (counter + 1 < lexerData.Count)
             {
                 int columnIndexOfNextVal = GetColumnIndexFromValue(lexerData[counter + 1].Value);
+                if (columnIndexOfNextVal == -1)
+                {
+                    //fatalErr
+                    PrintEndOfProgram("\n--- [Fatal Error]: columnIndexOfNextVal == -1 (not exist). For value: " + lexerData[counter + 1].Value + ";\n", false);
+                    return;
+                }
                 string nextValueOfColumn = MakeStringFromList(resultTable[counter].value[columnIndexOfNextVal].valueOfColumn);
                 if ((nextValueOfColumn == "RETURN")
                     || (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN"))
@@ -152,8 +158,7 @@ namespace Compiler.Runner
                     if (indexOfSafeKey == -1) //Проверяем, есть ли такой элемент в ключах таблицы
                     {
                         //fatalErr
-                        Console.WriteLine("\n--- [Fatal Error]: indexOfSafeKey == -1 (not exist). For value: ", nextValueOfColumn, ";\n");
-                        isSuccessfullyEnded = false;
+                        PrintEndOfProgram("\n--- [Fatal Error]: indexOfSafeKey == -1 (not exist). For value: " + nextValueOfColumn + ";\n", false);
                         return;
                     }
                     enterChain.Push(nextValueOfColumn);
@@ -162,8 +167,7 @@ namespace Compiler.Runner
                 else
                 {
                     //fatalErr
-                    Console.WriteLine("\n--- [Fatal Error]: nextValueOfColumn is NULL(\"\"). Index of next val = ", columnIndexOfNextVal, ";\n");
-                    isSuccessfullyEnded = false;
+                    PrintEndOfProgram("\n--- [Fatal Error]: nextValueOfColumn is NULL(\"\"). Index of next val = " + columnIndexOfNextVal + ";\n", false);
                     return;
                 }
             }
@@ -175,8 +179,7 @@ namespace Compiler.Runner
             else
             {
                 //fatalErr
-                Console.WriteLine("\n--- [Fatal Error]: Last element: \"", resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn, "\" != RETURN.\n");
-                isSuccessfullyEnded = false;
+                PrintEndOfProgram("\n--- [Fatal Error]: Last element: \"" + resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn + "\" != RETURN.\n", false);
                 return;
             }
         }
@@ -195,8 +198,7 @@ namespace Compiler.Runner
                 else
                 {
                     //fatalErr
-                    Console.WriteLine("\n--- [Fatal Error]: Clear Key: ", GetClearKey(enterChain.Peek()), " - not conform to rule. Rule element: ", rule[i], "; in rule ", numberOfRule, "; \n");
-                    isSuccessfullyEnded = false;
+                    PrintEndOfProgram("\n--- [Fatal Error]: Clear Key: " + GetClearKey(enterChain.Peek()) + " - not conform to rule. Rule element: " + rule[i] + "; in rule " + numberOfRule + "; \n", false);
                     return;
                 }
             }
@@ -211,14 +213,19 @@ namespace Compiler.Runner
             if ((lexerData.Count == 1) && (enterChain.Count == 0))
             {
                 //finish
-                Console.WriteLine("Свертка завершена успешно. Начальный элемент: ", key);
-                isSuccessfullyEnded = true;
+                PrintEndOfProgram("Свертка завершена успешно. Начальный элемент: " + key, true);
                 return;
             }
             else
             {
                 ProcessChain();
             }
+        }
+
+        void PrintEndOfProgram(string text, bool success)
+        {
+            Console.WriteLine(text);
+            isSuccessfullyEnded = success;
         }
     }
 }
