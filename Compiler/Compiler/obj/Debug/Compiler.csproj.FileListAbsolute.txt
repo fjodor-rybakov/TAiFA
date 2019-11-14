@@ -13,7 +13,6 @@ F:\rep\TAiFA\Compiler\Compiler\bin\Debug\Compiler.exe.config
 F:\rep\TAiFA\Compiler\Compiler\bin\Debug\Compiler.exe
 F:\rep\TAiFA\Compiler\Compiler\bin\Debug\Compiler.pdb
 F:\rep\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cache
-F:\rep\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csproj.CoreCompileInputs.cache
 F:\rep\TAiFA\Compiler\Compiler\obj\Debug\Compiler.exe
 F:\rep\TAiFA\Compiler\Compiler\obj\Debug\Compiler.pdb
 C:\projects\TAiFA\Compiler\Compiler\obj\Debug\Compiler.exe
