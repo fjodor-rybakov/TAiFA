@@ -59,6 +59,7 @@ namespace Compiler.Runner
             }
             else
             {
+               
                 int valIndex = GetColumnIndexFromValue(lexerData[counter].Value);
                 var value = resultTable[counter].value[valIndex].valueOfColumn;
                 firstElement = MakeStringFromList(value);
@@ -115,6 +116,7 @@ namespace Compiler.Runner
             int counter = 0;
             while (resultTable[0].value[counter].columnOfTable != value)
             {
+                Console.WriteLine();
                 if (resultTable.Count > (counter + 1)) { counter++; }
                 else { return -1; }
             }

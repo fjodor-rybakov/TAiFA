@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Compiler.SLR
 {
@@ -388,6 +389,7 @@ namespace Compiler.SLR
 
         private void ShowResultTable()
         {
+            var writer = new StreamWriter("test.txt");
             _resultTable.ForEach(row => {
                 string stringKey = "";
                 row.key.ForEach(x => { stringKey = "( " + stringKey + x + " ) "; });

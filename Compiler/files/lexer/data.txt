@@ -1,1 +1,1 @@
-PROGRAM name
+program name
