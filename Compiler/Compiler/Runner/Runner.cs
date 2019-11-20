@@ -102,6 +102,8 @@ namespace Compiler.Runner
             int counter = 0;
             while (!(MakeStringFromList(resultTable[counter].key) == value))
             {
+                string  str = MakeStringFromList(resultTable[counter].key);
+                Console.WriteLine("key = " + str + "; value = " + value + ";\n");
                 if (resultTable.Count > (counter + 1)) { counter++; }
                 else { return -1; }
             }
@@ -113,8 +115,8 @@ namespace Compiler.Runner
             int counter = 0;
             while (resultTable[0].value[counter].columnOfTable != value)
             {
-                /*string str = resultTable[0].value[counter].columnOfTable + " != " + value;
-                Console.WriteLine(str);*/
+                string str = resultTable[0].value[counter].columnOfTable + " != " + value;
+                Console.WriteLine(str);
                 if (resultTable[0].value.Count > (counter + 1)) { counter++; }
                 else { return -1; }
             }
@@ -139,7 +141,20 @@ namespace Compiler.Runner
         {
             if (counter + 1 < lexerData.Count)
             {
-                int columnIndexOfNextVal = GetColumnIndexFromValue(lexerData[counter + 1].Value);
+                int columnIndexOfNextVal = -1;
+                string word = "";
+                if (!(lexerData[counter + 1].IsReserve) && (lexerData[counter + 1].Type == "IDENTIFICATOR"))
+                {
+                    word = "identifier";
+                    Console.WriteLine("val is " + lexerData[counter + 1].Value);
+                    columnIndexOfNextVal = GetColumnIndexFromValue(word);
+                }
+                else
+                {
+                    word = lexerData[counter + 1].Value;
+                    columnIndexOfNextVal = GetColumnIndexFromValue(word);
+                }
+                
                 if (columnIndexOfNextVal == -1)
                 {
                     //fatalErr
@@ -147,8 +162,7 @@ namespace Compiler.Runner
                     return;
                 }
                 string nextValueOfColumn = MakeStringFromList(resultTable[counter].value[columnIndexOfNextVal].valueOfColumn);
-                if ((nextValueOfColumn == "RETURN")
-                    || (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN"))
+                if (nextValueOfColumn == "RETURN")
                 {
                     TryToConvolutionInRule(GetNumberOfRule(enterChain.Peek()));
                 }
@@ -167,20 +181,14 @@ namespace Compiler.Runner
                 else
                 {
                     //fatalErr
-                    PrintEndOfProgram("\n--- [Fatal Error]: nextValueOfColumn is NULL(\"\"). Index of next val = " + columnIndexOfNextVal + ";\n", false);
+                    PrintEndOfProgram("\n--- [Fatal Error]: nextValueOfColumn is NULL(\"\"). Index of next val = " + columnIndexOfNextVal + ";\n word is " + word + ";\n", false);
                     return;
                 }
             }
-            else if (MakeStringFromList(resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn) == "RETURN") //подумать над концовкой
+            else
             {
                 Console.WriteLine("Найден конец цепочки...");
                 TryToConvolutionInRule(GetNumberOfRule(enterChain.Peek()));
-            }
-            else
-            {
-                //fatalErr
-                PrintEndOfProgram("\n--- [Fatal Error]: Last element: \"" + resultTable[counter].value[resultTable[counter].value.Count].valueOfColumn + "\" != RETURN.\n", false);
-                return;
             }
         }
 
@@ -208,6 +216,12 @@ namespace Compiler.Runner
 
         void RebuildAndCheckChain(string key, int countElementsInRule)
         {
+            if (lexerData.Count <= countElementsInRule)
+            {
+                //fatalErr
+                PrintEndOfProgram("\n--- [Fatal Error]: Недостаточно элементов для свертки в правило.\n", false);
+                return;
+            }
             lexerData.RemoveRange(0, countElementsInRule);
             lexerData.Insert(0, new LexerInfo(key, "?", false));
             if ((lexerData.Count == 1) && (enterChain.Count == 0))
