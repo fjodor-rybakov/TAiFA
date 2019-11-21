@@ -10,7 +10,7 @@ namespace Compiler.Lexer
         public const string DECIMAL = "decimal";
         public const string UNKNOWN = "unknwon";
         public const string OPERATION = "operator";
-        public const string DELIMITER = "delimetrs";
+        public const string DELIMITER = "delimetr";
 
         public const string INT = "int";
         public const string STRING = "string";
