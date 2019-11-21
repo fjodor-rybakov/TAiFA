@@ -41,7 +41,9 @@ namespace Compiler.Runner
             {
                 if (enterChain.Count != 0)
                 {
-                    firstElement = MakeStringFromList(resultTable[GetSafeKeyIndexFromTableWith(enterChain.Peek())].value[GetColumnIndexFromValue(lexerData[counter].Value)].valueOfColumn);
+                    int tableStrIndex = GetSafeKeyIndexFromTableWith(enterChain.Peek());
+                    int columnValueIndex = GetColumnIndexFromValue(lexerData[counter].Value);
+                    firstElement = MakeStringFromList(resultTable[tableStrIndex].value[columnValueIndex].valueOfColumn);
                 }
                 else
                 {
@@ -124,8 +126,8 @@ namespace Compiler.Runner
                 if (resultTable[0].value.Count > (counter + 1)) { counter++; }
                 else { return -1; }
             }
-            /*string equalValues = "------EQUAL------ " + resultTable[0].value[counter].columnOfTable + " == " + value;
-            Console.WriteLine(equalValues);*/
+            string equalValues = "------EQUAL------ " + resultTable[0].value[counter].columnOfTable + " == " + value;
+            Console.WriteLine(equalValues);
             return counter;
         }
 
@@ -204,7 +206,7 @@ namespace Compiler.Runner
                     return;
                 }
             }
-            
+            Console.WriteLine(" |||| Свертка по правилу №" + numberOfRule + "; Rule Key: " + key + ";\n");
             RebuildAndCheckChain(key, rule.Count);
         }
 
