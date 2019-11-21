@@ -16,7 +16,7 @@ namespace Compiler.Runner
         public bool? isSuccessfullyEnded = null;
         public List<Dictionary<string, List<string>>> rules;
         public List<LexerInfo> lexerData;
-
+        int commonCounter = 0;
         //init
         public Runner(List<Dictionary<string, List<string>>> _rules) //правила берем из slr, они там уже есть.
         {
@@ -35,14 +35,14 @@ namespace Compiler.Runner
 
         void ProcessChain()
         {
-            int counter = 0;
             string firstElement = "";
             if (!firstEnter)
             {
                 if (enterChain.Count != 0)
                 {
                     int tableStrIndex = GetSafeKeyIndexFromTableWith(enterChain.Peek());
-                    int columnValueIndex = GetColumnIndexFromValue(lexerData[counter].Value);
+                    Console.WriteLine(enterChain.Peek());
+                    int columnValueIndex = GetColumnIndexFromValue(lexerData[commonCounter].Value);
                     firstElement = MakeStringFromList(resultTable[tableStrIndex].value[columnValueIndex].valueOfColumn);
                 }
                 else
@@ -54,16 +54,16 @@ namespace Compiler.Runner
             }
             else
             {
-                string word = (!lexerData[counter].IsReserve && (lexerData[counter].Type == "identifier")) ? lexerData[counter].Type : lexerData[counter].Value;
-                Console.WriteLine("value is " + lexerData[counter].Value);
+                string word = (!lexerData[commonCounter].IsReserve && (lexerData[commonCounter].Type == "identifier")) ? lexerData[commonCounter].Type : lexerData[commonCounter].Value;
+                Console.WriteLine("value is " + lexerData[commonCounter].Value);
                 int columnIndexOfNextVal = GetColumnIndexFromValue(word);
                 if (columnIndexOfNextVal == -1)
                 {
                     //fatalErr
-                    PrintEndOfProgram("\n--- [Fatal Error]: valIndex == -1 (not exist). For value: " + lexerData[counter].Value + ";\n", false);
+                    PrintEndOfProgram("\n--- [Fatal Error]: valIndex == -1 (not exist). For value: " + lexerData[commonCounter].Value + ";\n", false);
                     return;
                 }
-                var value = resultTable[counter].value[columnIndexOfNextVal].valueOfColumn;
+                var value = resultTable[commonCounter].value[columnIndexOfNextVal].valueOfColumn;
                 firstElement = MakeStringFromList(value);
                 firstEnter = false;
             }
@@ -71,11 +71,11 @@ namespace Compiler.Runner
             if (firstElement == "")
             {
                 //fatalErr
-                PrintEndOfProgram("\n--- [Fatal Error]: Element \"" + lexerData[counter].Value + "\" not found.\n", false);
+                PrintEndOfProgram("\n--- [Fatal Error]: Element \"" + lexerData[commonCounter].Value + "\" not found.\n", false);
                 return;
             }
             enterChain.Push(firstElement);
-            RecursiveAnalizingForChainWith(counter);
+            RecursiveAnalizingForChainWith(commonCounter);
             return;
         }
 
