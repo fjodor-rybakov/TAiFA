@@ -8,7 +8,7 @@
 <TYPE> ->integer
 <IDLIST> ->identifier
 <IDLIST> -><IDLIST> , identifier
-<BEGIN> -><OPERLIST> end
+<BEGIN> ->begin <OPERLIST> end
 <OPERLIST> -><OPERATOR>
 <OPERLIST> -><OPERLIST> ; <OPERATOR>
 <OPERATOR> -><READ>
