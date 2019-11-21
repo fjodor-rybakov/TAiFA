@@ -21,3 +21,4 @@ C:\projects\TAiFA\Compiler\Compiler\bin\Debug\Compiler.exe
 C:\projects\TAiFA\Compiler\Compiler\bin\Debug\Compiler.pdb
 C:\projects\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cache
 C:\Taifa\Compiler\Compiler\bin\Debug\Compiler.exe.config
+C:\Taifa\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cache

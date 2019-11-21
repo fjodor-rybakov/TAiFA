@@ -52,14 +52,16 @@ namespace Compiler.Runner
             }
             else
             {
-                int valIndex = GetColumnIndexFromValue(lexerData[counter].Value);
-                if (valIndex == -1)
+                string word = lexerData[counter].IsReserve ? lexerData[counter].Value : lexerData[counter].Type;
+                Console.WriteLine("value is " + lexerData[counter].Value);
+                int columnIndexOfNextVal = GetColumnIndexFromValue(word);
+                if (columnIndexOfNextVal == -1)
                 {
                     //fatalErr
                     PrintEndOfProgram("\n--- [Fatal Error]: valIndex == -1 (not exist). For value: " + lexerData[counter].Value + ";\n", false);
                     return;
                 }
-                var value = resultTable[counter].value[valIndex].valueOfColumn;
+                var value = resultTable[counter].value[columnIndexOfNextVal].valueOfColumn;
                 firstElement = MakeStringFromList(value);
                 firstEnter = false;
             }
@@ -141,27 +143,17 @@ namespace Compiler.Runner
         {
             if (counter + 1 < lexerData.Count)
             {
-                int columnIndexOfNextVal = -1;
-                string word = "";
-                if (!(lexerData[counter + 1].IsReserve) && (lexerData[counter + 1].Type == "IDENTIFICATOR"))
-                {
-                    word = "identifier";
-                    Console.WriteLine("val is " + lexerData[counter + 1].Value);
-                    columnIndexOfNextVal = GetColumnIndexFromValue(word);
-                }
-                else
-                {
-                    word = lexerData[counter + 1].Value;
-                    columnIndexOfNextVal = GetColumnIndexFromValue(word);
-                }
-                
+                string word = lexerData[counter + 1].IsReserve ? lexerData[counter + 1].Value : lexerData[counter + 1].Type;
+                Console.WriteLine("value is " + lexerData[counter + 1].Value + "; Type is " + lexerData[counter + 1].Type);
+                int columnIndexOfNextVal = GetColumnIndexFromValue(word);
                 if (columnIndexOfNextVal == -1)
                 {
                     //fatalErr
                     PrintEndOfProgram("\n--- [Fatal Error]: columnIndexOfNextVal == -1 (not exist). For value: " + lexerData[counter + 1].Value + ";\n", false);
                     return;
                 }
-                string nextValueOfColumn = MakeStringFromList(resultTable[counter].value[columnIndexOfNextVal].valueOfColumn);
+
+                string nextValueOfColumn = MakeStringFromList(resultTable[GetSafeKeyIndexFromTableWith(enterChain.Peek())].value[columnIndexOfNextVal].valueOfColumn);
                 if (nextValueOfColumn == "RETURN")
                 {
                     TryToConvolutionInRule(GetNumberOfRule(enterChain.Peek()));
