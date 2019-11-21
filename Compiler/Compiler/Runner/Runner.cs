@@ -109,6 +109,8 @@ namespace Compiler.Runner
                 if (resultTable.Count > (counter + 1)) { counter++; }
                 else { return -1; }
             }
+            string stra = MakeStringFromList(resultTable[counter].key);
+            Console.WriteLine("+++ key = " + stra + "; value = " + value + ";\n");
             return counter;
         }
 
@@ -143,7 +145,7 @@ namespace Compiler.Runner
         {
             if (counter + 1 < lexerData.Count)
             {
-                string word = (!lexerData[counter].IsReserve && (lexerData[counter].Type == "identifier")) ? lexerData[counter].Type : lexerData[counter].Value;
+                string word = (!lexerData[counter + 1].IsReserve && (lexerData[counter + 1].Type == "identifier")) ? lexerData[counter + 1].Type : lexerData[counter + 1].Value;
                 Console.WriteLine("value is " + lexerData[counter + 1].Value + "; Type is " + lexerData[counter + 1].Type);
                 int columnIndexOfNextVal = GetColumnIndexFromValue(word);
                 if (columnIndexOfNextVal == -1)
