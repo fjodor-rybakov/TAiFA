@@ -1,4 +1,10 @@
 <PROGRAM> -><HEAD> ; <BODY> .
 <HEAD> ->program identifier
-<BODY> -><BEGIN>
+<BODY> -><VAR> ; <BEGIN>
 <BEGIN> ->begin end
+<VAR> ->var <IDLIST> : <TYPE>
+<IDLIST> ->identifier
+<IDLIST> -><IDLIST> , identifier
+<TYPE> ->char
+<TYPE> ->bool
+<TYPE> ->integer

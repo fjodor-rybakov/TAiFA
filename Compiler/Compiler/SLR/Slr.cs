@@ -108,10 +108,10 @@ namespace Compiler.SLR
                     _resultTable[i + 1].key.ForEach(key => {
                         int k = -1;
                         int l = -1;
-                        int.TryParse(key.Split(':')[1], out k);
-                        int.TryParse(key.Split(':')[2], out l);
+                        int.TryParse(key.Split('^')[1], out k);
+                        int.TryParse(key.Split('^')[2], out l);
                         var elem = GetElementOfRule(k, l);
-
+                        //Console.WriteLine(elem.key);
                         if (elem.isLast)
                         {
                             var responseList = ToAddReturnToColumns(elem);
@@ -262,11 +262,11 @@ namespace Compiler.SLR
 
             if (IsTerminal(elem.value))
             {
-                AddValueToColumn(ref columns, elem.value, elem.value + ":" + i + ":" + j);
+                AddValueToColumn(ref columns, elem.value, elem.value + "^" + i + "^" + j);
             }
             else
             {
-                AddValueToColumn(ref columns, elem.value, elem.value + ":" + i + ":" + j);
+                AddValueToColumn(ref columns, elem.value, elem.value + "^" + i + "^" + j);
                 var notTerminals = GetAllNotTerminalId(elem.value, new List<string>(), 0);
 
                 if (!notTerminals.Contains(elem.value))
@@ -282,7 +282,7 @@ namespace Compiler.SLR
 
                         if (elemR.key == notTerminals[f])
                         {
-                            AddValueToColumn(ref columns, elemR.value, elemR.value + ":" + s + ":" + 0);
+                            AddValueToColumn(ref columns, elemR.value, elemR.value + "^" + s + "^" + 0);
                         }
                     }
                 }
@@ -393,13 +393,13 @@ namespace Compiler.SLR
             _resultTable.ForEach(row => {
                 string stringKey = "";
                 row.key.ForEach(x => { stringKey = "( " + stringKey + x + " ) "; });
-                Console.WriteLine(stringKey + ":");
+                writer.WriteLine(stringKey + ":");
 
                 row.value.ForEach(x =>
                 {
-                    Console.Write("     " + x.columnOfTable + "^ ");
-                    x.valueOfColumn.ForEach(y => { Console.Write(y + " "); });
-                    Console.WriteLine();
+                    writer.Write("     " + x.columnOfTable + "^ ");
+                    x.valueOfColumn.ForEach(y => { writer.Write(y + " "); });
+                    writer.WriteLine();
                 });
 
             });

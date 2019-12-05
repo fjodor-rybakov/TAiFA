@@ -82,7 +82,7 @@ namespace Compiler.Runner
 
         string GetClearKey(string dirtyKey)
         {
-            string[] keyParams = dirtyKey.Split(':');
+            string[] keyParams = dirtyKey.Split('^');
             return keyParams[0];
         }
 
@@ -131,7 +131,7 @@ namespace Compiler.Runner
 
         int GetNumberOfRule(string key)
         {
-            string[] keyParams = key.Split(':');
+            string[] keyParams = key.Split('^');
             if (keyParams.Length > 1)
             {
                 return int.Parse(keyParams[1]);
@@ -154,8 +154,9 @@ namespace Compiler.Runner
                     PrintEndOfProgram("\n--- [Fatal Error]: columnIndexOfNextVal == -1 (not exist). For value: " + lexerData[counter + 1].Value + ";\n", false);
                     return;
                 }
+                int indexStr = GetSafeKeyIndexFromTableWith(enterChain.Peek());
+                string nextValueOfColumn = MakeStringFromList(resultTable[indexStr].value[columnIndexOfNextVal].valueOfColumn);
 
-                string nextValueOfColumn = MakeStringFromList(resultTable[GetSafeKeyIndexFromTableWith(enterChain.Peek())].value[columnIndexOfNextVal].valueOfColumn);
                 if (nextValueOfColumn == "RETURN")
                 {
                     TryToConvolutionInRule(GetNumberOfRule(enterChain.Peek()), (counter + 1));
