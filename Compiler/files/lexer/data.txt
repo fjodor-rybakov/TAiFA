@@ -1,1 +1,1 @@
-program name
+program vavalalala; var a:integer; begin end.

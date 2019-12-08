@@ -2,15 +2,15 @@ namespace Compiler.Lexer
 {
     public static class TypeLexem
     {
-        public const string IDENTIFICATOR = "IDENTIFICATOR";
+        public const string IDENTIFICATOR = "identifier";
         public const string NUMBER2 = "NUMBER2";
         public const string NUMBER8 = "NUMBER8";
-        public const string NUMBER10 = "NUMBER10";
+        public const string NUMBER10 = "integer";
         public const string NUMBER16 = "NUMBER16";
-        public const string DECIMAL = "DECIMAL";
-        public const string UNKNOWN = "UNKNOWN";
-        public const string OPERATION = "OPERATION";
-        public const string DELIMITER = "DELIMITER";
+        public const string DECIMAL = "decimal";
+        public const string UNKNOWN = "unknwon";
+        public const string OPERATION = "operator";
+        public const string DELIMITER = "delimetr";
 
         public const string INT = "int";
         public const string STRING = "string";

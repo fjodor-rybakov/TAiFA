@@ -10,11 +10,11 @@ namespace Compiler.Lexer
         private const string ERROR_MESSAGE_PARSE_COUNT_STATE = "Не удалось считать кол-во состояний";
         private const string ERROR_MESSAGE_PARSE_FINISH_STATE = "Не удалось считать финишные состояния";
         public List<AutomateData> Automates { get; }
-        public List<char> BindOptions { get; } = new List<char>{'=', '*', '/', '+', '-', '<', '>', '(', ')', '.', '{', '}', '!', '?', '&', '|'};
-        public List<char> SplitSymbols { get; } = new List<char>{',', ':', ';'};
+        public List<char> BindOptions { get; } = new List<char>{'=', '*', '/', '+', '-', '<', '>', '(', ')', '{', '}', '!', '?', '&', '|', '"'};
+        public List<char> SplitSymbols { get; } = new List<char>{',', ':', ';', '.'};
         public List<string> ReserveWords { get; } = new List<string>
         {
-            "begin", "end", "main", "number", "decimal", "string", "char", "bool", "number2", "number8", "number216", "for", "while", "if", "else", "var"
+            "begin", "end", "main", "read", "write", "writeln", "char", "bool", "integer", "for", "while", "if", "else", "var", "program"
         };
 
         public Controller(params string[] paths)
