@@ -30,14 +30,16 @@ namespace Compiler
 			var lexer = new Lexer.Lexer(PATH_IDENTIFICATOR, PATH_NUMBER10, PATH_NUMBER2816);
 			string line;
 			var lexerData = new List<LexerInfo>();
+			int numberString = 0;
 			while ((line = reader.ReadLine()) != null)
 			{
-				var lexerInfo = lexer.GetLexerInfo(line);
+				var lexerInfo = lexer.GetLexerInfo(line, numberString);
 				foreach (var item in lexerInfo)
 				{
 					Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
 					lexerData.Add(item);
 				}
+				numberString++;
 			}
 			return lexerData;
 		}
