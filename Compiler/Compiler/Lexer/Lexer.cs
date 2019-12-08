@@ -13,7 +13,7 @@ namespace Compiler.Lexer
             _controller = new Controller(paths);
         }
 
-        public List<LexerInfo> GetLexerInfo(string line)
+        public List<LexerInfo> GetLexerInfo(string line, int numberString)
         {
             Dictionary<AutomateData, List<int>> acceptAutomates = InitAcceptAutomates();
             var value = "";
@@ -28,14 +28,14 @@ namespace Compiler.Lexer
                         if (automate.Value.Count == 0) continue;
                         if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
                         var isReserve = _controller.ReserveWords.Contains(value.ToLower());
-                        lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve));
+                        lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve, numberString, index));
                     }
                     value = "";
                     acceptAutomates = InitAcceptAutomates();
                 }
                 else if (CheckOperation(ch) && index + 1 < line.Length && !char.IsNumber(line[index + 1]))
                 {
-                    lexerInfo.Add(new LexerInfo(value, TypeLexem.OPERATION, false));
+                    lexerInfo.Add(new LexerInfo(value, TypeLexem.OPERATION, false, numberString, index));
                     value = "";
                 }
                 else if (_controller.SplitSymbols.Contains(ch))
@@ -45,9 +45,9 @@ namespace Compiler.Lexer
                         if (automate.Value.Count == 0) continue;
                         if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
                         var isReserve = _controller.ReserveWords.Contains(value.ToLower());
-                        lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve));
+                        lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve, numberString, index));
                     }
-                    lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.DELIMITER, false));
+                    lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.DELIMITER, false, numberString, index));
                     value = "";
                     acceptAutomates = InitAcceptAutomates();
                 }
@@ -56,7 +56,7 @@ namespace Compiler.Lexer
                     acceptAutomates = CheckLexem(ch, acceptAutomates, value);
                     if (acceptAutomates.Count == 0)
                     {
-                        throw new Exception(line[index] + " <--------- FAIL!!!");
+                        throw new Exception($"({numberString}, {index}): " + line[index] + " <--------- FAIL!!!");
                     }
                     value += ch;
                 }
@@ -68,7 +68,7 @@ namespace Compiler.Lexer
                 if (automate.Value.Count == 0) continue;
                 if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
                 var isReserve = _controller.ReserveWords.Contains(value.ToLower());
-                lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve));
+                lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve, numberString, index));
             }
 
             return lexerInfo;

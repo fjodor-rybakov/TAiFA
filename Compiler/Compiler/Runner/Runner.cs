@@ -209,7 +209,8 @@ namespace Compiler.Runner
         void RebuildAndCheckChain(string key, int countElementsInRule)
         {
             lexerData.RemoveRange(0, countElementsInRule);
-            lexerData.Insert(0, new LexerInfo(key, "?", false));
+            // TODO 
+            lexerData.Insert(0, new LexerInfo(key, "?", false, 0 , 0));
             if ((lexerData.Count == 1) && (enterChain.Count == 0))
             {
                 //finish
