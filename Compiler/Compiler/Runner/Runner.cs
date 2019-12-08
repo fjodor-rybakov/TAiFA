@@ -219,7 +219,8 @@ namespace Compiler.Runner
                 return;
             }
             lexerData.RemoveRange(lexerCounter - countElementsInRule, countElementsInRule);
-            lexerData.Insert(lexerCounter - countElementsInRule, new LexerInfo(key, "?", false));
+            // TODO line and pos
+            lexerData.Insert(lexerCounter - countElementsInRule, new LexerInfo(key, "?", false, 0, 0));
             commonCounter = lexerCounter - countElementsInRule;
             if ((lexerData.Count == 1) && (enterChain.Count == 1))
             {
