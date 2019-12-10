@@ -73,6 +73,11 @@ namespace Compiler.SLR
             return true;
         }
 
+        private void ShowKeys()
+        {
+            _resultTable.ForEach(x => { Console.WriteLine(x.key[0]); });
+        }
+
         private void DoOtherIterations()
         {
             int i = 0;
@@ -389,20 +394,22 @@ namespace Compiler.SLR
 
         private void ShowResultTable()
         {
-            var writer = new StreamWriter("test.txt");
+            //var writer = new StreamWriter("test.txt");
+           
             _resultTable.ForEach(row => {
                 string stringKey = "";
                 row.key.ForEach(x => { stringKey = "( " + stringKey + x + " ) "; });
-                writer.WriteLine(stringKey + ":");
+                Console.WriteLine(stringKey + ":");
 
                 row.value.ForEach(x =>
                 {
-                    writer.Write("     " + x.columnOfTable + "^ ");
-                    x.valueOfColumn.ForEach(y => { writer.Write(y + " "); });
-                    writer.WriteLine();
+                    Console.Write("     " + x.columnOfTable + "^ ");
+                    x.valueOfColumn.ForEach(y => { Console.Write(y + " "); });
+                    Console.WriteLine();
                 });
 
             });
+
         }
 
         private void AddnewIdentifier(string identifier)

@@ -1,4 +1,4 @@
-<PROGRAM> -><HEAD> ; <BODY> .
+<PROGRAM> -><HEAD> ; <BODY>
 <HEAD> ->program identifier
 <BODY> -><VAR> ; <BEGIN>
 <BODY> -><BEGIN>
@@ -7,7 +7,7 @@
 <TYPE> ->integer
 <IDLIST> ->identifier
 <IDLIST> -><IDLIST> , identifier
-<BEGIN> ->begin <OPERLIST> end
+<BEGIN> ->{ <OPERLIST> }
 <OPERLIST> -><OPERATOR>
 <OPERLIST> -><OPERLIST> ; <OPERATOR>
 <OPERATOR> -><READ>
@@ -26,13 +26,18 @@
 <EXPRESSION> ->identifier
 <EXPRESSION ->" text "
 <EXPRESSION> ->integer
-<IF> ->if <CONDITION> then <OPERATOR> else <OPERATOR>
-<IF> ->if <CONDITION> then <OPERATOR>
-<CONDITION> -><EXPRESSION> <COMPARE> <EXPRESSION>
+<EXPRESSION> ->integer <MATH> integer
+<MATH> ->+
+<MATH> ->-
+<MATH> ->*
+<MATH> ->/
 <COMPARE> -><
 <COMPARE> ->>
 <COMPARE> ->==
 <COMPARE> ->>=
 <COMPARE> -><=
 <COMPARE> ->!=
-<WHILE> ->while <CONDITION> do <OPERATOR>
+<CONDITION> -><EXPRESSION> <COMPARE> <EXPRESSION>
+<IF> ->cond <CONDITION> then{ <OPERLIST> }
+<IF> ->cond <CONDITION> then <OPERLIST> else { <OPERLIST> }
+<WHILE> ->while <CONDITION> do { <OPERLIST> }
