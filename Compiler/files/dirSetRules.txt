@@ -1,10 +1,38 @@
 <PROGRAM> -><HEAD> ; <BODY> .
 <HEAD> ->program identifier
 <BODY> -><VAR> ; <BEGIN>
-<BEGIN> ->begin end
+<BODY> -><BEGIN>
 <VAR> ->var <IDLIST> : <TYPE>
+<TYPE> ->string
+<TYPE> ->integer
 <IDLIST> ->identifier
 <IDLIST> -><IDLIST> , identifier
-<TYPE> ->char
-<TYPE> ->bool
-<TYPE> ->integer
+<BEGIN> ->begin <OPERLIST> end
+<OPERLIST> -><OPERATOR>
+<OPERLIST> -><OPERLIST> ; <OPERATOR>
+<OPERATOR> -><READ>
+<OPERATOR> -><WRITE>
+<OPERATOR> -><ASSIGNMENT>
+<OPERATOR> -><IF>
+<OPERATOR> -><WHILE>
+<OPERATOR> -><BEGIN>
+<READ> ->read ( <IDLIST> )
+<WRITE> ->write ( <WRITELIST> )
+<WRITE> ->writeln ( <WRITELIST> )
+<WRITELIST> -><ELWRITE>
+<WRITELIST> -><WRITELIST> , <ELWRITE>
+<ELWRITE> ->" text "
+<ASSIGNMENT> ->identifier = <EXPRESSION>
+<EXPRESSION> ->identifier
+<EXPRESSION ->" text "
+<EXPRESSION> ->integer
+<IF> ->if <CONDITION> then <OPERATOR> else <OPERATOR>
+<IF> ->if <CONDITION> then <OPERATOR>
+<CONDITION> -><EXPRESSION> <COMPARE> <EXPRESSION>
+<COMPARE> -><
+<COMPARE> ->>
+<COMPARE> ->==
+<COMPARE> ->>=
+<COMPARE> -><=
+<COMPARE> ->!=
+<WHILE> ->while <CONDITION> do <OPERATOR>

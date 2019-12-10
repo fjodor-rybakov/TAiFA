@@ -54,7 +54,10 @@ namespace Compiler.Runner
             }
             else
             {
-                string word = (!lexerData[commonCounter].IsReserve && (lexerData[commonCounter].Type == "identifier")) ? lexerData[commonCounter].Type : lexerData[commonCounter].Value;
+                string word = !lexerData[commonCounter].IsReserve && 
+                              (lexerData[commonCounter].Type == TypeLexem.IDENTIFICATOR || lexerData[commonCounter].Type == TypeLexem.TEXT) 
+                    ? lexerData[commonCounter].Type 
+                    : lexerData[commonCounter].Value;
                 Console.WriteLine("value is " + lexerData[commonCounter].Value);
                 int columnIndexOfNextVal = GetColumnIndexFromValue(word);
                 if (columnIndexOfNextVal == -1)
@@ -145,7 +148,10 @@ namespace Compiler.Runner
         {
             if (counter + 1 < lexerData.Count)
             {
-                string word = (!lexerData[counter + 1].IsReserve && (lexerData[counter + 1].Type == "identifier")) ? lexerData[counter + 1].Type : lexerData[counter + 1].Value;
+                string word = (!lexerData[counter + 1].IsReserve && 
+                               (lexerData[counter + 1].Type == TypeLexem.IDENTIFICATOR || lexerData[counter + 1].Type == TypeLexem.TEXT)) 
+                    ? lexerData[counter + 1].Type
+                    : lexerData[counter + 1].Value;
                 Console.WriteLine("value is " + lexerData[counter + 1].Value + "; Type is " + lexerData[counter + 1].Type);
                 int columnIndexOfNextVal = GetColumnIndexFromValue(word);
                 if (columnIndexOfNextVal == -1)

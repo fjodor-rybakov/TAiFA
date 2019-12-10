@@ -1,1 +1,1 @@
-program vavalalala; var a:integer; begin end.
+program vavalalala; var a:integer; begin if a > b then write ("asdasdasd") end.

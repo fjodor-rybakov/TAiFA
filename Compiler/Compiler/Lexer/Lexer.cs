@@ -18,47 +18,72 @@ namespace Compiler.Lexer
             Dictionary<AutomateData, List<int>> acceptAutomates = InitAcceptAutomates();
             var value = "";
             var index = 0;
+            var isString = false;
             var lexerInfo = new List<LexerInfo>();
             foreach (var ch in line)
             {
-                if (ch == ' ')
+                if (!isString)
                 {
-                    foreach (var automate in acceptAutomates)
+                    if (ch == ' ')
                     {
-                        if (automate.Value.Count == 0) continue;
-                        if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
-                        var isReserve = _controller.ReserveWords.Contains(value.ToLower());
-                        lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve, numberString, index));
+                        foreach (var automate in acceptAutomates)
+                        {
+                            if (automate.Value.Count == 0) continue;
+                            if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
+                            var isReserve = _controller.ReserveWords.Contains(value.ToLower());
+                            lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve, numberString, index));
+                        }
+                        value = "";
+                        acceptAutomates = InitAcceptAutomates();
                     }
-                    value = "";
-                    acceptAutomates = InitAcceptAutomates();
-                }
-                else if (CheckOperation(ch) && index + 1 < line.Length && !char.IsNumber(line[index + 1]))
-                {
-                    lexerInfo.Add(new LexerInfo(value, TypeLexem.OPERATION, false, numberString, index));
-                    value = "";
-                }
-                else if (_controller.SplitSymbols.Contains(ch))
-                {
-                    foreach (var automate in acceptAutomates)
+                    else if (CheckOperation(ch) && index + 1 < line.Length && !char.IsNumber(line[index + 1]))
                     {
-                        if (automate.Value.Count == 0) continue;
-                        if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
-                        var isReserve = _controller.ReserveWords.Contains(value.ToLower());
-                        lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve, numberString, index));
+                        lexerInfo.Add(new LexerInfo(value, TypeLexem.OPERATION, false, numberString, index));
+                        value = "";
                     }
-                    lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.DELIMITER, false, numberString, index));
-                    value = "";
-                    acceptAutomates = InitAcceptAutomates();
+                    else if (_controller.SplitSymbols.Contains(ch))
+                    {
+                        foreach (var automate in acceptAutomates)
+                        {
+                            if (automate.Value.Count == 0) continue;
+                            if (!automate.Key.FinishStates.Contains(automate.Value.Last())) continue;
+                            var isReserve = _controller.ReserveWords.Contains(value.ToLower());
+                            lexerInfo.Add(new LexerInfo(value, TypeLexem.GetToken(automate.Key, automate.Value.Last()), isReserve, numberString, index));
+                        }
+                        lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.DELIMITER, false, numberString, index));
+                        value = "";
+                        acceptAutomates = InitAcceptAutomates();
+                        if (lexerInfo[lexerInfo.Count - 2].Type == TypeLexem.TEXT)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        acceptAutomates = CheckLexem(ch, acceptAutomates, value);
+                        if (acceptAutomates.Count == 0)
+                        {
+                            throw new Exception($"({numberString}, {index}): " + line[index] + " <--------- FAIL!!!");
+                        }
+                        value += ch;
+                    }
                 }
                 else
                 {
-                    acceptAutomates = CheckLexem(ch, acceptAutomates, value);
-                    if (acceptAutomates.Count == 0)
-                    {
-                        throw new Exception($"({numberString}, {index}): " + line[index] + " <--------- FAIL!!!");
-                    }
+                    // обработка скобок (текста)
                     value += ch;
+                    if (index + 1 < line.Length && line[index + 1] == '"')
+                    {
+                        isString = false;
+                        lexerInfo.Add(new LexerInfo(value, TypeLexem.TEXT, false, numberString, index));
+                        value = "";
+                        acceptAutomates = InitAcceptAutomates();
+                    }
+                }
+                
+                if (ch == '"')
+                {
+                    isString = true;
                 }
 
                 index++;
