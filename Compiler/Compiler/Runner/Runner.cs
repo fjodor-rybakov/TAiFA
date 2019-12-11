@@ -54,8 +54,8 @@ namespace Compiler.Runner
             }
             else
             {
-                string word = !lexerData[commonCounter].IsReserve && 
-                              (lexerData[commonCounter].Type == TypeLexem.IDENTIFICATOR || lexerData[commonCounter].Type == TypeLexem.TEXT) 
+                string word = (!lexerData[commonCounter].IsReserve && 
+                              (lexerData[commonCounter].Type == TypeLexem.IDENTIFICATOR || lexerData[commonCounter].Type == TypeLexem.TEXT))
                     ? lexerData[commonCounter].Type 
                     : lexerData[commonCounter].Value;
                 Console.WriteLine("value is " + lexerData[commonCounter].Value);
@@ -182,7 +182,7 @@ namespace Compiler.Runner
                 else
                 {
                     //fatalErr
-                    PrintEndOfProgram("\n--- [Fatal Error]: nextValueOfColumn is NULL(\"\"). Index of next val = " + columnIndexOfNextVal + ";\n word is " + word + ";\n", false);
+                    PrintEndOfProgram("\n--- [Fatal Error]: resultTable[" + indexStr + "].value[" + columnIndexOfNextVal+ "].valueOfColumn == EMPTY;\nПереходить дальше некуда. Смотри SLR или правила.", false);
                     return;
                 }
             }
@@ -198,9 +198,10 @@ namespace Compiler.Runner
             //Пробуем свернуть. Получается -> идем дальше; нет - завершаем с ошибкой.
             string key = rules[numberOfRule].Keys.ElementAt(0);
             List<string> rule = rules[numberOfRule] [rules[numberOfRule].Keys.ElementAt(0)];
+            Console.WriteLine("///in loop");
             for (int i = rule.Count - 1; i >= 0; i--)
             {
-                Console.WriteLine("///in loop with index: " + i);
+                //Console.WriteLine("///in loop with index: " + i);
                 if ((rule[i] == GetClearKey(enterChain.Peek())) && (enterChain.Count >= 1))
                 {
                     enterChain.Pop();
