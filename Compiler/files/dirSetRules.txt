@@ -1,43 +1,42 @@
-<PROGRAM> -><HEAD> ; <BODY>
-<HEAD> ->program identifier
-<BODY> -><VAR> ; <BEGIN>
-<BODY> -><BEGIN>
-<VAR> ->var <IDLIST> : <TYPE>
-<TYPE> ->string
-<TYPE> ->integer
-<IDLIST> ->identifier
-<IDLIST> -><IDLIST> , identifier
-<BEGIN> ->{ <OPERLIST> }
-<OPERLIST> -><OPERATOR>
-<OPERLIST> -><OPERLIST> ; <OPERATOR>
-<OPERATOR> -><READ>
-<OPERATOR> -><WRITE>
-<OPERATOR> -><ASSIGNMENT>
-<OPERATOR> -><IF>
-<OPERATOR> -><WHILE>
-<OPERATOR> -><BEGIN>
-<READ> ->read ( <IDLIST> )
-<WRITE> ->write ( <WRITELIST> )
-<WRITE> ->writeln ( <WRITELIST> )
-<WRITELIST> -><ELWRITE>
-<WRITELIST> -><WRITELIST> , <ELWRITE>
-<ELWRITE> ->" text "
-<ASSIGNMENT> ->identifier = <EXPRESSION>
-<EXPRESSION> ->identifier
-<EXPRESSION ->" text "
-<EXPRESSION> ->integer
-<EXPRESSION> ->integer <MATH> integer
-<MATH> ->+
-<MATH> ->-
-<MATH> ->*
-<MATH> ->/
-<COMPARE> -><
-<COMPARE> ->>
-<COMPARE> ->==
-<COMPARE> ->>=
-<COMPARE> -><=
-<COMPARE> ->!=
-<CONDITION> -><EXPRESSION> <COMPARE> <EXPRESSION>
-<IF> ->cond <CONDITION> then{ <OPERLIST> }
-<IF> ->cond <CONDITION> then <OPERLIST> else { <OPERLIST> }
-<WHILE> ->while <CONDITION> do { <OPERLIST> }
+`PROGRAM` ->`HEAD` ; `BODY`
+`HEAD` ->program identifier
+`BODY` ->`VAR` ; `BEGIN`
+`BODY` ->`BEGIN`
+`VAR` ->var `IDLIST` : `TYPE`
+`TYPE` ->string
+`TYPE` ->integer
+`IDLIST` ->identifier
+`IDLIST` ->`IDLIST` , identifier
+`BEGIN` ->{ `OPERLIST` }
+`OPERLIST` ->`OPERATOR`
+`OPERLIST` ->`OPERLIST` ; `OPERATOR`
+`OPERATOR` ->`READ`
+`OPERATOR` ->`WRITE`
+`OPERATOR` ->`ASSIGNMENT`
+`OPERATOR` ->`IF`
+`OPERATOR` ->`WHILE`
+`OPERATOR` ->`BEGIN`
+`READ` ->read ( `IDLIST` )
+`WRITE` ->write ( `WRITELIST` )
+`WRITE` ->writeln ( `WRITELIST` )
+`WRITELIST` ->`ELWRITE`
+`WRITELIST` ->`WRITELIST` , `ELWRITE`
+`ELWRITE` ->" text "
+`ASSIGNMENT` ->identifier = `EXPRESSION`
+`EXPRESSION` ->identifier
+`EXPRESSION ->" text "
+`EXPRESSION` ->integer
+`EXPRESSION` ->integer `MATH` integer
+`MATH` ->+
+`MATH` ->-
+`MATH` ->*
+`COMPARE` -><
+`COMPARE` ->>
+`COMPARE` ->==
+`COMPARE` ->>=
+`COMPARE` -><=
+`COMPARE` ->!=
+`CONDITION` ->`EXPRESSION` `COMPARE` `EXPRESSION`
+`IF` ->cond `CONDITION` then { `OPERLIST` }
+`IF` ->cond `CONDITION` then { `OPERLIST` } else { `OPERLIST` }
+`WHILE` ->while `CONDITION` do { `OPERLIST` }

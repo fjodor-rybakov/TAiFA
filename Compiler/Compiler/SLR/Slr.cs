@@ -394,18 +394,18 @@ namespace Compiler.SLR
 
         private void ShowResultTable()
         {
-            //var writer = new StreamWriter("test.txt");
+            var writer = new StreamWriter("test.txt");
            
             _resultTable.ForEach(row => {
                 string stringKey = "";
                 row.key.ForEach(x => { stringKey = "( " + stringKey + x + " ) "; });
-                Console.WriteLine(stringKey + ":");
+                writer.WriteLine(stringKey + ":");
 
                 row.value.ForEach(x =>
                 {
-                    Console.Write("     " + x.columnOfTable + "^ ");
-                    x.valueOfColumn.ForEach(y => { Console.Write(y + " "); });
-                    Console.WriteLine();
+                    writer.Write("     " + x.columnOfTable + "^ ");
+                    x.valueOfColumn.ForEach(y => { writer.Write(y + " "); });
+                    writer.WriteLine();
                 });
 
             });
@@ -444,7 +444,7 @@ namespace Compiler.SLR
 
         private bool IsTerminal(string value)
         {
-            return value[0] != '<' && value[value.Length - 1] != '>';
+            return value[0] != '`' && value[value.Length - 1] != '`';
         }
     }
 }
