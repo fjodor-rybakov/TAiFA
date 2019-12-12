@@ -69,7 +69,7 @@ namespace Compiler.Lexer
                     }
                     else if (CheckOperation(ch))
                     {
-                        lexerInfo.Add(new LexerInfo(value, TypeLexem.OPERATION, false, numberString, index));
+                        lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.OPERATION, false, numberString, index));
                         value = "";
                     }
                     else

@@ -20,5 +20,6 @@ var a:integer;
 			write ("asdasdasd")
         };
 		write ("asdasdasd")
-    }	
+    };
+	a = 32 + 32
 }
