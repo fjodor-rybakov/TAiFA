@@ -26,17 +26,8 @@
 `EXPRESSION` ->identifier
 `EXPRESSION ->" text "
 `EXPRESSION` ->integer
-`EXPRESSION` ->integer `MATH` integer
-`MATH` ->+
-`MATH` ->-
-`MATH` ->*
-`COMPARE` -><
-`COMPARE` ->>
-`COMPARE` ->==
-`COMPARE` ->>=
-`COMPARE` -><=
-`COMPARE` ->!=
-`CONDITION` ->`EXPRESSION` `COMPARE` `EXPRESSION`
+`EXPRESSION` ->integer math integer
+`CONDITION` ->`EXPRESSION` comparison `EXPRESSION`
 `IF` ->cond `CONDITION` then { `OPERLIST` }
 `IF` ->cond `CONDITION` then { `OPERLIST` } else { `OPERLIST` }
 `WHILE` ->while `CONDITION` do { `OPERLIST` }
