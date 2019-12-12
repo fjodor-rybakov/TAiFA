@@ -20,11 +20,12 @@ namespace Compiler.Lexer
             var index = 0;
             var isString = false;
             var lexerInfo = new List<LexerInfo>();
-            foreach (var ch in line)
+            for (index = 0; index < line.Length; index++)
             {
+                var ch = line[index];
                 if (!isString)
                 {
-                    if (ch == ' ')
+                    if (ch == ' ' || ch == '\t')
                     {
                         foreach (var automate in acceptAutomates)
                         {
@@ -36,10 +37,18 @@ namespace Compiler.Lexer
                         value = "";
                         acceptAutomates = InitAcceptAutomates();
                     }
-                    else if (CheckOperation(ch) && index + 1 < line.Length && !char.IsNumber(line[index + 1]))
+                    else if (_controller.MathWords.Contains(ch))
                     {
-                        lexerInfo.Add(new LexerInfo(value, TypeLexem.OPERATION, false, numberString, index));
+                        lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.MATH, false, numberString, index));
                         value = "";
+                        acceptAutomates = InitAcceptAutomates();
+                    }
+                    else if (index < line.Length - 1 && CheckComparison(ch, line[index + 1], ref index, ref value))
+                    {
+                        lexerInfo.Add(new LexerInfo(value, TypeLexem.COMPARISON, false, numberString, index));
+                        value = "";
+                        acceptAutomates = InitAcceptAutomates();
+                        continue;
                     }
                     else if (_controller.SplitSymbols.Contains(ch))
                     {
@@ -53,10 +62,15 @@ namespace Compiler.Lexer
                         lexerInfo.Add(new LexerInfo(ch.ToString(), TypeLexem.DELIMITER, false, numberString, index));
                         value = "";
                         acceptAutomates = InitAcceptAutomates();
-                        if (lexerInfo[lexerInfo.Count - 2].Type == TypeLexem.TEXT)
+                        if (lexerInfo.Count > 1 && lexerInfo[lexerInfo.Count - 2].Type == TypeLexem.TEXT)
                         {
                             continue;
                         }
+                    }
+                    else if (CheckOperation(ch))
+                    {
+                        lexerInfo.Add(new LexerInfo(value, TypeLexem.OPERATION, false, numberString, index));
+                        value = "";
                     }
                     else
                     {
@@ -86,7 +100,7 @@ namespace Compiler.Lexer
                     isString = true;
                 }
 
-                index++;
+                //index++;
             }
             foreach (var automate in acceptAutomates)
             {
@@ -142,7 +156,25 @@ namespace Compiler.Lexer
             
             return acceptAutomates;
         }
-        
+
+        private bool CheckComparison(char firstCh, char lastCh, ref int index, ref string value)
+        {
+            if (_controller.ComparisonWords.Contains(string.Join("", firstCh, lastCh)))
+            {
+                value = string.Join("", firstCh, lastCh);
+                index +=2;
+                return true;
+            }
+            if (_controller.ComparisonWords.Contains(firstCh.ToString()))
+            {
+                value = firstCh.ToString();
+                index++;
+                return true;
+            }
+            return false;
+        }
+
+
         private bool CheckOperation(char value)
         {
             return _controller.BindOptions.Contains(value);

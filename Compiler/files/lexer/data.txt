@@ -1,1 +1,24 @@
-program vavalalala; var a:integer; { cond a > b then { write ("asdasdasd") } }
+program vavalalala;
+var a:integer;
+{ 
+    while a >= 22 + 22 do 
+    { 
+        write ("asdasdasd");
+        write ("asdasdasd");
+        cond a > b then
+        {
+			write ("asdasdasd")
+        };
+		write ("asdasdasd")
+    };
+    while a >= 22 + 22 do 
+    { 
+        write ("asdasdasd");
+        write ("asdasdasd");
+        cond a > b then
+        {
+			write ("asdasdasd")
+        };
+		write ("asdasdasd")
+    }	
+}

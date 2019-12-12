@@ -10,21 +10,21 @@ namespace Compiler.Lexer
         private const string ERROR_MESSAGE_PARSE_COUNT_STATE = "Не удалось считать кол-во состояний";
         private const string ERROR_MESSAGE_PARSE_FINISH_STATE = "Не удалось считать финишные состояния";
         public List<AutomateData> Automates { get; }
-        public List<char> BindOptions { get; } = new List<char>{'=', '!', '?', '&', '|'};
-        public List<char> SplitSymbols { get; } = new List<char>{',', ':', ';', '.',  '"', '(', ')', '{', '}', '\'', '*', '/', '+', '-', '<', '>'};
+        public List<char> BindOptions { get; } = new List<char>{'='};
+        public List<char> SplitSymbols { get; } = new List<char>{',', ':', ';', '.',  '"', '(', ')', '{', '}', '\''};
         public List<string> ReserveWords { get; } = new List<string>
         {
-            "begin", "end", "main", "read", "write", "writeln", "char", "bool", "integer", "for", "while", "cond", "else", "var", "program", "then"
+            "begin", "end", "main", "read", "write", "writeln", "char", "bool", "integer", "for", "while", "cond", "else", "var", "program", "then", "do"
         };
-
+        
         public List<string> ComparisonWords { get; } = new List<string>
         {
             ">", "==", "!=", "<", ">=", "<="
         };
 
-        public List<string> MathWords { get; } = new List<string>
+        public List<char> MathWords { get; } = new List<char>
         {
-            "+", "-", "*"
+            '+', '-', '*', '/'
         };
 
 
