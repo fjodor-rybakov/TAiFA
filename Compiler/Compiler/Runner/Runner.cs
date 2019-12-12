@@ -55,7 +55,7 @@ namespace Compiler.Runner
             else
             {
                 string word = (!lexerData[commonCounter].IsReserve && 
-                              (lexerData[commonCounter].Type == TypeLexem.IDENTIFICATOR || lexerData[commonCounter].Type == TypeLexem.TEXT))
+                              (lexerData[commonCounter].Type == TypeLexem.IDENTIFICATOR || lexerData[commonCounter].Type == TypeLexem.TEXT || lexerData[commonCounter].Type == TypeLexem.MATH || lexerData[commonCounter].Type == TypeLexem.COMPARISON))
                     ? lexerData[commonCounter].Type 
                     : lexerData[commonCounter].Value;
                 Console.WriteLine("value is " + lexerData[commonCounter].Value);
@@ -149,7 +149,7 @@ namespace Compiler.Runner
             if (counter + 1 < lexerData.Count)
             {
                 string word = (!lexerData[counter + 1].IsReserve && 
-                               (lexerData[counter + 1].Type == TypeLexem.IDENTIFICATOR || lexerData[counter + 1].Type == TypeLexem.TEXT)) 
+                               (lexerData[counter + 1].Type == TypeLexem.IDENTIFICATOR || lexerData[counter + 1].Type == TypeLexem.TEXT || lexerData[counter + 1].Type == TypeLexem.COMPARISON || lexerData[counter + 1].Type == TypeLexem.MATH)) 
                     ? lexerData[counter + 1].Type
                     : lexerData[counter + 1].Value;
                 Console.WriteLine("value is " + lexerData[counter + 1].Value + "; Type is " + lexerData[counter + 1].Type);

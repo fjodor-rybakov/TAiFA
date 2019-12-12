@@ -12,6 +12,8 @@ namespace Compiler.Lexer
         public const string OPERATION = "operator";
         public const string DELIMITER = "delimetr";
         public const string TEXT = "text";
+        public const string COMPARISON = "comparison";
+        public const string MATH = "MATH";
 
         public const string INT = "int";
         public const string STRING = "string";
