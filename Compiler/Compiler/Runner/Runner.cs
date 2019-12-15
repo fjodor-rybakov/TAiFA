@@ -38,19 +38,9 @@ namespace Compiler.Runner
             string firstElement = "";
             if (!firstEnter)
             {
-                if (enterChain.Count != 0)
-                {
-                    int tableStrIndex = GetSafeKeyIndexFromTableWith(enterChain.Peek());
-                    Console.WriteLine("STACK PEEK: " + enterChain.Peek());
-                    int columnValueIndex = GetColumnIndexFromValue(lexerData[commonCounter].Value);
-                    firstElement = MakeStringFromList(resultTable[tableStrIndex].value[columnValueIndex].valueOfColumn);
-                }
-                else
-                {
-                    //fatalErr
-                    PrintEndOfProgram("\n--- [Fatal Error]: Enter Chain is Empty!\n", false);
-                    return;
-                }
+                int tableStrIndex = GetSafeKeyIndexFromTableWith(enterChain.Peek());
+                int columnValueIndex = GetColumnIndexFromValue(lexerData[commonCounter].Value);
+                firstElement = MakeStringFromList(resultTable[tableStrIndex].value[columnValueIndex].valueOfColumn);
             }
             else
             {
@@ -63,12 +53,11 @@ namespace Compiler.Runner
                               ))
                     ? lexerData[commonCounter].Type 
                     : lexerData[commonCounter].Value;
-                Console.WriteLine("value is " + lexerData[commonCounter].Value);
                 int columnIndexOfNextVal = GetColumnIndexFromValue(word);
                 if (columnIndexOfNextVal == -1)
                 {
                     //fatalErr
-                    PrintEndOfProgram("\n--- [Fatal Error]: valIndex == -1 (not exist). For value: " + lexerData[commonCounter].Value + ";\n", false);
+                    PrintEndOfProgram("\n--- [Fatal Error]: индекс колонки таблицы не найден для значения: \"" + lexerData[commonCounter].Value + "\";\n", false);
                     return;
                 }
                 var value = resultTable[commonCounter].value[columnIndexOfNextVal].valueOfColumn;
@@ -80,7 +69,7 @@ namespace Compiler.Runner
             if (firstElement == "")
             {
                 //fatalErr
-                PrintEndOfProgram("\n--- [Fatal Error]: Element \"" + lexerData[commonCounter].Value + "\" not found.\n", false);
+                PrintEndOfProgram("\n--- [Fatal Error]: Элемент: \"" + lexerData[commonCounter].Value + "\" не был найден в таблице.\n", false);
                 return;
             }
             enterChain.Push(firstElement);
@@ -119,8 +108,8 @@ namespace Compiler.Runner
                 if (resultTable.Count > (counter + 1)) { counter++; }
                 else { return -1; }
             }
-            string stra = MakeStringFromList(resultTable[counter].key);
-            Console.WriteLine("+++ Safe key = " + stra + "; From value = " + value + ";\n");
+            //string stra = MakeStringFromList(resultTable[counter].key);
+            //Console.WriteLine("+++ Safe key = " + stra + "; From value = " + value + ";\n");
             return counter;
         }
 
@@ -132,8 +121,8 @@ namespace Compiler.Runner
                 if (resultTable[0].value.Count > (counter + 1)) { counter++; }
                 else { return -1; }
             }
-            string equalValues = "+++ Column index found: " + counter + "; " + resultTable[0].value[counter].columnOfTable + " == " + value;
-            Console.WriteLine(equalValues);
+            //string equalValues = "+++ Column index found: " + counter + "; " + resultTable[0].value[counter].columnOfTable + " == " + value;
+            //Console.WriteLine(equalValues);
             return counter;
         }
 
@@ -162,12 +151,12 @@ namespace Compiler.Runner
                                )) 
                     ? lexerData[counter + 1].Type
                     : lexerData[counter + 1].Value;
-                Console.WriteLine("value is " + lexerData[counter + 1].Value + "; Type is " + lexerData[counter + 1].Type);
+                //Console.WriteLine("Следующее значение лексера: " + lexerData[counter + 1].Value + "; его тип: " + lexerData[counter + 1].Type);
                 int columnIndexOfNextVal = GetColumnIndexFromValue(word);
                 if (columnIndexOfNextVal == -1)
                 {
                     //fatalErr
-                    PrintEndOfProgram("\n--- [Fatal Error]: columnIndexOfNextVal == -1 (not exist). For value: " + lexerData[counter + 1].Value + ";\n", false);
+                    PrintEndOfProgram("\n--- [Fatal Error]: индекс колонки таблицы не найден для значения: \"" + lexerData[counter + 1].Value + "\";\n", false);
                     return;
                 }
                 int indexStr = GetSafeKeyIndexFromTableWith(enterChain.Peek());
@@ -183,7 +172,7 @@ namespace Compiler.Runner
                     if (indexOfSafeKey == -1) //Проверяем, есть ли такой элемент в ключах таблицы
                     {
                         //fatalErr
-                        PrintEndOfProgram("\n--- [Fatal Error]: indexOfSafeKey == -1 (not exist). For value: " + nextValueOfColumn + ";\n", false);
+                        PrintEndOfProgram("\n--- [Fatal Error]: ключ таблицы не найден для значения: " + nextValueOfColumn + "; resultTable[" + indexStr + "].value[" + columnIndexOfNextVal + "]ы\n", false);
                         return;
                     }
                     enterChain.Push(nextValueOfColumn);
@@ -198,7 +187,7 @@ namespace Compiler.Runner
             }
             else
             {
-                Console.WriteLine("Найден конец цепочки...");
+                //Console.WriteLine("Найден конец цепочки...");
                 TryToConvolutionInRule(GetNumberOfRule(enterChain.Peek()), ++counter);
             }
         }
@@ -208,7 +197,6 @@ namespace Compiler.Runner
             //Пробуем свернуть. Получается -> идем дальше; нет - завершаем с ошибкой.
             string key = rules[numberOfRule].Keys.ElementAt(0);
             List<string> rule = rules[numberOfRule] [rules[numberOfRule].Keys.ElementAt(0)];
-            Console.WriteLine("///in loop");
             for (int i = rule.Count - 1; i >= 0; i--)
             {
                 //Console.WriteLine("///in loop with index: " + i);
