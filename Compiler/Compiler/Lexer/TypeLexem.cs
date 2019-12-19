@@ -29,6 +29,7 @@ namespace Compiler.Lexer
             const int finishStateNumber2 = 4;
             const int finishStateNumber8 = 6;
             const int finishStateNumber16 = 8;
+            const int finishStateNumber = 1;
             const int finishStateNumberOne = 2;
             const int finishStateNumberTwo = 4;
             const int finishStateNumberThree = 7;
@@ -41,6 +42,8 @@ namespace Compiler.Lexer
                     return NUMBER10;
                 case "number10" when lastState == finishStateNumberTwo:
                     return DECIMAL;
+                case "number10" when lastState == finishStateNumber:
+                    return NUMBER10;
                 case "number10" when lastState == finishStateNumberThree:
                     return DECIMAL;
                 case "number10" when lastState == finishStateNumberFour:

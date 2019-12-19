@@ -18,8 +18,11 @@ var a:integer;
         cond a > b then
         {
 			write ("asdasdasd")
-        };
+        } else 
+		{
+			write ("asdasdasd")
+		};
 		write ("asdasdasd")
     };
-	a = 32 + 32
+	a = 33 + - 33
 }

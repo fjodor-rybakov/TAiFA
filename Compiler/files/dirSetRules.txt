@@ -26,7 +26,10 @@
 `EXPRESSION` ->identifier
 `EXPRESSION ->" text "
 `EXPRESSION` ->integer
-`EXPRESSION` ->integer math integer
+`EXPRESSION` ->integer `TYPEMATH`
+`TYPEMATH` ->math `TYPEMATH`
+`TYPEMATH` ->math
+`TYPEMATH` ->integer
 `CONDITION` ->`EXPRESSION` comparison `EXPRESSION`
 `IF` ->cond `CONDITION` then { `OPERLIST` }
 `IF` ->cond `CONDITION` then { `OPERLIST` } else { `OPERLIST` }
