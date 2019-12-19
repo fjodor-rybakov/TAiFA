@@ -28,8 +28,7 @@
 `EXPRESSION` ->integer
 `EXPRESSION` ->integer `TYPEMATH`
 `TYPEMATH` ->math `TYPEMATH`
-`TYPEMATH` ->math
-`TYPEMATH` ->integer
+`TYPEMATH` ->math integer
 `CONDITION` ->`EXPRESSION` comparison `EXPRESSION`
 `IF` ->cond `CONDITION` then { `OPERLIST` }
 `IF` ->cond `CONDITION` then { `OPERLIST` } else { `OPERLIST` }

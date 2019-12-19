@@ -24,5 +24,5 @@ var a:integer;
 		};
 		write ("asdasdasd")
     };
-	a = 33 + - 33
+	a = 33 - 33
 }
