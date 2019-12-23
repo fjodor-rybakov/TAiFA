@@ -57,7 +57,8 @@ namespace Compiler.Runner
                 if (columnIndexOfNextVal == -1)
                 {
                     //fatalErr
-                    PrintEndOfProgram("\n--- [Fatal Error]: индекс колонки таблицы не найден для значения: \"" + lexerData[commonCounter].Value + "\";\n", false);
+                    PrintEndOfProgram("\n--- [Fatal Error]: индекс колонки таблицы не найден для значения: \"" + lexerData[commonCounter].Value + "\";", false);
+                    Console.WriteLine(" Line: " + lexerData[commonCounter].LineNumber + "; Position: " + lexerData[commonCounter].PosNumber + ";\n");
                     return;
                 }
                 var value = resultTable[commonCounter].value[columnIndexOfNextVal].valueOfColumn;
@@ -69,7 +70,8 @@ namespace Compiler.Runner
             if (firstElement == "")
             {
                 //fatalErr
-                PrintEndOfProgram("\n--- [Fatal Error]: Элемент: \"" + lexerData[commonCounter].Value + "\" не был найден в таблице.\n", false);
+                PrintEndOfProgram("\n--- [Fatal Error]: Элемент: \"" + lexerData[commonCounter].Value + "\" не был найден в таблице.", false);
+                Console.WriteLine(" Line: " + lexerData[commonCounter].LineNumber + "; Position: " + lexerData[commonCounter].PosNumber + ";\n");
                 return;
             }
             enterChain.Push(firstElement);
@@ -156,7 +158,8 @@ namespace Compiler.Runner
                 if (columnIndexOfNextVal == -1)
                 {
                     //fatalErr
-                    PrintEndOfProgram("\n--- [Fatal Error]: индекс колонки таблицы не найден для значения: \"" + lexerData[counter + 1].Value + "\";\n", false);
+                    PrintEndOfProgram("\n--- [Fatal Error]: индекс колонки таблицы не найден для значения: \"" + lexerData[counter + 1].Value + "\";", false);
+                    Console.WriteLine(" Line: " + lexerData[counter + 1].LineNumber + "; Position: " + lexerData[counter + 1].PosNumber + ";\n");
                     return;
                 }
                 int indexStr = GetSafeKeyIndexFromTableWith(enterChain.Peek());
@@ -172,7 +175,8 @@ namespace Compiler.Runner
                     if (indexOfSafeKey == -1) //Проверяем, есть ли такой элемент в ключах таблицы
                     {
                         //fatalErr
-                        PrintEndOfProgram("\n--- [Fatal Error]: ключ таблицы не найден для значения: " + nextValueOfColumn + "; resultTable[" + indexStr + "].value[" + columnIndexOfNextVal + "]ы\n", false);
+                        PrintEndOfProgram("\n--- [Fatal Error]: ключ таблицы не найден для значения: " + nextValueOfColumn + "; resultTable[" + indexStr + "].value[" + columnIndexOfNextVal + "]", false);
+                        Console.WriteLine(" Line: " + lexerData[counter + 1].LineNumber + "; Position: " + lexerData[counter + 1].PosNumber + ";\n");
                         return;
                     }
                     enterChain.Push(nextValueOfColumn);
@@ -182,6 +186,7 @@ namespace Compiler.Runner
                 {
                     //fatalErr
                     PrintEndOfProgram("\n--- [Fatal Error]: resultTable[" + indexStr + "].value[" + columnIndexOfNextVal+ "].valueOfColumn == EMPTY;\nПереходить дальше некуда. Смотри SLR или правила.", false);
+                    Console.WriteLine(" Line: " + lexerData[counter + 1].LineNumber + "; Position: " + lexerData[counter + 1].PosNumber + ";\n");
                     return;
                 }
             }
@@ -208,10 +213,11 @@ namespace Compiler.Runner
                 {
                     //fatalErr
                     PrintEndOfProgram("\n--- [Fatal Error]: Clear Key: " + GetClearKey(enterChain.Peek()) + " - not conform to rule. Rule element: " + rule[i] + "; in rule " + numberOfRule + "; EnterChain.Count ==" + enterChain.Count + "\n", false);
+                    Console.WriteLine(" Line: " + lexerData[lexerCounter].LineNumber + "; Position: " + lexerData[lexerCounter].PosNumber + ";\n");
                     return;
                 }
             }
-            Console.WriteLine(" |||| Свертка по правилу №" + numberOfRule + "; Rule Key: " + key + ";\n");
+            //Console.WriteLine(" |||| Свертка по правилу №" + numberOfRule + "; Rule Key: " + key + ";\n");
             RebuildAndCheckChain(key, rule.Count, lexerCounter);
         }
 
@@ -221,6 +227,7 @@ namespace Compiler.Runner
             {
                 //fatalErr
                 PrintEndOfProgram("\n--- [Fatal Error]: Недостаточно элементов для свертки в правило.\n", false);
+                Console.WriteLine(" Line: " + lexerData[lexerCounter].LineNumber + "; Position: " + lexerData[lexerCounter].PosNumber + ";\n");
                 return;
             }
             lexerData.RemoveRange(lexerCounter - countElementsInRule, countElementsInRule);
