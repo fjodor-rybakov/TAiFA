@@ -18,9 +18,12 @@ namespace Compiler
 			var lexerData = MakeLexer();
 			
             var rulesReader = new RulesReader();
+            var rules = rulesReader.GetRules();
             var slr = new Slr(rulesReader.GetRules());
             var table = slr.GetTable();
-            MakeAndLaunchRunner(table.rules, table.resultTable, lexerData);
+            //MakeAndLaunchRunner(table.rules, table.resultTable, lexerData);
+            
+            
             Console.ReadLine();
 		}
 

@@ -22,3 +22,10 @@ C:\projects\TAiFA\Compiler\Compiler\bin\Debug\Compiler.pdb
 C:\projects\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cache
 C:\Taifa\Compiler\Compiler\bin\Debug\Compiler.exe.config
 C:\Taifa\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cache
+G:\TAiFA\Compiler\Compiler\bin\Debug\Compiler.exe.config
+G:\TAiFA\Compiler\Compiler\bin\Debug\Compiler.exe
+G:\TAiFA\Compiler\Compiler\bin\Debug\Compiler.pdb
+G:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cache
+G:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csproj.CoreCompileInputs.cache
+G:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.exe
+G:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.pdb

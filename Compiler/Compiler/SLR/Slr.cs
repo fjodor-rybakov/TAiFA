@@ -11,13 +11,17 @@ namespace Compiler.SLR
         public string key;
         public string value;
         public bool isLast;
+        public string action;
     }
 
     struct Value
     {
         public string columnOfTable;
         public List<string> valueOfColumn;
+        public string action;
     }
+
+
     struct Table
     {
         public List<string> key;
@@ -27,18 +31,18 @@ namespace Compiler.SLR
 
     struct ReturnData
     {
-        public List<Dictionary<string, List<string>>> rules;
+        public List<Dictionary<HeadOfRule, List<string>>> rules;
         public List<Table> resultTable;
     }
 
     class Slr
     {
         List<string> _identifiers = new List<string>();
-        List<Dictionary<string, List<string>>> _rules;
+        List<Dictionary<HeadOfRule, List<string>>> _rules;
         List<Table> _resultTable = new List<Table>();
         List<Value> columnsOnTable = new List<Value>();
 
-        public Slr(List<Dictionary<string, List<String>>> rules)
+        public Slr(List<Dictionary<HeadOfRule, List<String>>> rules)
         {
             _rules = rules;
         }
@@ -123,10 +127,10 @@ namespace Compiler.SLR
 
                             responseList.ForEach(x =>
                             {
-                                AddValueToColumn(ref values, x.value, "RETURN");
+                                AddValueToColumn(ref values, x.value, "RETURN", elem.action);
                             });
 
-                            AddValueToColumn(ref values, "__end", "RETURN");
+                            AddValueToColumn(ref values, "__end", "RETURN", elem.action);
                         }
                         else
                         {
@@ -211,6 +215,7 @@ namespace Compiler.SLR
             {
                 var elem = GetElementOfRule(i, 0);
                 key = elem.key;
+              
 
                 ToProcessElementFirstIt(i, 0, elem, ref values);
 
@@ -240,7 +245,7 @@ namespace Compiler.SLR
 
         }
 
-        private bool AddValueToColumn(ref List<Value> values, string key, string value)
+        private bool AddValueToColumn(ref List<Value> values, string key, string value, string action="")
         {
             for (int i = 0; i < values.Count; i++)
             {
@@ -248,7 +253,10 @@ namespace Compiler.SLR
                 {
                     if (!values[i].valueOfColumn.Contains(value))
                     {
-                        values[i].valueOfColumn.Add(value);
+                        var value2 = values[i];
+                        value2.valueOfColumn.Add(value);
+                        value2.action = action;
+                        values[i] = value2;
                         return true;
                     }
                     else
@@ -341,6 +349,7 @@ namespace Compiler.SLR
         private Response GetElementOfRule(int i, int j)
         {
             List<string> elements = new List<string>();
+            List<string> elements2 = new List<string>();
 
             Response response = new Response();
             response.value = "-1";
@@ -355,7 +364,8 @@ namespace Compiler.SLR
 
             foreach (var key in keys)
             {
-                response.key = key;
+                response.action = key.action;
+                response.key = key.haedOfRule;
                 rule.TryGetValue(key, out elements);
             }
 
@@ -394,18 +404,19 @@ namespace Compiler.SLR
 
         private void ShowResultTable()
         {
-            var writer = new StreamWriter("test.txt");
+            //var writer = new StreamWriter("test.txt");
            
             _resultTable.ForEach(row => {
                 string stringKey = "";
                 row.key.ForEach(x => { stringKey = "( " + stringKey + x + " ) "; });
-                writer.WriteLine(stringKey + ":");
+                Console.WriteLine(stringKey + ":");
 
                 row.value.ForEach(x =>
                 {
-                    writer.Write("     " + x.columnOfTable + "^ ");
-                    x.valueOfColumn.ForEach(y => { writer.Write(y + " "); });
-                    writer.WriteLine();
+                    Console.Write("     " + x.columnOfTable + "^ ");
+                    x.valueOfColumn.ForEach(y => { Console.Write(y + " "); });
+                    Console.Write(x.action);
+                    Console.WriteLine();
                 });
 
             });
@@ -430,7 +441,7 @@ namespace Compiler.SLR
 
                 foreach (var key in keys)
                 {
-                    AddnewIdentifier(key);
+                    AddnewIdentifier(key.haedOfRule);
                     List<string> elements = new List<string>();
                     rule.TryGetValue(key, out elements);
                     foreach (var element in elements)

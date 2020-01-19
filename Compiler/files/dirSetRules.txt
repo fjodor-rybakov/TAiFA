@@ -1,35 +1,3 @@
-`PROGRAM` ->`HEAD` ; `BODY`
-`HEAD` ->program identifier
-`BODY` ->`VAR` ; `BEGIN`
-`BODY` ->`BEGIN`
-`VAR` ->var `IDLIST` : `TYPE`
-`TYPE` ->string
-`TYPE` ->integer
-`IDLIST` ->identifier
-`IDLIST` ->`IDLIST` , identifier
-`BEGIN` ->{ `OPERLIST` }
-`OPERLIST` ->`OPERATOR`
-`OPERLIST` ->`OPERLIST` ; `OPERATOR`
-`OPERATOR` ->`READ`
-`OPERATOR` ->`WRITE`
-`OPERATOR` ->`ASSIGNMENT`
-`OPERATOR` ->`IF`
-`OPERATOR` ->`WHILE`
-`OPERATOR` ->`BEGIN`
-`READ` ->read ( `IDLIST` )
-`WRITE` ->write ( `WRITELIST` )
-`WRITE` ->writeln ( `WRITELIST` )
-`WRITELIST` ->`ELWRITE`
-`WRITELIST` ->`WRITELIST` , `ELWRITE`
-`ELWRITE` ->" text "
-`ASSIGNMENT` ->identifier = `EXPRESSION`
-`EXPRESSION` ->identifier
-`EXPRESSION ->" text "
-`EXPRESSION` ->integer
-`EXPRESSION` ->integer `TYPEMATH`
-`TYPEMATH` ->math `TYPEMATH`
-`TYPEMATH` ->math integer
-`CONDITION` ->`EXPRESSION` comparison `EXPRESSION`
-`IF` ->cond `CONDITION` then { `OPERLIST` }
-`IF` ->cond `CONDITION` then { `OPERLIST` } else { `OPERLIST` }
-`WHILE` ->while `CONDITION` do { `OPERLIST` }
+`PROGRAM` ->`HEAD`$action1
+`HEAD` ->program identifier `ZIM`$action2
+`ZIM` ->kura idioma$action3
