@@ -21,6 +21,7 @@ namespace Compiler
             var rules = rulesReader.GetRules();
             var slr = new Slr(rules);
             var table = slr.GetTable();
+            PrintReestrTable(table.reestr);
 			MakeAndLaunchRunner(table.rules, table.resultTable, lexerData);
             
             
@@ -39,7 +40,7 @@ namespace Compiler
 				var lexerInfo = lexer.GetLexerInfo(line, numberString);
 				foreach (var item in lexerInfo)
 				{
-					Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
+					// Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
 					lexerData.Add(item);
 				}
 				numberString++;
@@ -58,6 +59,28 @@ namespace Compiler
 			bool runnerResult = runner.isSuccessfullyEnded ?? default(bool);
 			// Console.WriteLine($"Runner result: {runnerResult}");
 			//следуем дальнейшей логике...
+		}
+
+		private static void PrintReestrTable(IReadOnlyList<ColumnOfReestr> reestr)
+		{
+			PrintDelimiter(97);
+			Console.WriteLine($"|{"Num",-5}|{"Name",-5}|{"Next Element",-15}|{"Count args",-15}|{"Function name",-25}|{"New token name",-25}|");
+			PrintDelimiter(97);
+			for (var i = 0; i < reestr.Count; i++)
+			{
+				var item = reestr[i];
+				Console.WriteLine($"|{i,-5}|{item.name,-5}|{item.nextElement,-15}|{item.countOfArgs,-15}|{item.nameOfFunction,-25}|{item.nameOfNewToken,-25}|");
+			}
+			PrintDelimiter(97);
+		}
+
+		private static void PrintDelimiter(int count)
+		{
+			for (var i = 0; i < count; i++)
+			{
+				Console.Write("-");
+			}
+			Console.WriteLine();
 		}
 
 	}

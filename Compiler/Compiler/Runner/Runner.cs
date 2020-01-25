@@ -151,7 +151,7 @@ namespace Compiler.Runner
                                )) 
                     ? lexerData[counter + 1].Type
                     : lexerData[counter + 1].Value;
-                Console.WriteLine("Следующее значение лексера: " + lexerData[counter + 1].Value + "; его тип: " + lexerData[counter + 1].Type);
+                // Console.WriteLine("Следующее значение лексера: " + lexerData[counter + 1].Value + "; его тип: " + lexerData[counter + 1].Type);
                 int columnIndexOfNextVal = GetColumnIndexFromValue(word);
                 if (columnIndexOfNextVal == -1)
                 {
@@ -215,7 +215,7 @@ namespace Compiler.Runner
                     return;
                 }
             }
-            // Console.WriteLine(" |||| Свертка по правилу №" + numberOfRule + "; Rule Key: " + key + ";\n");
+            Console.WriteLine(" |||| Свертка по правилу №" + numberOfRule + "; Rule Key: " + key + ";\n");
             RebuildAndCheckChain(key, rule.Count, lexerCounter);
         }
 
