@@ -19,7 +19,7 @@ namespace Compiler
 			
             var rulesReader = new RulesReader();
             var rules = rulesReader.GetRules();
-            var slr = new Slr(rulesReader.GetRules());
+            var slr = new Slr(rules);
             var table = slr.GetTable();
             //MakeAndLaunchRunner(table.rules, table.resultTable, lexerData);
             

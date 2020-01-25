@@ -1,3 +1,10 @@
-`PROGRAM` ->`HEAD`$action1
-`HEAD` ->program identifier `ZIM`$action2
-`ZIM` ->kura idioma$action3
+`S` ->`EXPRESSION`
+`EXPRESSION` ->`EXPRESSION` + `T`$sum
+`EXPRESSION` ->`EXPRESSION` - `T`$subtract
+`EXPRESSION` ->`T`
+`T` ->`T` * `F`$multiplication
+`T` ->`T` / `F`$division
+`T` ->`F`
+`F` ->( `EXPRESSION` )
+`F` ->- `F`
+`F` ->integer

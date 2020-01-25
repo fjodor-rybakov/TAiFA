@@ -29,10 +29,20 @@ namespace Compiler.SLR
 
     }
 
+    struct ColumnOfReestr
+    {
+        public string name;
+        public string nameOfFunction;
+        public int countOfArgs;
+        public string nameOfNewToken;
+        public string nextElement;
+    }
+
     struct ReturnData
     {
         public List<Dictionary<HeadOfRule, List<string>>> rules;
         public List<Table> resultTable;
+        public List<ColumnOfReestr> reestr;
     }
 
     class Slr
@@ -55,7 +65,56 @@ namespace Compiler.SLR
             ReturnData returnData = new ReturnData();
             returnData.resultTable = _resultTable;
             returnData.rules = _rules;
+            returnData.reestr = GetReestr();
+
             return returnData;
+        }
+
+        private List<ColumnOfReestr> GetReestr()
+        {
+            List<ColumnOfReestr> reestr = new List<ColumnOfReestr>();
+
+            _resultTable.ForEach(row => {
+                row.key.ForEach(x => {});
+
+                row.value.ForEach(x =>
+                {
+                    x.valueOfColumn.ForEach(y => {
+                        if (y.Contains("RETURN"))
+                        {
+                            int indexI = 0;
+                            int indexJ = 0;
+                            Int32.TryParse(row.key[0].Split('^')[1], out indexI);
+                            Int32.TryParse(row.key[0].Split('^')[2], out indexJ);
+                            reestr.Add(ToFillColumnReestr(indexI, indexJ, x.columnOfTable));
+                        }
+                    });
+                   
+                });
+
+            });
+
+            return reestr;
+        }
+
+        private ColumnOfReestr ToFillColumnReestr(int i, int j, string element)
+        {
+            ColumnOfReestr columnOfReestr = new ColumnOfReestr();
+
+            var keys = _rules[i].Keys;
+            foreach(var key in keys)
+            {
+                List<string> elements;
+                _rules[i].TryGetValue(key, out elements);
+                columnOfReestr.countOfArgs = elements.Count;
+                columnOfReestr.name = "R" + i.ToString();
+                columnOfReestr.nameOfFunction = key.action;
+                columnOfReestr.nameOfNewToken = key.haedOfRule;
+                columnOfReestr.nextElement = element;
+            }
+
+
+            return columnOfReestr;
         }
 
         private void FillResultTable()
@@ -127,7 +186,7 @@ namespace Compiler.SLR
 
                             responseList.ForEach(x =>
                             {
-                                AddValueToColumn(ref values, x.value, "RETURN", elem.action);
+                                AddValueToColumn(ref values, x.value, "RETURN:" + k.ToString(), elem.action);
                             });
 
                             AddValueToColumn(ref values, "__end", "RETURN", elem.action);
