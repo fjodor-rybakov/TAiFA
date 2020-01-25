@@ -56,7 +56,7 @@ namespace Compiler
 				System.Threading.Thread.Sleep(300);
 			}
 			bool runnerResult = runner.isSuccessfullyEnded ?? default(bool);
-			Console.WriteLine($"Runner result: {runnerResult}");
+			// Console.WriteLine($"Runner result: {runnerResult}");
 			//следуем дальнейшей логике...
 		}
 

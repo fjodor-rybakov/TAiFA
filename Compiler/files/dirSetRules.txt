@@ -1,10 +1,10 @@
 `S` ->`EXPRESSION`
-`EXPRESSION` ->`EXPRESSION` + `T`$sum
-`EXPRESSION` ->`EXPRESSION` - `T`$subtract
+`EXPRESSION` ->`EXPRESSION` + `T`$Sum
+`EXPRESSION` ->`EXPRESSION` - `T`$Subtract
 `EXPRESSION` ->`T`
-`T` ->`T` * `F`$multiplication
-`T` ->`T` / `F`$division
+`T` ->`T` * `F`$Multiplication
+`T` ->`T` / `F`$Division
 `T` ->`F`
 `F` ->( `EXPRESSION` )
-`F` ->- `F`
-`F` ->integer
+`F` ->- `F`$DefineLeaf
+`F` ->integer$DefineUnaryMinus
