@@ -46,8 +46,7 @@ namespace Compiler.Runner
             {
                 string word = (!lexerData[commonCounter].IsReserve && 
                               (lexerData[commonCounter].Type == TypeLexem.IDENTIFICATOR || 
-                              lexerData[commonCounter].Type == TypeLexem.TEXT || 
-                              lexerData[commonCounter].Type == TypeLexem.MATH || 
+                              lexerData[commonCounter].Type == TypeLexem.TEXT ||
                               lexerData[commonCounter].Type == TypeLexem.COMPARISON ||
                               lexerData[commonCounter].Type == TypeLexem.NUMBER10
                               ))
@@ -148,7 +147,6 @@ namespace Compiler.Runner
                                (lexerData[counter + 1].Type == TypeLexem.IDENTIFICATOR || 
                                lexerData[counter + 1].Type == TypeLexem.TEXT || 
                                lexerData[counter + 1].Type == TypeLexem.COMPARISON || 
-                               lexerData[counter + 1].Type == TypeLexem.MATH ||
                                lexerData[counter + 1].Type == TypeLexem.NUMBER10
                                )) 
                     ? lexerData[counter + 1].Type
@@ -165,7 +163,7 @@ namespace Compiler.Runner
                 int indexStr = GetSafeKeyIndexFromTableWith(enterChain.Peek());
                 string nextValueOfColumn = MakeStringFromList(resultTable[indexStr].value[columnIndexOfNextVal].valueOfColumn);
 
-                if (nextValueOfColumn == "RETURN")
+                if (nextValueOfColumn.Split(':')[0] == "RETURN")
                 {
                     TryToConvolutionInRule(GetNumberOfRule(enterChain.Peek()), (counter + 1));
                 }
