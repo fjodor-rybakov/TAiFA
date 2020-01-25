@@ -1,4 +1,4 @@
-namespace Compiler.AST.helper.enums
+namespace Compiler.Helper.enums
 {
     public enum ActionType
     {

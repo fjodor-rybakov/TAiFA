@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Compiler.AST;
 using Compiler.SLR;
 using Compiler.Lexer;
 
@@ -12,15 +13,18 @@ namespace Compiler.Runner
         private Stack<string> enterChain = new Stack<string>();
         private List<Table> resultTable = new List<Table>(); //вынес в глобальную переменную, чтобы слишком часто не передавать по значению(экономим немного памяти)
         private bool firstEnter = true;
+        private readonly AstTree _astTree = new AstTree();
+        private readonly List<ColumnOfReestr> _registry;
 
         public bool? isSuccessfullyEnded = null;
         public List<Dictionary<HeadOfRule, List<string>>> rules;
         public List<LexerInfo> lexerData;
         int commonCounter = 0;
         //init
-        public Runner(List<Dictionary<HeadOfRule, List<string>>> _rules) //правила берем из slr, они там уже есть.
+        public Runner(List<Dictionary<HeadOfRule, List<string>>> _rules, List<ColumnOfReestr> registry) //правила берем из slr, они там уже есть.
         {
             rules = _rules;
+            _registry = registry;
         }
 
         //входная цепочка может состоять из подстрок и разделяется пробелами.
@@ -28,9 +32,10 @@ namespace Compiler.Runner
         public void Convolution(List<Table> table, List<LexerInfo> lexerChainData) //return true if success.
         {
             resultTable = table;
-            lexerData = lexerChainData;
+            lexerData = new List<LexerInfo>(lexerChainData);
             
             ProcessChain();
+            _astTree.PrintTree(); // Принт дерева
         }
 
         void ProcessChain()
@@ -200,11 +205,12 @@ namespace Compiler.Runner
             //Пробуем свернуть. Получается -> идем дальше; нет - завершаем с ошибкой.
             string key = rules[numberOfRule].Keys.ElementAt(0).haedOfRule;
             List<string> rule = rules[numberOfRule] [rules[numberOfRule].Keys.ElementAt(0)];
+            var countRemoveElems = 0;
             for (int i = rule.Count - 1; i >= 0; i--)
             {
-                //Console.WriteLine("///in loop with index: " + i);
                 if ((rule[i] == GetClearKey(enterChain.Peek())) && (enterChain.Count >= 1))
                 {
+                    countRemoveElems++;
                     enterChain.Pop();
                 }
                 else
@@ -215,7 +221,11 @@ namespace Compiler.Runner
                     return;
                 }
             }
-            Console.WriteLine(" |||| Свертка по правилу №" + numberOfRule + "; Rule Key: " + key + ";\n");
+
+            var value = lexerData[lexerCounter - 1].Value;
+            var registryColumn = FindRegistry(numberOfRule);
+            _astTree.CreateNode(registryColumn, value, countRemoveElems - 1);
+            Console.WriteLine($"|Свертка по правилу №{numberOfRule, -5}| Номер правила: {key, -15}| Действие: {registryColumn.nameOfFunction ?? "null", -15}|");
             RebuildAndCheckChain(key, rule.Count, lexerCounter);
         }
 
@@ -248,6 +258,15 @@ namespace Compiler.Runner
         {
             Console.WriteLine(text);
             isSuccessfullyEnded = success;
+        }
+
+        private ColumnOfReestr FindRegistry(int numberConvolution)
+        {
+            return _registry.Find(item =>
+            {
+                int.TryParse(item.name.Substring(1), out var parsedNumberConvolution);
+                return parsedNumberConvolution == numberConvolution;
+            });
         }
     }
 }

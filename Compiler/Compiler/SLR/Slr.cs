@@ -29,7 +29,7 @@ namespace Compiler.SLR
 
     }
 
-    struct ColumnOfReestr
+    public struct ColumnOfReestr
     {
         public string name;
         public string nameOfFunction;

@@ -40,8 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AST\AstTree.cs" />
-    <Compile Include="AST\helper\enums\ActionType.cs" />
     <Compile Include="AST\TreeNode.cs" />
+    <Compile Include="Helper\enums\ActionType.cs" />
+    <Compile Include="Helper\Helper.cs" />
     <Compile Include="LLSyntaxer\DirSetFinder.cs" />
     <Compile Include="LLSyntaxer\Factorization.cs" />
     <Compile Include="LLSyntaxer\Generator.cs" />
