@@ -21,7 +21,7 @@ namespace Compiler
             var rules = rulesReader.GetRules();
             var slr = new Slr(rules);
             var table = slr.GetTable();
-            //MakeAndLaunchRunner(table.rules, table.resultTable, lexerData);
+			MakeAndLaunchRunner(table.rules, table.resultTable, lexerData);
             
             
             Console.ReadLine();
@@ -47,7 +47,7 @@ namespace Compiler
 			return lexerData;
 		}
 
-		private static void MakeAndLaunchRunner(List<Dictionary<string, List<string>>> rules, List<Table> resultTable, List<LexerInfo> lexerData)
+		private static void MakeAndLaunchRunner(List<Dictionary<HeadOfRule, List<string>>> rules, List<Table> resultTable, List<LexerInfo> lexerData)
 		{
 			var runner = new Runner.Runner(rules); // при инициализации бегунка передаем правила из SLR.
 			runner.Convolution(resultTable, lexerData);
@@ -56,6 +56,7 @@ namespace Compiler
 				System.Threading.Thread.Sleep(300);
 			}
 			bool runnerResult = runner.isSuccessfullyEnded ?? default(bool);
+			Console.WriteLine($"Runner result: {runnerResult}");
 			//следуем дальнейшей логике...
 		}
 

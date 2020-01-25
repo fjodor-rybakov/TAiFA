@@ -14,11 +14,11 @@ namespace Compiler.Runner
         private bool firstEnter = true;
 
         public bool? isSuccessfullyEnded = null;
-        public List<Dictionary<string, List<string>>> rules;
+        public List<Dictionary<HeadOfRule, List<string>>> rules;
         public List<LexerInfo> lexerData;
         int commonCounter = 0;
         //init
-        public Runner(List<Dictionary<string, List<string>>> _rules) //правила берем из slr, они там уже есть.
+        public Runner(List<Dictionary<HeadOfRule, List<string>>> _rules) //правила берем из slr, они там уже есть.
         {
             rules = _rules;
         }
@@ -200,7 +200,7 @@ namespace Compiler.Runner
         void TryToConvolutionInRule(int numberOfRule, int lexerCounter)
         {
             //Пробуем свернуть. Получается -> идем дальше; нет - завершаем с ошибкой.
-            string key = rules[numberOfRule].Keys.ElementAt(0);
+            string key = rules[numberOfRule].Keys.ElementAt(0).haedOfRule;
             List<string> rule = rules[numberOfRule] [rules[numberOfRule].Keys.ElementAt(0)];
             for (int i = rule.Count - 1; i >= 0; i--)
             {
