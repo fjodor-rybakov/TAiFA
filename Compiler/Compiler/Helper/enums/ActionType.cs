@@ -14,6 +14,7 @@ namespace Compiler.Helper.enums
         DefileRead,
         DefineIfCondition,
         DefineIfElseCondition,
-        DefineWhile
+        DefineWhile,
+        DefineAssign
     }
 }

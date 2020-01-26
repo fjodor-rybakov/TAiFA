@@ -59,7 +59,7 @@ namespace Compiler.AST
                     break;
                 }
                 default:
-                    throw new Exception("Unknow action!");
+                    throw new Exception("Unknow action! Please add action at enum \"ActionType\" and release action at AST tree");
             }
         }
 
