@@ -7,6 +7,13 @@ namespace Compiler.Helper.enums
         Multiplication,
         Division,
         DefineLeaf,
-        DefineUnaryMinus
+        DefineUnaryMinus,
+        DefineVar,
+        DefineWrite,
+        DefineWriteLine,
+        DefileRead,
+        DefineIfCondition,
+        DefineIfElseCondition,
+        DefineWhile
     }
 }
