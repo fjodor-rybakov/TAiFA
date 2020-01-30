@@ -13,6 +13,7 @@ namespace Compiler.Lexer
         public const string DELIMITER = "delimetr";
         public const string TEXT = "text";
         public const string COMPARISON = "comparison";
+        public const string BOOLEAN = "boolean";
         public const string MATH = "math";
 
         public const string INT = "int";
