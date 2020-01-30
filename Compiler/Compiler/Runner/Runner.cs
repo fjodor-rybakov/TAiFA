@@ -13,8 +13,9 @@ namespace Compiler.Runner
         private Stack<string> enterChain = new Stack<string>();
         private List<Table> resultTable = new List<Table>(); //вынес в глобальную переменную, чтобы слишком часто не передавать по значению(экономим немного памяти)
         private bool firstEnter = true;
-        private readonly AstTree _astTree = new AstTree();
+        private readonly AstTree _astTree;
         private readonly List<ColumnOfReestr> _registry;
+        private readonly IdTable.IdTable _table;
 
         public bool? isSuccessfullyEnded = null;
         public List<Dictionary<HeadOfRule, List<string>>> rules;
@@ -25,6 +26,8 @@ namespace Compiler.Runner
         {
             rules = _rules;
             _registry = registry;
+            _astTree = new AstTree();
+            _table = new IdTable.IdTable();
         }
 
         //входная цепочка может состоять из подстрок и разделяется пробелами.
