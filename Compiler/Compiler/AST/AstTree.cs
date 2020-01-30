@@ -83,5 +83,10 @@ namespace Compiler.AST
             var childrenListString = node.ChildNodes == null ? "null" : string.Join(", ", node.ChildNodes.Select(item => item.Value));
             Console.WriteLine($"|{node.Value, -10}|{childrenListString, -20}|{node.ActionType, -20}|");
         }
+
+        public TreeNode GetTree()
+        {
+            return _tree.Peek();
+        }
     }
 }
