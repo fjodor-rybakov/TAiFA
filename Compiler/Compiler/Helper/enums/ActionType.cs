@@ -11,10 +11,11 @@ namespace Compiler.Helper.enums
         DefineVar,
         DefineWrite,
         DefineWriteLine,
-        DefileRead,
         DefineIfCondition,
         DefineIfElseCondition,
         DefineWhile,
-        DefineAssign
+        DefineAssign,
+        DefineBody,
+        DefineBegin
     }
 }

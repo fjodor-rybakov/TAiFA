@@ -224,8 +224,11 @@ namespace Compiler.Runner
 
             var value = lexerData[lexerCounter - 1].Value;
             var registryColumn = FindRegistry(numberOfRule);
+            
+            // Формируем AST дерево
             _astTree.CreateNode(registryColumn, value, countRemoveElems - 1);
             Console.WriteLine($"|Свертка по правилу №{numberOfRule, -5}| Номер правила: {key, -15}| Действие: {registryColumn.nameOfFunction ?? "null", -15}|");
+            
             RebuildAndCheckChain(key, rule.Count, lexerCounter);
         }
 
