@@ -5,5 +5,5 @@
 `VARIABLE` ->identifier : `TYPE`$DefineLeaf
 `VARIABLE` ->`VARIABLE`, identifier : `TYPE`$DefineLeaf
 `TYPE` ->string$DefineLeaf
-`TYPE` ->int$DefineLeaf
+`TYPE` ->integer$DefineLeaf
 `TYPE` ->bool$DefineLeaf
