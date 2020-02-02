@@ -1,10 +1,9 @@
-`S` ->`EXPRESSION`
-`EXPRESSION` ->`EXPRESSION` + `T`$Sum
-`EXPRESSION` ->`EXPRESSION` - `T`$Subtract
-`EXPRESSION` ->`T`
-`T` ->`T` * `F`$Multiplication
-`T` ->`T` / `F`$Division
-`T` ->`F`
-`F` ->( `EXPRESSION` )
-`F` ->- `F`$DefineUnaryMinus
-`F` ->integer$DefineLeaf
+`PROGRAM` ->`BODY`$DefineBody
+`BODY` ->`VAR` ;$DefineVar
+
+`VAR` ->var `VARIABLE`$DefineLeaf
+`VARIABLE` ->identifier : `TYPE`$DefineLeaf
+`VARIABLE` ->`VARIABLE`, identifier : `TYPE`$DefineLeaf
+`TYPE` ->string$DefineLeaf
+`TYPE` ->int$DefineLeaf
+`TYPE` ->bool$DefineLeaf

@@ -51,7 +51,7 @@ namespace Compiler
                 var lexerInfo = lexer.GetLexerInfo(line, numberString);
                 foreach (var item in lexerInfo)
                 {
-                    // Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
+                    Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
                     lexerData.Add(item);
                 }
 

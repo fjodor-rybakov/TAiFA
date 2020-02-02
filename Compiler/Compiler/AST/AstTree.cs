@@ -22,36 +22,57 @@ namespace Compiler.AST
                 case nameof(ActionType.DefineUnaryMinus):
                 {
                     var tempList = new List<TreeNode>();
-                    for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
+                    if (tempList.Count != 0)
+                        for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
                     _tree.Push(new TreeNode(TermType.Minis, ActionType.DefineUnaryMinus, "-", tempList));
                     break;
                 }
                 case nameof(ActionType.Sum):
                 {
                     var tempList = new List<TreeNode>();
-                    for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
+                    if (tempList.Count != 0)
+                        for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
                     _tree.Push(new TreeNode(TermType.Plus, ActionType.Sum, "+", tempList));
                     break;
                 }
                 case nameof(ActionType.Subtract):
                 {
                     var tempList = new List<TreeNode>();
-                    for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
+                    if (tempList.Count != 0)
+                        for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
                     _tree.Push(new TreeNode(TermType.Minis, ActionType.Subtract, "-", tempList));
                     break;
                 }
                 case nameof(ActionType.Multiplication):
                 {
                     var tempList = new List<TreeNode>();
-                    for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
+                    if (tempList.Count != 0)
+                        for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
                     _tree.Push(new TreeNode(TermType.Multiple, ActionType.Multiplication, "*", tempList));
                     break;
                 }
                 case nameof(ActionType.Division):
                 {
                     var tempList = new List<TreeNode>();
-                    for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
+                    if (tempList.Count != 0)
+                        for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
                     _tree.Push(new TreeNode(TermType.Division, ActionType.Division, "/", tempList));
+                    break;
+                }
+                case nameof(ActionType.DefineBody):
+                {
+                    var tempList = new List<TreeNode>();
+                    if (tempList.Count != 0)
+                        for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
+                    _tree.Push(new TreeNode(TermType.Multiple, ActionType.DefineBody, value, tempList));
+                    break;
+                }
+                case nameof(ActionType.DefineVar):
+                {
+                    var tempList = new List<TreeNode>();
+                    if (tempList.Count != 0)
+                        for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
+                    _tree.Push(new TreeNode(TermType.Multiple, ActionType.DefineVar, value, tempList));
                     break;
                 }
                 case null:
