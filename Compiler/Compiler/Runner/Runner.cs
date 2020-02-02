@@ -38,7 +38,7 @@ namespace Compiler.Runner
             lexerData = new List<LexerInfo>(lexerChainData);
             
             ProcessChain();
-            _astTree.PrintTree(); // Принт дерева
+            // _astTree.PrintTree(); // Принт дерева
         }
 
         void ProcessChain()
@@ -229,8 +229,8 @@ namespace Compiler.Runner
             var registryColumn = FindRegistry(numberOfRule);
             
             // Формируем AST дерево
-            _astTree.CreateNode(registryColumn, value, countRemoveElems - 1);
-            Console.WriteLine($"|Свертка по правилу №{numberOfRule, -5}| Номер правила: {key, -15}| Действие: {registryColumn.nameOfFunction ?? "null", -15}|");
+            //_astTree.CreateNode(registryColumn, value, countRemoveElems - 1);
+            //Console.WriteLine($"|Свертка по правилу №{numberOfRule, -5}| Номер правила: {key, -15}| Действие: {registryColumn.nameOfFunction ?? "null", -15}|");
             
             RebuildAndCheckChain(key, rule.Count, lexerCounter);
         }
