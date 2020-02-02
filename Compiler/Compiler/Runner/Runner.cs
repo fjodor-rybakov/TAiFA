@@ -38,7 +38,7 @@ namespace Compiler.Runner
             lexerData = new List<LexerInfo>(lexerChainData);
             
             ProcessChain();
-            // _astTree.PrintTree(); // Принт дерева
+            _astTree.PrintTree(); // Принт дерева
         }
 
         void ProcessChain()
@@ -225,7 +225,6 @@ namespace Compiler.Runner
                 }
             }
 
-            var value = lexerData[lexerCounter - 1].Value;
             var registryColumn = FindRegistry(numberOfRule);
             
             // Формируем AST дерево

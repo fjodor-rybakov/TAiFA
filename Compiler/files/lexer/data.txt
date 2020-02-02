@@ -1,1 +1,1 @@
-var a: integer, b: string;
+var a: integer;

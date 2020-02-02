@@ -67,12 +67,20 @@ namespace Compiler.AST
                     _tree.Push(new TreeNode(TermType.Multiple, ActionType.DefineBody, value, tempList));
                     break;
                 }
-                case nameof(ActionType.DefineVar):
+                case nameof(ActionType.DefineVarStatement):
                 {
                     var tempList = new List<TreeNode>();
                     if (tempList.Count != 0)
                         for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
-                    _tree.Push(new TreeNode(TermType.Multiple, ActionType.DefineVar, value, tempList));
+                    _tree.Push(new TreeNode(TermType.Multiple, ActionType.DefineVarStatement, value, tempList));
+                    break;
+                }
+                case nameof(ActionType.DefineVarDeclaration):
+                {
+                    var tempList = new List<TreeNode>();
+                    if (tempList.Count != 0)
+                        for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
+                    _tree.Push(new TreeNode(TermType.Multiple, ActionType.DefineVarDeclaration, value, tempList));
                     break;
                 }
                 case null:
@@ -86,11 +94,19 @@ namespace Compiler.AST
 
         public void PrintTree()
         {
-            Helper.Helper.PrintDelimiter(54);
-            Console.WriteLine($"|{"Node value", -10}|{"Children list", -20}|{"Action", -20}|");
-            Helper.Helper.PrintDelimiter(54);
-            Traversal(_tree.First());
-            Helper.Helper.PrintDelimiter(54);
+            var root = _tree.FirstOrDefault();
+            if (root != null)
+            {
+                Helper.Helper.PrintDelimiter(54);
+                Console.WriteLine($"|{"Node value", -10}|{"Children list", -20}|{"Action", -20}|");
+                Helper.Helper.PrintDelimiter(54);
+                Traversal(root);
+                Helper.Helper.PrintDelimiter(54);
+            }
+            else
+            {
+                Console.WriteLine("Дерево пустое!");
+            }
         }
 
         private void Traversal(TreeNode node)
