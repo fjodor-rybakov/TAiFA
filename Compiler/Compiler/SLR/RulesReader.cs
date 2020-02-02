@@ -28,8 +28,14 @@ namespace Compiler.SLR
             var reader = new StreamReader(PATH_RULES);
             string line;
           
-            while ((line = reader.ReadLine()) != null)
+            while (reader.Peek() > 0)
             {
+                line = reader.ReadLine();
+                if (line == null)
+                {
+                    continue;
+                }
+
                 HeadOfRule leftPart = new HeadOfRule();
                 string[] partsOne;
 
