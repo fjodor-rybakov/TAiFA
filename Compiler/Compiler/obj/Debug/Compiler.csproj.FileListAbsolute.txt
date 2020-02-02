@@ -29,3 +29,10 @@ G:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cache
 G:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csproj.CoreCompileInputs.cache
 G:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.exe
 G:\TAiFA\Compiler\Compiler\obj\Debug\Compiler.pdb
+D:\repos\TAiFA\Compiler\Compiler\bin\Debug\Compiler.exe.config
+D:\repos\TAiFA\Compiler\Compiler\bin\Debug\Compiler.exe
+D:\repos\TAiFA\Compiler\Compiler\bin\Debug\Compiler.pdb
+D:\repos\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cache
+D:\repos\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csproj.CoreCompileInputs.cache
+D:\repos\TAiFA\Compiler\Compiler\obj\Debug\Compiler.exe
+D:\repos\TAiFA\Compiler\Compiler\obj\Debug\Compiler.pdb

@@ -1,9 +1,8 @@
 `PROGRAM` ->`BODY`$DefineBody
 `BODY` ->`VAR` ;$DefineVar
-
 `VAR` ->var `VARIABLE`$DefineLeaf
 `VARIABLE` ->identifier : `TYPE`$DefineLeaf
-`VARIABLE` ->`VARIABLE`, identifier : `TYPE`$DefineLeaf
+`VARIABLE` ->`VARIABLE` , identifier : `TYPE`$DefineLeaf
 `TYPE` ->string$DefineLeaf
 `TYPE` ->integer$DefineLeaf
 `TYPE` ->bool$DefineLeaf

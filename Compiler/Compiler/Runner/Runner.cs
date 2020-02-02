@@ -260,6 +260,14 @@ namespace Compiler.Runner
             }
         }
 
+        bool checkForMathematicalAction() //умножение, деление, сложение и вычитание
+        {
+            bool result = false;
+
+            return result;
+        }
+
+
         void PrintEndOfProgram(string text, bool success)
         {
             Console.WriteLine(text);

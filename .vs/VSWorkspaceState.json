@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Compiler",
+    "\\Compiler\\Compiler",
+    "\\Compiler\\Compiler\\Helper",
+    "\\Compiler\\Compiler\\Helper\\enums",
+    "\\Compiler\\Compiler\\Runner",
+    "\\Runner",
+    "\\Runner\\Runner\\bin\\Debug",
+    "\\Runner\\Runner\\bin\\Release",
+    "\\Runner\\Runner\\bin\\Release\\netcoreapp3.0"
+  ],
+  "SelectedNode": "\\Compiler\\Compiler\\Helper\\enums\\ActionType.cs",
+  "PreviewInSolutionExplorer": false
+}
