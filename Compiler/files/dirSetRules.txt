@@ -1,8 +1,10 @@
-`PROGRAM` ->`BODY`$DefineBody
-`BODY` ->`VAR` ;$DefineVarStatement
-`VAR` ->var `VARIABLE`$DefineLeaf
-`VARIABLE` ->identifier : `TYPE`$DefineVarDeclaration
-`VARIABLE` ->`VARIABLE` , identifier : `TYPE`$DefineVarDeclaration
-`TYPE` ->string$DefineLeaf
-`TYPE` ->integer$DefineLeaf
-`TYPE` ->bool$DefineLeaf
+`S` ->`EXPRESSION`
+`EXPRESSION` ->`EXPRESSION` + `T`$Sum
+`EXPRESSION` ->`EXPRESSION` - `T`$Subtract
+`EXPRESSION` ->`T`
+`T` ->`T` * `F`$Multiplication
+`T` ->`T` / `F`$Division
+`T` ->`F`
+`F` ->( `EXPRESSION` )
+`F` ->- `F`$DefineUnaryMinus
+`F` ->integer$DefineLeaf
