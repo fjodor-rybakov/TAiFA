@@ -220,10 +220,14 @@ namespace Compiler.Runner
                         (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.COMPARISON) ||
                         (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.BOOLEAN) ||
                         (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.INT) ||
-                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.MATH)) 
-
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.MATH))
                     { // && !(lexerData[countRemoveElems].IsReserve)
-                        Console.WriteLine(lexerData[lexerCounter - countRemoveElems - 1].Value);
+                        var value = lexerData[lexerCounter - countRemoveElems - 1].Value;
+                        var registryColumn = FindRegistry(numberOfRule);
+            
+                        // Формируем AST дерево
+                        _astTree.CreateNode(registryColumn, value, countRemoveElems + 1);
+                        Console.WriteLine($"|Лексема: {value, -15}|Свертка по правилу №{numberOfRule, -5}| Номер правила: {key, -15}| Действие: {registryColumn.nameOfFunction ?? "null", -15}|");
                     }
                     countRemoveElems++;
                     enterChain.Pop();
@@ -237,14 +241,6 @@ namespace Compiler.Runner
                 }
             }
 
-            //var value = lexerData[lexerCounter - 1].Value;
-            var value = lexerData[lexerCounter - 1].Value;
-            var registryColumn = FindRegistry(numberOfRule);
-            
-            // Формируем AST дерево
-            //_astTree.CreateNode(registryColumn, value, countRemoveElems - 1);
-            //Console.WriteLine($"|Свертка по правилу №{numberOfRule, -5}| Номер правила: {key, -15}| Действие: {registryColumn.nameOfFunction ?? "null", -15}|");
-            
             RebuildAndCheckChain(key, rule.Count, lexerCounter);
         }
 
