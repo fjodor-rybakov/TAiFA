@@ -213,7 +213,16 @@ namespace Compiler.Runner
             {
                 if ((rule[i] == GetClearKey(enterChain.Peek())) && (enterChain.Count >= 1))
                 {
-                    if ((lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.IDENTIFICATOR)) { // && !(lexerData[countRemoveElems].IsReserve)
+                    if ((lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.IDENTIFICATOR) || 
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.DECIMAL) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.OPERATION) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.TEXT) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.COMPARISON) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.BOOLEAN) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.INT) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.MATH)) 
+
+                    { // && !(lexerData[countRemoveElems].IsReserve)
                         Console.WriteLine(lexerData[lexerCounter - countRemoveElems - 1].Value);
                     }
                     countRemoveElems++;
