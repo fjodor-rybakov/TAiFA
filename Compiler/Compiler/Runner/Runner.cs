@@ -213,6 +213,9 @@ namespace Compiler.Runner
             {
                 if ((rule[i] == GetClearKey(enterChain.Peek())) && (enterChain.Count >= 1))
                 {
+                    if ((lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.IDENTIFICATOR)) { // && !(lexerData[countRemoveElems].IsReserve)
+                        Console.WriteLine(lexerData[lexerCounter - countRemoveElems - 1].Value);
+                    }
                     countRemoveElems++;
                     enterChain.Pop();
                 }
@@ -225,6 +228,7 @@ namespace Compiler.Runner
                 }
             }
 
+            //var value = lexerData[lexerCounter - 1].Value;
             var value = lexerData[lexerCounter - 1].Value;
             var registryColumn = FindRegistry(numberOfRule);
             
