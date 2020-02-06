@@ -36,7 +36,7 @@ namespace Compiler
             PrintRegistryTable(grouping);
             MakeAndLaunchRunner(table.rules, table.resultTable, grouping, lexerData);
 
-            Console.ReadLine();
+             Console.ReadLine();
         }
 
         private static List<LexerInfo> MakeLexer()
@@ -51,7 +51,7 @@ namespace Compiler
                 var lexerInfo = lexer.GetLexerInfo(line, numberString);
                 foreach (var item in lexerInfo)
                 {
-                    Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
+                    // Console.WriteLine("Value: " + item.Value + " => Type: " + item.Type + ", IsReserve: " + item.IsReserve);
                     lexerData.Add(item);
                 }
 

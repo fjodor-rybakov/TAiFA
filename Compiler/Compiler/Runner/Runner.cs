@@ -38,7 +38,7 @@ namespace Compiler.Runner
             lexerData = new List<LexerInfo>(lexerChainData);
             
             ProcessChain();
-            // _astTree.PrintTree(); // Принт дерева
+            _astTree.PrintTree(); // Принт дерева
         }
 
         void ProcessChain()

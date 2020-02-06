@@ -1,8 +1,8 @@
 `PROGRAM` ->`BODY`$DefineBody
-`BODY` ->`VAR` ;$DefineVar
+`BODY` ->`VAR` ;$DefineVarStatement
 `VAR` ->var `VARIABLE`$DefineLeaf
-`VARIABLE` ->identifier : `TYPE`$DefineLeaf
-`VARIABLE` ->`VARIABLE` , identifier : `TYPE`$DefineLeaf
+`VARIABLE` ->identifier : `TYPE`$DefineVarDeclaration
+`VARIABLE` ->`VARIABLE` , identifier : `TYPE`$DefineVarDeclaration
 `TYPE` ->string$DefineLeaf
 `TYPE` ->integer$DefineLeaf
 `TYPE` ->bool$DefineLeaf
