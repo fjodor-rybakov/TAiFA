@@ -108,6 +108,7 @@
     <Compile Include="MSILGenerator\Resources\ResourceManager.cs" />
     <Compile Include="MSILGenerator\Utils\Constants.cs" />
     <Compile Include="MSILGenerator\Utils\VariableTypeHelper.cs" />
+    <Compile Include="MyMsil\MsilGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecDown\RecDown.cs" />

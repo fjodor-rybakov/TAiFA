@@ -39,6 +39,8 @@ namespace Compiler.Runner
             
             ProcessChain();
             _astTree.PrintTree(); // Принт дерева
+            TreeNode tree = _astTree.GetTree();
+            var c = 3 + 2;
         }
 
         void ProcessChain()
