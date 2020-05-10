@@ -22,8 +22,8 @@ namespace Compiler.AST
                 case nameof(ActionType.DefineUnaryMinus):
                 {
                     var tempList = new List<TreeNode>();
-                    for (var i = 0; i < countRemoveElems; i++) tempList.Add(_tree.Pop());
-                    _tree.Push(new TreeNode(TermType.Minis, ActionType.DefineUnaryMinus, "-", tempList));
+                    for (var i = 0; i < countRemoveElems - 1; i++) tempList.Add(_tree.Pop());
+                    _tree.Push(new TreeNode(TermType.Minis, ActionType.DefineUnaryMinus, value, tempList));
                     break;
                 }
                 case nameof(ActionType.Sum):

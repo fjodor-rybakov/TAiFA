@@ -226,8 +226,8 @@ namespace Compiler.Runner
                         var registryColumn = FindRegistry(numberOfRule);
             
                         // Формируем AST дерево
-                        _astTree.CreateNode(registryColumn, value, countRemoveElems + 1);
                         Console.WriteLine($"|Лексема: {value, -15}|Свертка по правилу №{numberOfRule, -5}| Номер правила: {key, -15}| Действие: {registryColumn.nameOfFunction ?? "null", -15}|");
+                        _astTree.CreateNode(registryColumn, value, countRemoveElems + 1);
                     }
                     countRemoveElems++;
                     enterChain.Pop();

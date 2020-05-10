@@ -36,3 +36,4 @@ D:\repos\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csprojAssemblyReference.cach
 D:\repos\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csproj.CoreCompileInputs.cache
 D:\repos\TAiFA\Compiler\Compiler\obj\Debug\Compiler.exe
 D:\repos\TAiFA\Compiler\Compiler\obj\Debug\Compiler.pdb
+C:\projects\TAiFA\Compiler\Compiler\obj\Debug\Compiler.csproj.CoreCompileInputs.cache
