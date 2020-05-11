@@ -24,7 +24,7 @@ namespace Compiler.MyMsil
             code.WriteLine("{");
             code.WriteLine(".entrypoint");
             code.WriteLine(".maxstack 5");
-            code.WriteLine(".locals init (int32 first)");
+            code.WriteLine(".locals init (int32 first, second)");
             var a = GetResult(treeNode, code);
             code.WriteLine("call void [mscorlib]System.Console::Write(int32)");
             code.WriteLine("ret");
@@ -88,6 +88,16 @@ namespace Compiler.MyMsil
                     return response;
                 }
 
+                if (!firstResult.isResultOfOperation && secondResult.isResultOfOperation)
+                {
+                    writer.WriteLine("stloc second");
+                    WriteInt(writer, firstResult.value);
+                    writer.WriteLine("ldloc second");
+                    WriteCommand(writer, treeNode.TermType);
+                    response.isResultOfOperation = true;
+                    return response;
+                }
+
                 response.isResultOfOperation = true;
                 return response;
             }
@@ -97,6 +107,7 @@ namespace Compiler.MyMsil
                 Int32.TryParse(treeNode.Value, out value);
                 response.value = value;
                 response.isResultOfOperation = false;
+
                 return response;
             }
         }
