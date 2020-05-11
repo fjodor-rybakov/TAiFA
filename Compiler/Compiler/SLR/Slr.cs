@@ -29,7 +29,7 @@ namespace Compiler.SLR
 
     }
 
-    struct ColumnOfReestr
+    public struct ColumnOfReestr
     {
         public string name;
         public string nameOfFunction;
@@ -61,7 +61,7 @@ namespace Compiler.SLR
         {
             AddIdentifiers();
             FillResultTable();
-            ShowResultTable(); //раскомментировать, если хочешь увидеть таблицу.
+            // ShowResultTable(); //раскомментировать, если хочешь увидеть таблицу.
             ReturnData returnData = new ReturnData();
             returnData.resultTable = _resultTable;
             returnData.rules = _rules;

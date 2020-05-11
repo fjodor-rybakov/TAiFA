@@ -14,7 +14,7 @@ namespace Compiler.Lexer
         public List<char> SplitSymbols { get; } = new List<char>{',', ':', ';', '.',  '"', '(', ')', '{', '}', '\''};
         public List<string> ReserveWords { get; } = new List<string>
         {
-            "begin", "end", "main", "read", "write", "writeln", "char", "bool", "integer", "for", "while", "cond", "else", "var", "program", "then", "do"
+            "begin", "end", "main", "read", "write", "writeln", "char", "bool", "integer", "for", "while", "cond", "else", "var", "program", "then", "do", "string"
         };
         
         public List<string> ComparisonWords { get; } = new List<string>

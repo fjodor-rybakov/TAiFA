@@ -43,6 +43,13 @@ namespace Compiler.Lexer
                         value = "";
                         acceptAutomates = InitAcceptAutomates();
                     }
+                    else if(value + ch == "true" || value + ch == "false")
+                    {
+                        lexerInfo.Add(new LexerInfo(value, TypeLexem.BOOLEAN, true, numberString, index));
+                        value = "";
+                        acceptAutomates = InitAcceptAutomates();
+                        continue;
+                    }
                     else if (index < line.Length - 1 && CheckComparison(ch, line[index + 1], ref index, ref value))
                     {
                         lexerInfo.Add(new LexerInfo(value, TypeLexem.COMPARISON, false, numberString, index));

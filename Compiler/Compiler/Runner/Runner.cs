@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Compiler.AST;
 using Compiler.SLR;
 using Compiler.Lexer;
+using Compiler.MyMsil;
 
 namespace Compiler.Runner
 {
@@ -12,15 +14,21 @@ namespace Compiler.Runner
         private Stack<string> enterChain = new Stack<string>();
         private List<Table> resultTable = new List<Table>(); //вынес в глобальную переменную, чтобы слишком часто не передавать по значению(экономим немного памяти)
         private bool firstEnter = true;
+        private readonly AstTree _astTree;
+        private readonly List<ColumnOfReestr> _registry;
+        private readonly IdTable.IdTable _table;
 
         public bool? isSuccessfullyEnded = null;
-        public List<Dictionary<string, List<string>>> rules;
+        public List<Dictionary<HeadOfRule, List<string>>> rules;
         public List<LexerInfo> lexerData;
         int commonCounter = 0;
         //init
-        public Runner(List<Dictionary<string, List<string>>> _rules) //правила берем из slr, они там уже есть.
+        public Runner(List<Dictionary<HeadOfRule, List<string>>> _rules, List<ColumnOfReestr> registry) //правила берем из slr, они там уже есть.
         {
             rules = _rules;
+            _registry = registry;
+            _astTree = new AstTree();
+            _table = new IdTable.IdTable();
         }
 
         //входная цепочка может состоять из подстрок и разделяется пробелами.
@@ -28,9 +36,14 @@ namespace Compiler.Runner
         public void Convolution(List<Table> table, List<LexerInfo> lexerChainData) //return true if success.
         {
             resultTable = table;
-            lexerData = lexerChainData;
+            lexerData = new List<LexerInfo>(lexerChainData);
             
             ProcessChain();
+            _astTree.PrintTree(); // Принт дерева
+            TreeNode tree = _astTree.GetTree();
+            MsilGenerator msilGenerator = new MsilGenerator();
+            msilGenerator.Generate(tree);
+            var c = 3 + 2;
         }
 
         void ProcessChain()
@@ -46,8 +59,7 @@ namespace Compiler.Runner
             {
                 string word = (!lexerData[commonCounter].IsReserve && 
                               (lexerData[commonCounter].Type == TypeLexem.IDENTIFICATOR || 
-                              lexerData[commonCounter].Type == TypeLexem.TEXT || 
-                              lexerData[commonCounter].Type == TypeLexem.MATH || 
+                              lexerData[commonCounter].Type == TypeLexem.TEXT ||
                               lexerData[commonCounter].Type == TypeLexem.COMPARISON ||
                               lexerData[commonCounter].Type == TypeLexem.NUMBER10
                               ))
@@ -148,12 +160,11 @@ namespace Compiler.Runner
                                (lexerData[counter + 1].Type == TypeLexem.IDENTIFICATOR || 
                                lexerData[counter + 1].Type == TypeLexem.TEXT || 
                                lexerData[counter + 1].Type == TypeLexem.COMPARISON || 
-                               lexerData[counter + 1].Type == TypeLexem.MATH ||
                                lexerData[counter + 1].Type == TypeLexem.NUMBER10
                                )) 
                     ? lexerData[counter + 1].Type
                     : lexerData[counter + 1].Value;
-                //Console.WriteLine("Следующее значение лексера: " + lexerData[counter + 1].Value + "; его тип: " + lexerData[counter + 1].Type);
+                // Console.WriteLine("Следующее значение лексера: " + lexerData[counter + 1].Value + "; его тип: " + lexerData[counter + 1].Type);
                 int columnIndexOfNextVal = GetColumnIndexFromValue(word);
                 if (columnIndexOfNextVal == -1)
                 {
@@ -165,7 +176,7 @@ namespace Compiler.Runner
                 int indexStr = GetSafeKeyIndexFromTableWith(enterChain.Peek());
                 string nextValueOfColumn = MakeStringFromList(resultTable[indexStr].value[columnIndexOfNextVal].valueOfColumn);
 
-                if (nextValueOfColumn == "RETURN")
+                if (nextValueOfColumn.Split(':')[0] == "RETURN")
                 {
                     TryToConvolutionInRule(GetNumberOfRule(enterChain.Peek()), (counter + 1));
                 }
@@ -200,13 +211,30 @@ namespace Compiler.Runner
         void TryToConvolutionInRule(int numberOfRule, int lexerCounter)
         {
             //Пробуем свернуть. Получается -> идем дальше; нет - завершаем с ошибкой.
-            string key = rules[numberOfRule].Keys.ElementAt(0);
+            string key = rules[numberOfRule].Keys.ElementAt(0).haedOfRule;
             List<string> rule = rules[numberOfRule] [rules[numberOfRule].Keys.ElementAt(0)];
+            var countRemoveElems = 0;
             for (int i = rule.Count - 1; i >= 0; i--)
             {
-                //Console.WriteLine("///in loop with index: " + i);
                 if ((rule[i] == GetClearKey(enterChain.Peek())) && (enterChain.Count >= 1))
                 {
+                    if ((lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.IDENTIFICATOR) || 
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.DECIMAL) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.OPERATION) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.TEXT) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.COMPARISON) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.BOOLEAN) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.INT) ||
+                        (lexerData[lexerCounter - countRemoveElems - 1].Type == TypeLexem.MATH))
+                    { // && !(lexerData[countRemoveElems].IsReserve)
+                        var value = lexerData[lexerCounter - countRemoveElems - 1].Value;
+                        var registryColumn = FindRegistry(numberOfRule);
+            
+                        // Формируем AST дерево
+                        Console.WriteLine($"|Лексема: {value, -15}|Свертка по правилу №{numberOfRule, -5}| Номер правила: {key, -15}| Действие: {registryColumn.nameOfFunction ?? "null", -15}|");
+                        _astTree.CreateNode(registryColumn, value, countRemoveElems + 1);
+                    }
+                    countRemoveElems++;
                     enterChain.Pop();
                 }
                 else
@@ -217,7 +245,7 @@ namespace Compiler.Runner
                     return;
                 }
             }
-            //Console.WriteLine(" |||| Свертка по правилу №" + numberOfRule + "; Rule Key: " + key + ";\n");
+
             RebuildAndCheckChain(key, rule.Count, lexerCounter);
         }
 
@@ -246,10 +274,27 @@ namespace Compiler.Runner
             }
         }
 
+        bool checkForMathematicalAction() //умножение, деление, сложение и вычитание
+        {
+            bool result = false;
+
+            return result;
+        }
+
+
         void PrintEndOfProgram(string text, bool success)
         {
             Console.WriteLine(text);
             isSuccessfullyEnded = success;
+        }
+
+        private ColumnOfReestr FindRegistry(int numberConvolution)
+        {
+            return _registry.Find(item =>
+            {
+                int.TryParse(item.name.Substring(1), out var parsedNumberConvolution);
+                return parsedNumberConvolution == numberConvolution;
+            });
         }
     }
 }
