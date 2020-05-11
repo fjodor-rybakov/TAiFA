@@ -449,7 +449,8 @@ namespace Compiler.SLR
         private List<Value> GetEmptyColumns()
         {
             List<Value> values = new List<Value>();
-
+            
+            
             foreach (var id in _identifiers)
             {
                 Value value = new Value();
