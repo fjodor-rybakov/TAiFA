@@ -4,6 +4,7 @@ using System.Linq;
 using Compiler.AST;
 using Compiler.SLR;
 using Compiler.Lexer;
+using Compiler.MyMsil;
 
 namespace Compiler.Runner
 {
@@ -40,6 +41,8 @@ namespace Compiler.Runner
             ProcessChain();
             _astTree.PrintTree(); // Принт дерева
             TreeNode tree = _astTree.GetTree();
+            MsilGenerator msilGenerator = new MsilGenerator();
+            msilGenerator.Generate(tree);
             var c = 3 + 2;
         }
 
