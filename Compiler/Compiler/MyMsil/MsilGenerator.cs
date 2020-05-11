@@ -24,7 +24,7 @@ namespace Compiler.MyMsil
             code.WriteLine("{");
             code.WriteLine(".entrypoint");
             code.WriteLine(".maxstack 5");
-            code.WriteLine(".locals init (int32 first, second)");
+            code.WriteLine(".locals init (int32 first,int32 second)");
             var a = GetResult(treeNode, code);
             code.WriteLine("call void [mscorlib]System.Console::Write(int32)");
             code.WriteLine("ret");
