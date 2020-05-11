@@ -24,6 +24,7 @@ namespace Compiler.MyMsil
             code.WriteLine("{");
             code.WriteLine(".entrypoint");
             code.WriteLine(".maxstack 5");
+            code.WriteLine(".locals init (int32 first)");
             var a = GetResult(treeNode, code);
             code.WriteLine("call void [mscorlib]System.Console::Write(int32)");
             code.WriteLine("ret");
@@ -39,11 +40,24 @@ namespace Compiler.MyMsil
             {
                 if (treeNode.ChildNodes.Count == 1 && treeNode.TermType == Helper.enums.TermType.Minis)
                 {
-                    int value = -1;
-                    Int32.TryParse(treeNode.ChildNodes[0].Value, out value);
-                    response.value = 0 - value;
-                    response.isResultOfOperation = false;
-                    return response;
+                    if (treeNode.ChildNodes[0].TermType == Helper.enums.TermType.Int)
+                    {
+                        int value = -1;
+                        Int32.TryParse(treeNode.ChildNodes[0].Value, out value);
+                        response.value = 0 - value;
+                        response.isResultOfOperation = false;
+                        return response;
+                    }
+                    else
+                    {
+                        var res = GetResult(treeNode.ChildNodes[0], writer);
+                        writer.WriteLine("stloc first");
+                        writer.WriteLine("ldc.i4 0");
+                        writer.WriteLine("ldloc first");
+                        writer.WriteLine("sub");
+                        response.isResultOfOperation = true;
+                        return response;
+                    }
                 }
 
                 var firstResult = GetResult(treeNode.ChildNodes[0], writer);
